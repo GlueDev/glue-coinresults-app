@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Navigation } from 'react-native-navigation';
 
 import RegisterScreens from './src/screens';
+import Stores from './src/stores';
+import Provider from './src/utils/Provider';
 
 /**
  * Register screens.
  */
-RegisterScreens();
+RegisterScreens(Stores, Provider);
 
 /**
  * Start the CoinResults app.

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
+import { inject, observer } from 'mobx-react/native';
 
+@inject('user') @observer
 export default class HelloWorldScreen extends Component {
-  render() {
+  render () {
     return (
       <View>
-        <Text>Hello World!</Text>
+        <Text>{this.props.user.currency}</Text>
       </View>
-    )
+    );
   }
 }
