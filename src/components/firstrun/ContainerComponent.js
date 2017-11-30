@@ -39,15 +39,15 @@ const styles = StyleSheet.create({
     color:           '#FFFFFF',
     fontSize:        30,
     fontWeight:      'bold',
-    marginBottom: 50,
+    marginBottom:    50,
   },
 
   body: {
     backgroundColor: 'transparent',
     color:           '#FFFFFF',
     textAlign:       'justify',
-    lineHeight: 23,
-    fontWeight: '100',
-    padding: 30,
+    lineHeight:      23,
+    fontWeight:      '100',
+    padding:         30,
   },
 });
