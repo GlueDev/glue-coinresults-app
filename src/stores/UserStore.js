@@ -1,6 +1,8 @@
 import { action, observable } from 'mobx';
 import Moment from 'moment';
 
+import { loadStore, saveStore } from '../utils/iCloud';
+
 export default class UserStore {
   @observable currency = 'USD';
   @observable lastLogin = false;
@@ -18,14 +20,38 @@ export default class UserStore {
   /**
    * Change the user's last login date.
    *
-   * @param {string} date
+   * @param {?int} date
    */
   @action
   setLastLogin (date = false) {
     if (!date) {
-      const date = Moment.now();
+      date = Moment.now();
     }
 
     this.lastLogin = date;
+  }
+
+  /**
+   * Get the store from iCloud.
+   * TODO: Error handling.
+   */
+  @action
+  async getStore () {
+    const store = await loadStore('UserStore');
+
+    this.lastLogin = store.lastLogin;
+    this.currency = store.currency;
+  }
+
+  /**
+   * Save the store to iCloud.
+   * TODO: Error handling.
+   */
+  @action
+  async saveStore () {
+    await saveStore('UserStore', {
+      currency: this.currency,
+      lastLogin: this.lastLogin,
+    });
   }
 }
