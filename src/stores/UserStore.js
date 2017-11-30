@@ -4,7 +4,7 @@ import Moment from 'moment';
 import { loadStore, saveStore } from '../utils/iCloud';
 
 export default class UserStore {
-  @observable currency = 'USD';
+  @observable currency  = 'USD';
   @observable lastLogin = false;
 
   /**
@@ -40,7 +40,7 @@ export default class UserStore {
     const store = await loadStore('UserStore');
 
     this.lastLogin = store.lastLogin;
-    this.currency = store.currency;
+    this.currency  = store.currency;
   }
 
   /**

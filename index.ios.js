@@ -24,7 +24,7 @@ class CoinResults extends Component {
 
     // First we will let iCloud know that we have opened the app.
     // Then we will show the first run screens.
-    if (!firstRun) {
+    if (firstRun) {
       await saveStore('firstRun', {date: Moment.now()});
       return this.setNavigationStack('CR.FR.ExplanationScreen');
     }
