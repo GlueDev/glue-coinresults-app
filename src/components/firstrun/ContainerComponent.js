@@ -26,7 +26,7 @@ export default class ContainerComponent extends Component {
         <View style={styles.buttonContainer}>
           {this.props.buttons.map((button, i) => (
             <TouchableOpacity style={styles.touchable} onPress={button.onPress} key={i}>
-              <Text style={styles.button}>Hello!</Text>
+              <Text style={styles.button}>{button.text}</Text>
             </TouchableOpacity>
           ))}
         </View>
