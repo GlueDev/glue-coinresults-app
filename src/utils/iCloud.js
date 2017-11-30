@@ -19,5 +19,5 @@ export const loadStore = async (key) => {
  * TODO: Error handling.
  */
 export const saveStore = async (key, value) => {
-  await iCloudStore.setItem('UserStore', JSON.stringify(value));
+  await iCloudStore.setItem(key, JSON.stringify(value));
 };

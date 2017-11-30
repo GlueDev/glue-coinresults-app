@@ -36,7 +36,7 @@ export default class UserStore {
    * TODO: Error handling.
    */
   @action
-  async getStore () {
+  async loadStore () {
     const store = await loadStore('UserStore');
 
     this.lastLogin = store.lastLogin;
@@ -50,7 +50,7 @@ export default class UserStore {
   @action
   async saveStore () {
     await saveStore('UserStore', {
-      currency: this.currency,
+      currency:  this.currency,
       lastLogin: this.lastLogin,
     });
   }
