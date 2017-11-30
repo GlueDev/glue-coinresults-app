@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import Gradient from '../../components/ui/GradientComponent';
 
@@ -9,8 +9,9 @@ export default class ContainerComponent extends Component {
    * Define the possible props.
    */
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    body:  PropTypes.string.isRequired,
+    title:   PropTypes.string.isRequired,
+    body:    PropTypes.string.isRequired,
+    buttons: PropTypes.array.isRequired,
   };
 
   /**
@@ -21,6 +22,14 @@ export default class ContainerComponent extends Component {
       <Gradient style={styles.container}>
         <Text style={styles.title}>{this.props.title}</Text>
         <Text style={styles.body}>{this.props.body}</Text>
+
+        <View style={styles.buttonContainer}>
+          {this.props.buttons.map((button, i) => (
+            <TouchableOpacity style={styles.touchable} onPress={button.onPress} key={i}>
+              <Text style={styles.button}>Hello!</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </Gradient>
     );
   }
@@ -49,5 +58,29 @@ const styles = StyleSheet.create({
     lineHeight:      23,
     fontWeight:      '100',
     padding:         30,
+  },
+
+  buttonContainer: {
+    marginTop: 60,
+  },
+
+  touchable: {
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    width:           300,
+    shadowColor:     '#595959',
+    shadowOpacity:   0.5,
+    shadowOffset:    {width: 0, height: 2},
+    shadowRadius:    4,
+    borderRadius:    4,
+    marginBottom:    20,
+  },
+
+  button: {
+    backgroundColor: 'transparent',
+    color:           '#489DD0',
+    fontWeight:      'bold',
+    textAlign:       'center',
+    paddingTop:      12,
+    paddingBottom:   12,
   },
 });
