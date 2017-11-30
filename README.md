@@ -15,7 +15,8 @@ One of the glorious benefits of opensourcing your software is that others can co
 ## Donate
 Although this app is completely free, we have invested a lot of time and effort in its development. In case you would like to return the favor we would naturally be very happy. Our crypto wallet addresses:
 
-```BTC: 1A8ssLTrNsXEynCsULFwoDUMKwRHL7K7bJ
+```
+BTC: 1A8ssLTrNsXEynCsULFwoDUMKwRHL7K7bJ
 ETH: 0x6fa48974a2d730d704a53231a8a41f8113fc8e25
 XRP: rpnnEyXXw3Ex8EjZX5dgcu8byE1UhrsWFn
 DASH: XpwoQDbdfBFXJFrhKo7RmR5quLXj5vxzXP
