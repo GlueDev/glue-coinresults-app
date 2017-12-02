@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Gradient from '../../components/ui/GradientComponent';
 
@@ -10,7 +10,6 @@ export default class ContainerComponent extends Component {
    */
   static propTypes = {
     title:   PropTypes.string.isRequired,
-    body:    PropTypes.string.isRequired,
     buttons: PropTypes.array.isRequired,
   };
 
@@ -22,6 +21,8 @@ export default class ContainerComponent extends Component {
       <Gradient style={styles.container}>
         <Text style={styles.title}>{this.props.title}</Text>
         <Text style={styles.body}>{this.props.body}</Text>
+
+        <View>{this.props.action}</View>
 
         <View style={styles.buttonContainer}>
           {this.props.buttons.map((button, i) => (

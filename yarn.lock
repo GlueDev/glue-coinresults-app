@@ -3599,6 +3599,10 @@ react-native-svg@^6.0.0:
     github-download "^0.5.0"
     lodash "^4.16.6"
 
+react-native-textinput-effects@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-textinput-effects/-/react-native-textinput-effects-0.4.2.tgz#05336a8ed9e4992397fc5de714692d774eb91b07"
+
 "react-native-touch-id@https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b":
   version "3.1.0"
   resolved "https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b"

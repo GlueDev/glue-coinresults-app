@@ -21,6 +21,7 @@
 		"react-native-navigation": "^1.1.297",
 		"react-native-svg": "^6.0.0",
 		"react-native-svg-charts": "^1.6.0",
+		"react-native-textinput-effects": "^0.4.2",
 		"react-native-touch-id": "https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b"
 	},
 	"devDependencies": {

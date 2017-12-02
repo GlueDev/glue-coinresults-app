@@ -1,7 +1,9 @@
+import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
 
 import Container from '../../components/firstrun/ContainerComponent';
 
+@inject('cryptos') @observer
 export default class AssetsScreen extends Component {
   nextScreen = () => {
     this.props.navigator.showModal({
