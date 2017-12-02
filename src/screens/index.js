@@ -1,7 +1,8 @@
 import { Navigation } from 'react-native-navigation';
 
 import ExplanationScreen from './firstrun/ExplanationScreen';
-import AssetsScreen from './firstrun/AssetsScreen';
+import AssetsOverviewScreen from './firstrun/AssetsOverviewScreen';
+import AssetsAddScreen from './firstrun/AssetsAddScreen';
 
 import OverviewScreen from './portfolio/OverviewScreen';
 
@@ -15,5 +16,6 @@ export default function registerScreens (Store: {}, Provider: {}) {
    * First run screens.
    */
   Navigation.registerComponent('CR.FR.ExplanationScreen', () => ExplanationScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.AssetsScreen', () => AssetsScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.AssetsOverviewScreen', () => AssetsOverviewScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.AssetsAddScreen', () => AssetsAddScreen, Store, Provider);
 }
