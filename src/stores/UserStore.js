@@ -7,6 +7,10 @@ export default class UserStore {
   @observable currency  = 'USD';
   @observable lastLogin = false;
 
+  constructor () {
+    this.loadStore();
+  }
+
   /**
    * Change the user's currency.
    *

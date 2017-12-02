@@ -1,9 +1,9 @@
 import HistoryStore from './HistoryStore';
-import PortfolioStore from './PortfolioStore';
+import CryptosStore from './CryptosStore';
 import UserStore from './UserStore';
 
 export default {
-  history:   new HistoryStore(),
-  portfolio: new PortfolioStore(),
-  user:      new UserStore(),
+  history: new HistoryStore(),
+  cryptos: new CryptosStore(),
+  user:    new UserStore(),
 };
