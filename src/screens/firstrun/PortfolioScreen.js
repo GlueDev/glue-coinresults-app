@@ -1,52 +1,68 @@
 import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { AlertIOS, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
 
 import Container from '../../components/firstrun/ContainerComponent';
 
 @inject('cryptos') @observer
 export default class AssetsScreen extends Component {
-  nextScreen = () => {
-    this.props.navigator.showModal({
-      screen: 'CR.FR.AssetsAddScreen',
-      title:  'Modal',
-    });
+  constructor () {
+    super();
+    this.state = {portfolioName: ''};
+  }
+
+  /**
+   * Add a new portfolio to the store.
+   */
+  onSubmit = async () => {
+    const portfolioName = this.state.portfolioName;
+
+    // Check for empty names.
+    if (portfolioName === '') {
+      return AlertIOS.alert('Please enter a portfolio name.');
+    }
+
+    // Try to add the portfolio.
+    try {
+      await this.props.cryptos.createPortfolio(portfolioName);
+      this.props.navigator.resetTo({
+        screen: 'CR.FR.AssetsOverviewScreen',
+
+        navigatorStyle: {
+          navBarHidden:             true,
+          statusBarTextColorScheme: 'light',
+        },
+      });
+    } catch (e) {
+      AlertIOS.alert('Oops, something went wrong. Please try again!');
+    }
   };
 
   /**
    * Render the body for the container component.
    */
-  renderAction = () => {
-    /**
-     * <TextInput
-     style={styles.textInput}
-     defaultValue={'My Portfolio'}
-     onSubmitEditing={() => {}}
-     returnKeyType={'next'}
-     clearTextOnFocus={true}
-     enablesReturnKeyAutomatically={true}/>
-     */
-    return (
-      <View style={styles.inputView}>
-        <Hoshi
-          label={'Portfolio name'}
-          style={styles.inputContainer}
-          labelStyle={styles.inputLabel}
-          inputStyle={styles.inputText}
-          height={60}
-          borderColor={'rgba(255, 255, 255, 0.75)'}
-          backgroundColor={'transparent'}/>
-      </View>
-    );
-  };
+  renderAction = () => (
+    <View style={styles.inputView}>
+      <Hoshi
+        onChangeText={value => this.setState({portfolioName: value})}
+        onSubmitEditing={this.onSubmit}
+        label={'Portfolio name'}
+        style={styles.inputContainer}
+        labelStyle={styles.inputLabel}
+        inputStyle={styles.inputText}
+        height={60}
+        borderColor={'rgba(255, 255, 255, 0.75)'}
+        backgroundColor={'transparent'}/>
+    </View>
+  );
 
   /**
    * Render the component.
    */
   render () {
     const buttons = [
-      {text: 'Continue', onPress: this.nextScreen},
+      {text: 'Continue', onPress: this.onSubmit},
     ];
 
     return (
@@ -64,7 +80,7 @@ export default class AssetsScreen extends Component {
 
 const styles = StyleSheet.create({
   inputView: {
-    width: 300,
+    width:     300,
     marginTop: 10,
   },
 
@@ -77,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color:           'rgba(255, 255, 255, 0.5)',
     fontWeight:      'bold',
-    left: -16,
+    left:            -16,
   },
 
   inputText: {
@@ -85,6 +101,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize:   13,
     paddingTop: 3,
-    left: 0,
+    left:       0,
   },
 });

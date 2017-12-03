@@ -4,7 +4,7 @@ import { Navigation } from 'react-native-navigation';
 
 import RegisterScreens from './src/screens';
 import Stores from './src/stores';
-import { loadStore, saveStore } from './src/utils/iCloud';
+import { loadStore, saveStore, clearStores } from './src/utils/iCloud';
 import Provider from './src/utils/Provider';
 
 /**
@@ -25,6 +25,7 @@ class CoinResults extends Component {
     // First we will let iCloud know that we have opened the app.
     // Then we will show the first run screens.
     if (true) {
+      // await clearStores();
       await saveStore('firstRun', {date: Moment.now()});
       return this.setNavigationStack('CR.FR.ExplanationScreen');
     }

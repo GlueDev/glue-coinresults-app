@@ -8,7 +8,8 @@ export default class ExplanationScreen extends Component {
    */
   nextScreen = () => (
     this.props.navigator.resetTo({
-      screen: 'CR.FR.PortfolioScreen',
+      screen: 'CR.FR.AssetsOverviewScreen',
+      // screen: 'CR.FR.PortfolioScreen',
 
       navigatorStyle: {
         navBarHidden:             true,

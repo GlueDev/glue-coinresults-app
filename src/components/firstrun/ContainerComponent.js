@@ -10,6 +10,8 @@ export default class ContainerComponent extends Component {
    */
   static propTypes = {
     title:   PropTypes.string.isRequired,
+    action:  PropTypes.object,
+    body:    PropTypes.string.isRequired,
     buttons: PropTypes.array.isRequired,
   };
 

@@ -3,7 +3,7 @@ import { action, observable, computed, createTransformer } from 'mobx';
 import { loadStore, saveStore } from '../utils/iCloud';
 
 export default class CryptosStore {
-  @observable portfolios = [ // DUMMY DATA
+  /* @observable portfolios = [ // DUMMY DATA
     {
       name: 'Johnny',
 
@@ -54,18 +54,17 @@ export default class CryptosStore {
         {amount: 200, date: 1884183},
       ],
     },
-  ];
+  ]; */
 
+  @observable portfolios = [];
   @observable rates = [];
 
   /**
    * Ensure the store is filled with iCloud data.
    */
   constructor () {
-    // Normally we would fill the store with iCloud data. Not now.
-    // this.loadStore();
-
-    this.getRates();
+    this.loadStore();
+    // this.getRates();
   }
 
   /**
@@ -74,9 +73,9 @@ export default class CryptosStore {
    * @param {string} name
    */
   @action
-  createPortfolio (name) {
+  async createPortfolio (name) {
     // Check for unique portfolio name.
-    if (this.getPortfolio !== undefined) {
+    if (this.getPortfolio(name) !== undefined) {
       throw Error('A portfolio with this name already exists.');
     }
 
@@ -84,7 +83,11 @@ export default class CryptosStore {
     this.portfolios.push({
       name,
       assets: [],
+      investments: [],
     });
+
+    // Save to iCloud.
+    await this.saveStore();
   }
 
   /**
@@ -94,7 +97,11 @@ export default class CryptosStore {
    */
   @action
   getPortfolio (name) {
-    return this.portfolios.find(portfolio => portfolio.name === name);
+    try {
+      return this.portfolios.find(portfolio => portfolio.name === name);
+    } catch (e) {
+      return undefined;
+    }
   }
 
   /**
@@ -254,13 +261,15 @@ export default class CryptosStore {
 
   /**
    * Get the store from iCloud.
-   * TODO: Error handling.
    */
   @action
   async loadStore () {
-    const store = await loadStore('CryptoStore');
-
-    this.portfolios = store.portfolios;
+    try {
+      const store = await loadStore('CryptoStore');
+      this.portfolios = store.portfolios || [];
+    } catch (e) {
+      this.portfolios = [];
+    }
   }
 
   /**

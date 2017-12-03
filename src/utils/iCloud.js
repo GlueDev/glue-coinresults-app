@@ -21,3 +21,10 @@ export const loadStore = async (key) => {
 export const saveStore = async (key, value) => {
   await iCloudStore.setItem(key, JSON.stringify(value));
 };
+
+/**
+ * Clear all storage keys.
+ */
+export const clearStores = async () => {
+  iCloudStore.clear();
+};
