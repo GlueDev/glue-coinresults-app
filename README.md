@@ -8,7 +8,7 @@ Obviously there are many apps that offer some of the same features as CoinResult
 One of the reasons why we appreciate cryptocurrencies so much is because of privacy reasons. We completely opensourced this app because we want to be transparent and we want to prove that we really will not save any of your data (other than anonimous analytics).
 
 ## Contribute
-One of the glorious benefits of opensourcing your software is that others can contribute. In case you have any ideas, extra features or questions, do not hesitate to open an issue / pull request.
+One of the glorious benefits of opensourcing your software is that others can contribute. In case you have any ideas, extra features or questions, do not hesitate to open an issue / pull request. In case you want to contribute in another way, check out the project boards. There are plenty of issues we can use your help with.
 
 [contribution guidelines will be added later]
 

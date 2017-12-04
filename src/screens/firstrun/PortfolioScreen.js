@@ -1,9 +1,9 @@
 import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
-import { AlertIOS, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
-import { Hoshi } from 'react-native-textinput-effects';
+import { AlertIOS, KeyboardAvoidingView } from 'react-native';
 
 import Container from '../../components/firstrun/ContainerComponent';
+import Input from '../../components/firstrun/InputComponent';
 
 @inject('cryptos') @observer
 export default class AssetsScreen extends Component {
@@ -14,6 +14,9 @@ export default class AssetsScreen extends Component {
     navBarHidden: true,
   };
 
+  /**
+   * Create an empty state.
+   */
   constructor () {
     super();
     this.state = {portfolioName: ''};
@@ -50,18 +53,10 @@ export default class AssetsScreen extends Component {
    * Render the body for the container component.
    */
   renderAction = () => (
-    <View style={styles.inputView}>
-      <Hoshi
-        onChangeText={value => this.setState({portfolioName: value})}
-        onSubmitEditing={this.onSubmit}
-        label={'Portfolio name'}
-        style={styles.inputContainer}
-        labelStyle={styles.inputLabel}
-        inputStyle={styles.inputText}
-        height={60}
-        borderColor={'rgba(255, 255, 255, 0.75)'}
-        backgroundColor={'transparent'}/>
-    </View>
+    <Input
+      onChangeText={value => this.setState({portfolioName: value})}
+      onSubmitEditing={this.onSubmit}
+      label={'Portfolio name'}/>
   );
 
   /**
@@ -84,30 +79,3 @@ export default class AssetsScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  inputView: {
-    width:     300,
-    marginTop: 10,
-  },
-
-  inputContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.75)',
-  },
-
-  inputLabel: {
-    backgroundColor: 'transparent',
-    color:           'rgba(255, 255, 255, 0.5)',
-    fontWeight:      'bold',
-    left:            -16,
-  },
-
-  inputText: {
-    color:      '#FFFFFF',
-    fontWeight: 'normal',
-    fontSize:   13,
-    paddingTop: 3,
-    left:       0,
-  },
-});

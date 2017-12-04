@@ -2,8 +2,9 @@ import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-
 import Container from '../../components/firstrun/ContainerComponent';
+
+import Finance from '../../utils/Finance';
 
 @inject('cryptos') @observer
 export default class AssetsScreen extends Component {
@@ -11,43 +12,30 @@ export default class AssetsScreen extends Component {
    * Set the screen's navigator style.
    */
   static navigatorStyle = {
-    navBarHidden: true,
+    navBarHidden:          true,
     screenBackgroundColor: 'transparent',
-    rootBackgroundImageName: 'iPhone X',
   };
 
+  /**
+   * Setup the default state.
+   */
   constructor () {
     super();
     this.state = {portfolioName: 'Diederik'};
   }
 
-  componentWillMount () {
-    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {ticker: 'BTC', amount: 3.15452});
-    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {ticker: 'ETH', amount: 12.14469});
-    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {ticker: 'XMR', amount: 50.0});
-    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {
-      ticker: 'XRP',
-      amount: 12418.311331,
-    });
-  }
-
   /**
    * Show the asset modal.
    */
-  nextScreen = () => {
+  addAsset = () => {
     this.props.navigator.showModal({
-      screen: 'CR.FR.AssetsAddScreen',
+      screen: 'CR.FR.AddTickerScreen',
 
-      navigatorStyle: {
-        navBarHidden:             true,
-        statusBarTextColorScheme: 'light',
+      passProps: {
+        portfolioName: this.state.portfolioName,
       },
     });
   };
-
-  /**
-   *
-   */
 
   /**
    * Render the action.
@@ -81,7 +69,7 @@ export default class AssetsScreen extends Component {
         right={listItemButton}>
         <View style={styles.listItem}>
           <Text style={styles.listItemTicker}>{item.ticker}</Text>
-          <Text style={styles.listItemAmount}>{item.amount}</Text>
+          <Text style={styles.listItemAmount}>{Finance.formatCrypto(item.amount)}</Text>
         </View>
       </Swipeout>
     );
@@ -110,8 +98,8 @@ export default class AssetsScreen extends Component {
     }
 
     const buttons = [
-      {text: 'Add asset', onPress: this.nextScreen},
-      {text: 'Continue', onPress: this.nextScreen},
+      {text: 'Add asset', onPress: this.addAsset},
+      {text: 'Continue', onPress: () => {}},
     ];
 
     return (
@@ -136,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems:        'center',
     padding:           12,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, .3)',
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
   },
 
   listItemTicker: {

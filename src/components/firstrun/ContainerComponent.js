@@ -26,7 +26,7 @@ export default class ContainerComponent extends Component {
 
         <View>{this.props.action}</View>
 
-        <View style={styles.buttonContainer}>
+        <View>
           {this.props.buttons.map((button, i) => (
             <TouchableOpacity style={styles.touchable} onPress={button.onPress} key={i}>
               <Text style={styles.button}>{button.text}</Text>
@@ -41,9 +41,10 @@ export default class ContainerComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     flex:           1,
-    paddingTop:     40,
+    paddingTop:     80,
+    paddingBottom:  80,
     alignItems:     'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
 
   title: {
@@ -51,7 +52,6 @@ const styles = StyleSheet.create({
     color:           '#FFFFFF',
     fontSize:        30,
     fontWeight:      'bold',
-    marginBottom:    50,
   },
 
   body: {
@@ -60,11 +60,8 @@ const styles = StyleSheet.create({
     textAlign:       'justify',
     lineHeight:      23,
     fontWeight:      '100',
-    padding:         30,
-  },
-
-  buttonContainer: {
-    marginTop: 60,
+    paddingLeft:     30,
+    paddingRight:    30,
   },
 
   touchable: {

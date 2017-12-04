@@ -1,0 +1,46 @@
+[
+  {
+    "ticker": "BTC",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "BCH",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "BTG",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "ETH",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "XRP",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "DASH",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "XMR",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "DGB",
+    "color": "#FCA328"
+  },
+
+  {
+    "ticker": "NEO",
+    "color": "#FCA328"
+  }
+]
