@@ -25,19 +25,20 @@ export default class AddTicker extends Component {
    */
   constructor () {
     super();
-    this.state = {ticker: ''};
+    this.state = {ticker: 'BTC'};
   }
 
   /**
    * Go to the next page.
    */
   addAmount = () => {
-    this.props.navigator.push({
+    console.info(this.state.ticker);
+    return this.props.navigator.push({
       screen:    'CR.FR.SetAmountScreen',
 
       passProps: {
         ticker:        this.state.ticker,
-        portfolioName: '',
+        portfolioName: this.props.portfolioName,
       },
     });
   };

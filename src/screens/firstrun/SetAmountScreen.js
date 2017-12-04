@@ -35,11 +35,13 @@ export default class AddAmount extends Component {
    * Handle setting an amount.
    */
   handleSubmit = () => {
-    const { ticker, portfolio } = this.props;
-    this.props.cryptos.createOrUpdateAsset(portfolio, {
+    const { ticker, portfolioName } = this.props;
+    this.props.cryptos.createOrUpdateAsset(portfolioName, {
       ticker,
       amount: this.state.amount,
     });
+
+    this.props.navigator.dismissAllModals();
   };
 
   /**

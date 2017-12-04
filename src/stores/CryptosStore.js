@@ -85,9 +85,6 @@ export default class CryptosStore {
       assets: [],
       investments: [],
     });
-
-    // Save to iCloud.
-    await this.saveStore();
   }
 
   /**
