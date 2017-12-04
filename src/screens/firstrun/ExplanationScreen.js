@@ -4,17 +4,19 @@ import Container from '../../components/firstrun/ContainerComponent';
 
 export default class ExplanationScreen extends Component {
   /**
+   * Set the screen's navigator style.
+   */
+  static navigatorStyle = {
+    navBarHidden: true,
+  };
+
+  /**
    * Navigate to the next screen.
    */
   nextScreen = () => (
     this.props.navigator.resetTo({
       screen: 'CR.FR.AssetsOverviewScreen',
       // screen: 'CR.FR.PortfolioScreen',
-
-      navigatorStyle: {
-        navBarHidden:             true,
-        statusBarTextColorScheme: 'light',
-      },
     })
   );
 

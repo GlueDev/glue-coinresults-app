@@ -4,7 +4,7 @@ import { Navigation } from 'react-native-navigation';
 
 import RegisterScreens from './src/screens';
 import Stores from './src/stores';
-import { loadStore, saveStore, clearStores } from './src/utils/iCloud';
+import { loadStore, saveStore } from './src/utils/iCloud';
 import Provider from './src/utils/Provider';
 
 /**
@@ -40,16 +40,8 @@ class CoinResults extends Component {
    * @param {string} screen
    */
   static setNavigationStack (screen) {
-    const navigatorStyle = {
-      navBarHidden:             true,
-      statusBarTextColorScheme: 'light',
-    };
-
     Navigation.startSingleScreenApp({
-      screen: {
-        screen,
-        navigatorStyle,
-      },
+      screen: {screen},
     });
   }
 }

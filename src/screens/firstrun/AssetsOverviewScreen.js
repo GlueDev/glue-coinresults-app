@@ -7,28 +7,47 @@ import Container from '../../components/firstrun/ContainerComponent';
 
 @inject('cryptos') @observer
 export default class AssetsScreen extends Component {
+  /**
+   * Set the screen's navigator style.
+   */
+  static navigatorStyle = {
+    navBarHidden: true,
+    screenBackgroundColor: 'transparent',
+    rootBackgroundImageName: 'iPhone X',
+  };
+
   constructor () {
     super();
-    this.state = {portfolioName: ''};
+    this.state = {portfolioName: 'Diederik'};
   }
 
   componentWillMount () {
-    // This can actually be set as a prop from the previous screen.
-    const firstPortfolio = this.props.cryptos.portfolios[0];
-    this.setState({portfolioName: firstPortfolio.name});
-
-    this.props.cryptos.createOrUpdateAsset(firstPortfolio.name, {ticker: 'BTC', amount: 3.15452});
-    this.props.cryptos.createOrUpdateAsset(firstPortfolio.name, {ticker: 'ETH', amount: 12.14469});
-    this.props.cryptos.createOrUpdateAsset(firstPortfolio.name, {ticker: 'XMR', amount: 50.0});
-    this.props.cryptos.createOrUpdateAsset(firstPortfolio.name, {ticker: 'XRP', amount: 12418.311331});
+    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {ticker: 'BTC', amount: 3.15452});
+    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {ticker: 'ETH', amount: 12.14469});
+    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {ticker: 'XMR', amount: 50.0});
+    this.props.cryptos.createOrUpdateAsset(this.state.portfolioName, {
+      ticker: 'XRP',
+      amount: 12418.311331,
+    });
   }
 
+  /**
+   * Show the asset modal.
+   */
   nextScreen = () => {
     this.props.navigator.showModal({
       screen: 'CR.FR.AssetsAddScreen',
-      title:  'Modal',
+
+      navigatorStyle: {
+        navBarHidden:             true,
+        statusBarTextColorScheme: 'light',
+      },
     });
   };
+
+  /**
+   *
+   */
 
   /**
    * Render the action.

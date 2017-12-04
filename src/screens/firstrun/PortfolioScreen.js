@@ -7,6 +7,13 @@ import Container from '../../components/firstrun/ContainerComponent';
 
 @inject('cryptos') @observer
 export default class AssetsScreen extends Component {
+  /**
+   * Set the screen's navigator style.
+   */
+  static navigatorStyle = {
+    navBarHidden: true,
+  };
+
   constructor () {
     super();
     this.state = {portfolioName: ''};
