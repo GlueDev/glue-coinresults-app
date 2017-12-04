@@ -3,59 +3,6 @@ import { action, observable, computed, createTransformer } from 'mobx';
 import { loadStore, saveStore } from '../utils/iCloud';
 
 export default class CryptosStore {
-  /* @observable portfolios = [ // DUMMY DATA
-    {
-      name: 'Johnny',
-
-      assets: [
-        {ticker: 'BTC', amount: 1.000},
-        {ticker: 'BCH', amount: 1.500},
-        {ticker: 'BTG', amount: 0.750},
-        {ticker: 'XRP', amount: 5000.000},
-        {ticker: 'ETH', amount: 15.000},
-        {ticker: 'DASH', amount: 10.000},
-        {ticker: 'XMR', amount: 100.000},
-      ],
-
-      investments: [
-        {amount: 1000, date: 1884183},
-        {amount: 200, date: 1884183},
-        {amount: 750, date: 1884183},
-      ],
-    },
-
-    {
-      name: 'Hector',
-
-      assets: [
-        {ticker: 'BTC', amount: 0.250},
-        {ticker: 'BCH', amount: 0.600},
-        {ticker: 'BTG', amount: 3.000},
-        {ticker: 'XRP', amount: 1000.000},
-        {ticker: 'ETH', amount: 7.500},
-        {ticker: 'DASH', amount: 3.000},
-        {ticker: 'XMR', amount: 25.000},
-      ],
-
-      investments: [
-        {amount: 300, date: 1884183},
-        {amount: 700, date: 1884183},
-      ],
-    },
-
-    {
-      name: 'Pete',
-
-      assets: [
-        {ticker: 'NEO', amount: 500.000},
-      ],
-
-      investments: [
-        {amount: 200, date: 1884183},
-      ],
-    },
-  ]; */
-
   @observable portfolios = [];
   @observable rates = [];
 
@@ -64,7 +11,33 @@ export default class CryptosStore {
    */
   constructor () {
     this.loadStore();
-    // this.getRates();
+  }
+
+  /**
+   *
+   */
+  @computed get totalValues() {
+    return this.portfolios.map(portfolio => {
+      const ret = { [portfolio.name]: 0 };
+      if (!portfolio.assets[0].values) {
+        return ret;
+      }
+
+      ret.value = portfolio.assets.reduce((a, b) => a.values.EUR + b.values.EUR);
+      return ret;
+    });
+  }
+
+  @computed get totalInvestments() {
+
+  }
+
+  @computed get totalResults() {
+
+  }
+
+  @computed get totalROIs() {
+
   }
 
   /**
@@ -120,33 +93,6 @@ export default class CryptosStore {
   }
 
   /**
-   * Calculate the total value of a portfolio.
-   *
-   * @param {string} name
-   */
-
-
-  /**
-   * Calculate the total investments.
-   *
-   * @param {string} name
-   */
-  @action
-  getPortfolioTotalInvestments (name) {
-
-  }
-
-  @action
-  getPortfolioTotalProfit (name) {
-
-  }
-
-  @action
-  getPortfolioROI (name) {
-
-  }
-
-  /**
    * Remove a portfolio.
    *
    * @param {string} name
@@ -173,7 +119,6 @@ export default class CryptosStore {
     }
 
     this.portfolios[portfolioIndex].assets[assetIndex] = asset;
-    this.calculateAssetValues();
   }
 
   /**
@@ -212,6 +157,11 @@ export default class CryptosStore {
    */
   @action
   async getRates (tickers = false) {
+    // Skip if no portfolios exist.
+    if (!this.portfolios[0]) {
+      return;
+    }
+
     // Create the string for the URL.
     let string;
     switch (typeof tickers) {

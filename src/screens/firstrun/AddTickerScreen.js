@@ -31,17 +31,16 @@ export default class AddTicker extends Component {
   /**
    * Go to the next page.
    */
-  addAmount = () => {
-    console.info(this.state.ticker);
-    return this.props.navigator.push({
+  addAmount = () => (
+    this.props.navigator.push({
       screen:    'CR.FR.SetAmountScreen',
 
       passProps: {
         ticker:        this.state.ticker,
         portfolioName: this.props.portfolioName,
       },
-    });
-  };
+    })
+  );
 
   /**
    * Render the action.

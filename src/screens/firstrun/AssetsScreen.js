@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react/native';
+import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Swipeout from 'react-native-swipeout';
@@ -17,12 +19,11 @@ export default class AssetsScreen extends Component {
   };
 
   /**
-   * Setup the default state.
+   * Define the possible props.
    */
-  constructor () {
-    super();
-    this.state = {portfolioName: 'Diederik'};
-  }
+  static PropTypes = {
+    portfolioName: PropTypes.string.isRequired,
+  };
 
   /**
    * Show the asset modal.
@@ -32,9 +33,23 @@ export default class AssetsScreen extends Component {
       screen: 'CR.FR.AddTickerScreen',
 
       passProps: {
-        portfolioName: this.state.portfolioName,
+        portfolioName: this.props.portfolioName,
       },
     });
+  };
+
+  /**
+   * Remove an asset.
+   */
+  removeAsset = (asset) => {
+    this.props.cryptos.removeAsset(this.props.portfolioName, asset.ticker);
+  };
+
+  /**
+   * Save the portfolio to iCloud.
+   */
+  savePortfolio = () => {
+    this.props.cryptos.saveStore();
   };
 
   /**
@@ -43,7 +58,7 @@ export default class AssetsScreen extends Component {
   renderAction = () => (
     <View style={styles.actionContainer}>
       <FlatList
-        data={this.props.cryptos.getPortfolio(this.state.portfolioName).assets}
+        data={toJS(this.props.cryptos.getPortfolio(this.props.portfolioName).assets)}
         renderItem={this.renderListItem}
         keyExtractor={item => item.ticker}
       />
@@ -58,7 +73,7 @@ export default class AssetsScreen extends Component {
       {
         text:            'Remove',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        onPress:         () => {this.removeAsset(item);},
+        onPress:         () => {this.removeAsset(item)},
       },
     ];
 
@@ -76,31 +91,21 @@ export default class AssetsScreen extends Component {
   };
 
   /**
-   * Remove an asset.
-   */
-  removeAsset = (asset) => {
-    this.props.cryptos.removeAsset(this.state.portfolioName, asset.ticker);
-  };
-
-  /**
    * Render the component.
    */
   render () {
     const assets = this.props.cryptos.portfolios[0].assets;
     let body     = '', action;
+    let buttons = [{text: 'Add asset', onPress: this.addAsset}];
 
     if (assets === undefined || !assets.length) {
       body = 'Add at least one asset to your portfolio.';
     } else {
       body   = 'The following asset(s) have been added to your portfolio. Swipe right to remove' +
-        ' an asset';
+        ' an asset.';
       action = this.renderAction();
+      buttons.push({text: 'Continue', onPress: this.savePortfolio});
     }
-
-    const buttons = [
-      {text: 'Add asset', onPress: this.addAsset},
-      {text: 'Continue', onPress: () => {}},
-    ];
 
     return (
       <Container

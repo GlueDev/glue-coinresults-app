@@ -37,15 +37,14 @@ export default class AssetsScreen extends Component {
     try {
       await this.props.cryptos.createPortfolio(portfolioName);
       this.props.navigator.resetTo({
-        screen: 'CR.FR.AssetsOverviewScreen',
+        screen: 'CR.FR.AssetsScreen',
 
-        navigatorStyle: {
-          navBarHidden:             true,
-          statusBarTextColorScheme: 'light',
+        passProps: {
+          portfolioName: this.state.portfolioName,
         },
       });
     } catch (e) {
-      AlertIOS.alert('Oops, something went wrong. Please try again!');
+      AlertIOS.alert('Oops, something went wrong. Please try again or use a different name!');
     }
   };
 
