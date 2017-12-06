@@ -20,6 +20,7 @@ BTC: 1A8ssLTrNsXEynCsULFwoDUMKwRHL7K7bJ
 ETH: 0x6fa48974a2d730d704a53231a8a41f8113fc8e25
 XRP: rpnnEyXXw3Ex8EjZX5dgcu8byE1UhrsWFn
 DASH: XpwoQDbdfBFXJFrhKo7RmR5quLXj5vxzXP
+XMR: 4JUdGzvrMFDWrUUwY3toJATSeNwjn54LkCnKBPRzDuhzi5vSepHfUckJNxRL2gjkNrSqtCoRUrEDAgRwsQvVCjZbS2cGvoaHXukMm1yLK4
 Paypal: info@webrelated.nl
 ```
 
