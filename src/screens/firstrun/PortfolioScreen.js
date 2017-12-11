@@ -36,6 +36,7 @@ export default class AssetsScreen extends Component {
     // Try to add the portfolio.
     try {
       await this.props.cryptos.createPortfolio(portfolioName);
+      this.props.cryptos.activePortfolio = portfolioName;
       this.props.navigator.resetTo({
         screen: 'CR.FR.AssetsScreen',
 

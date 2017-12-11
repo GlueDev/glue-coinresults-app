@@ -1,8 +1,8 @@
 import Accounting from 'accounting';
 
 class Finance {
-  static formatFIAT(value) {
-    return Accounting.formatMoney(value, "â‚¬", 2, '.', ',');
+  static formatFIAT(value, decimals = 2) {
+    return Accounting.formatMoney(value, "€", decimals, '.', ',');
   }
 
   static formatCrypto(value) {

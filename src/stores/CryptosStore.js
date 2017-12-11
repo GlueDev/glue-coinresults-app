@@ -1,24 +1,29 @@
-import { action, observable, computed, createTransformer } from 'mobx';
+import ccxt from 'ccxt';
+import { action, computed, createTransformer, observable } from 'mobx';
 
 import { loadStore, saveStore } from '../utils/iCloud';
 
 export default class CryptosStore {
-  @observable portfolios = [];
-  @observable rates = [];
+  @observable portfolios      = [];
+  @observable activePortfolio = false;
+  @observable rates           = [];
+  @observable marketCap       = [];
 
   /**
    * Ensure the store is filled with iCloud data.
    */
   constructor () {
     this.loadStore();
+
   }
 
   /**
    *
    */
-  @computed get totalValues() {
+  @computed
+  get totalValues () {
     return this.portfolios.map(portfolio => {
-      const ret = { [portfolio.name]: 0 };
+      const ret = {[portfolio.name]: 0};
       if (!portfolio.assets[0].values) {
         return ret;
       }
@@ -28,16 +33,33 @@ export default class CryptosStore {
     });
   }
 
-  @computed get totalInvestments() {
+  @computed
+  get totalInvestments () {
 
   }
 
-  @computed get totalResults() {
+  @computed
+  get totalResults () {
 
   }
 
-  @computed get totalROIs() {
+  @computed
+  get totalROIs () {
 
+  }
+
+  /**
+   * Grab the market cap.
+   */
+  @action
+  async getMarketCap () {
+    const mc = new ccxt.coinmarketcap();
+    const response = await mc.fetchGlobal('EUR');
+
+    this.marketCap = {
+      total: response.total_market_cap_eur,
+      btcDominance: response.bitcoin_percentage_of_market_cap,
+    };
   }
 
   /**
@@ -55,7 +77,7 @@ export default class CryptosStore {
     // Add the empty assets portfolio.
     this.portfolios.push({
       name,
-      assets: [],
+      assets:      [],
       investments: [],
     });
   }
@@ -178,13 +200,12 @@ export default class CryptosStore {
     }
 
     try {
-      const request  = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${string}&tsyms=BTC,USD,EUR`);
-      const response = await request.json();
+      const request = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${string}&tsyms=BTC,USD,EUR`);
+      this.rates    = await request.json();
 
-      this.rates = response;
       this.calculateAssetValues();
     } catch (e) {
-      throw Error('Could not connect to API');
+      throw Error('Could not connect to the API.');
     }
   }
 
@@ -212,8 +233,9 @@ export default class CryptosStore {
   @action
   async loadStore () {
     try {
-      const store = await loadStore('CryptoStore');
-      this.portfolios = store.portfolios || [];
+      const store          = await loadStore('CryptoStore');
+      this.portfolios      = store.portfolios || [];
+      this.activePortfolio = store.activePortfolio || false;
     } catch (e) {
       this.portfolios = [];
     }
@@ -226,7 +248,8 @@ export default class CryptosStore {
   @action
   async saveStore () {
     await saveStore('CryptoStore', {
-      portfolios: this.portfolios,
+      portfolios:      this.portfolios,
+      activePortfolio: this.activePortfolio,
     });
   }
 }

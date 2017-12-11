@@ -24,6 +24,7 @@ class CoinResults extends Component {
 
     // First we will let iCloud know that we have opened the app.
     // Then we will show the first run screens.
+    // if (true) {
     if (!firstRun) {
       // Clear all iCloud stores, just in case something went wrong before.
       // await clearStores();

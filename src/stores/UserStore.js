@@ -7,6 +7,9 @@ export default class UserStore {
   @observable currency  = 'USD';
   @observable lastLogin = false;
 
+  /**
+   * Ensure the store is filled with iCloud data.
+   */
   constructor () {
     this.loadStore();
   }

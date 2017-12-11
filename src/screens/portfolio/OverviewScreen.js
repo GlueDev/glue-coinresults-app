@@ -1,6 +1,9 @@
 import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+
+import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
+import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 
 @inject('user', 'cryptos') @observer
 export default class OverviewScreen extends Component {
@@ -11,21 +14,69 @@ export default class OverviewScreen extends Component {
     navBarHidden: true,
   };
 
-  async componentWillMount() {
-    await this.props.cryptos.getRates();
+  /**
+   *
+   */
+  constructor (props) {
+    super(props);
+
+    this.state = {refreshing: false};
   }
 
-  render () {
-    return (
-      <TouchableOpacity onPress={() => {
-        this.props.cryptos.createOrUpdateAsset('Diederik', {ticker: 'XRP', amount: 1200});
-        // this.props.cryptos.getRates();
-      }}>
-        <View>
-          <Text style={{marginTop: 100, marginLeft: 40}}>{this.props.cryptos.getPortfolio('Diederik').assets[0].amount}</Text>
-          <Text style={{marginTop: 10,  marginLeft: 40}}>{this.props.cryptos.totalValues[0].value}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+  /**
+   * Grab up to date rates.
+   */
+  componentWillMount () {
+    this.loadData();
   }
+
+  /**
+   * Load the most recent data.
+   *
+   * @returns {Promise.<void>}
+   */
+  async loadData () {
+    await this.props.cryptos.getMarketCap();
+    this.state.refreshing = false;
+  }
+
+  /**
+   * Render the view.
+   */
+  render = () => (
+    <View style={styles.container}>
+      <MarketCapComponent marketCap={this.props.cryptos.marketCap.total}
+                          btcDominance={this.props.cryptos.marketCap.btcDominance}
+                          lastVisit={519312}/>
+
+      <ScrollView style={styles.scrollView}
+                  contentInset={{top: this.state.refreshing ? 30 : 0}}
+                  refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                  onRefresh={this.loadData.bind(this)}
+                                                  tintColor={'rgba(0, 0, 0, 0.25)'}/>}>
+        <FlatList
+          style={styles.flatList}
+          data={this.props.cryptos.portfolios}
+          renderItem={({item}) => <PortfolioCardComponent portfolio={item}/>}
+          keyExtractor={(item, index) => index}
+        />
+      </ScrollView>
+
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#F7F6FB',
+    flex:            1,
+  },
+
+  scrollView: {
+    marginTop: -40,
+  },
+
+  flatList: {
+    paddingBottom: 40,
+  },
+});
