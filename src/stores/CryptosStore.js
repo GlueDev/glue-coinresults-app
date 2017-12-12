@@ -131,6 +131,7 @@ export default class CryptosStore {
    * @param {string} portfolioName
    * @param {object} asset
    */
+  @action
   createOrUpdateAsset (portfolioName, asset) {
     const ticker         = asset.ticker;
     const portfolioIndex = this.getPortfolioIndex(portfolioName);
@@ -149,6 +150,7 @@ export default class CryptosStore {
    * @param {string} portfolioName
    * @param {string} ticker
    */
+  @action
   removeAsset (portfolioName, ticker) {
     const portfolioIndex = this.getPortfolioIndex(portfolioName);
     const assetIndex     = this.portfolios[portfolioIndex].assets.findIndex(asset => asset.ticker === ticker);
@@ -158,6 +160,12 @@ export default class CryptosStore {
     }
 
     this.portfolios[portfolioIndex].assets.splice(assetIndex, 1);
+  }
+
+  @action
+  setInvestment (portfolioName, investment) {
+    const portfolioIndex = this.getPortfolioIndex(portfolioName);
+    this.portfolios[portfolioIndex].investments = investment;
   }
 
   /**

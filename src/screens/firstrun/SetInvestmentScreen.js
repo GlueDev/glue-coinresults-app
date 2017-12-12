@@ -7,7 +7,7 @@ import Container from '../../components/firstrun/ContainerComponent';
 import Input from '../../components/ui/InputComponent';
 
 @inject('cryptos') @observer
-export default class SetAmountScreen extends Component {
+export default class SetInvestmentScreen extends Component {
   /**
    * Set the screen's navigator style.
    */
@@ -19,7 +19,6 @@ export default class SetAmountScreen extends Component {
    * Define the possible props.
    */
   static PropTypes = {
-    ticker:        PropTypes.string.isRequired,
     portfolioName: PropTypes.string.isRequired,
   };
 
@@ -55,7 +54,7 @@ export default class SetAmountScreen extends Component {
     <Input
       onChangeText={amount => this.setState({amount})}
       onSubmitEditing={() => this.handleSubmit}
-      label={'Amount'}
+      label={'Invested'}
       keyboardType={'numeric'}/>
   );
 
@@ -65,14 +64,14 @@ export default class SetAmountScreen extends Component {
   render () {
     const buttons = [
       {text: 'Continue', onPress: () => this.handleSubmit()},
-      {text: 'Cancel', onPress: () => this.props.navigator.dismissAllModals()},
     ];
 
     return (
       <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
         <Container
-          title={'Add an amount'}
-          body={`Enter how much ${this.props.ticker} you own. Remember, we will not be able to access this data.`}
+          title={'Investments'}
+          body={'Enter the total amount of FIAT currency you have invested in your portfolio. ' +
+          'This is used to calculate your profit and return on investment.'}
           action={this.renderAction()}
           buttons={buttons}/>
       </KeyboardAvoidingView>

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { AlertIOS, KeyboardAvoidingView } from 'react-native';
 
 import Container from '../../components/firstrun/ContainerComponent';
-import Input from '../../components/firstrun/InputComponent';
+import Input from '../../components/ui/InputComponent';
 
 @inject('cryptos') @observer
 export default class AssetsScreen extends Component {

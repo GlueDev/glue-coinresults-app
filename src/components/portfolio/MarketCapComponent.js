@@ -5,7 +5,7 @@ import { StyleSheet, Text } from 'react-native';
 import Finance from '../../utils/Finance';
 import GradientComponent from '../ui/GradientComponent';
 
-export default class ResultComponent extends Component {
+export default class MarketCapComponent extends Component {
   /**
    * Define the possible props.
    */

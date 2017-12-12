@@ -24,17 +24,36 @@ class CoinResults extends Component {
 
     // First we will let iCloud know that we have opened the app.
     // Then we will show the first run screens.
-    // if (true) {
-    if (!firstRun) {
+    if (true) {
+    // if (!firstRun) {
       // Clear all iCloud stores, just in case something went wrong before.
       // await clearStores();
+
+      return Navigation.startSingleScreenApp({
+        screen: {
+          screen: 'CR.FR.SetInvestmentScreen',
+        },
+
+        passProps: {
+          portfolioName: 'Diederik',
+        }
+      });
 
       await saveStore('firstRun', {date: Moment.now()});
       return this.setNavigationStack('CR.FR.ExplanationScreen');
     }
 
     // Show the overview screen.
-    return this.setNavigationStack('CR.PF.OverviewScreen');
+    // return this.setNavigationStack('CR.PF.OverviewScreen');
+    Navigation.startSingleScreenApp({
+      screen: {
+        screen: 'CR.PF.DetailsScreen',
+      },
+
+      passProps: {
+        portfolioName: 'Diederik',
+      }
+    });
   }
 
   /**

@@ -15,7 +15,7 @@ export default class OverviewScreen extends Component {
   };
 
   /**
-   *
+   * Set the default state.
    */
   constructor (props) {
     super(props);
@@ -45,19 +45,24 @@ export default class OverviewScreen extends Component {
    */
   render = () => (
     <View style={styles.container}>
-      <MarketCapComponent marketCap={this.props.cryptos.marketCap.total}
-                          btcDominance={this.props.cryptos.marketCap.btcDominance}
-                          lastVisit={519312}/>
+      <MarketCapComponent
+        marketCap={this.props.cryptos.marketCap.total}
+        btcDominance={this.props.cryptos.marketCap.btcDominance}
+        lastVisit={519312}/>
 
-      <ScrollView style={styles.scrollView}
-                  contentInset={{top: this.state.refreshing ? 30 : 0}}
-                  refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                  onRefresh={this.loadData.bind(this)}
-                                                  tintColor={'rgba(0, 0, 0, 0.25)'}/>}>
+      <ScrollView
+        style={styles.scrollView}
+        contentInset={{top: this.state.refreshing ? 30 : 0}}
+        refreshControl={<RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this.loadData.bind(this)}
+          tintColor={'rgba(0, 0, 0, 0.25)'}/>}>
         <FlatList
           style={styles.flatList}
           data={this.props.cryptos.portfolios}
-          renderItem={({item}) => <PortfolioCardComponent portfolio={item}/>}
+          renderItem={({item}) => <PortfolioCardComponent
+            portfolio={item}
+            navigator={this.props.navigator}/>}
           keyExtractor={(item, index) => index}
         />
       </ScrollView>
