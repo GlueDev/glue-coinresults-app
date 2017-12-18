@@ -1,11 +1,12 @@
 import Moment from 'moment';
 import React, { Component } from 'react';
 import { Navigation } from 'react-native-navigation';
+import Realm from 'realm';
 
 import RegisterScreens from './src/screens';
 import Stores from './src/stores';
-import { loadStore, saveStore, clearStores } from './src/utils/iCloud';
 import Provider from './src/utils/Provider';
+import realm from './src/realm';
 
 /**
  * Register screens.
@@ -20,40 +21,14 @@ class CoinResults extends Component {
    * Determine which screen to show.
    */
   static async startApp () {
-    const firstRun = await loadStore('firstRun');
-
-    // First we will let iCloud know that we have opened the app.
-    // Then we will show the first run screens.
-    if (true) {
-    // if (!firstRun) {
-      // Clear all iCloud stores, just in case something went wrong before.
-      // await clearStores();
-
-      return Navigation.startSingleScreenApp({
-        screen: {
-          screen: 'CR.FR.SetInvestmentScreen',
-        },
-
-        passProps: {
-          portfolioName: 'Diederik',
-        }
-      });
-
-      await saveStore('firstRun', {date: Moment.now()});
+    // The first step is to check whether we have a portfolio available.
+    const portfolios = realm.objects('Portfolio');
+    if (!portfolios) {
       return this.setNavigationStack('CR.FR.ExplanationScreen');
     }
 
     // Show the overview screen.
-    // return this.setNavigationStack('CR.PF.OverviewScreen');
-    Navigation.startSingleScreenApp({
-      screen: {
-        screen: 'CR.PF.DetailsScreen',
-      },
-
-      passProps: {
-        portfolioName: 'Diederik',
-      }
-    });
+    return this.setNavigationStack('CR.PF.OverviewScreen');
   }
 
   /**

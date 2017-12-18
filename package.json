@@ -26,7 +26,8 @@
 		"react-native-swipeout": "^2.3.1",
 		"react-native-textinput-effects": "^0.4.2",
 		"react-native-touch-id": "https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b",
-		"react-native-vector-icons": "^4.4.2"
+		"react-native-vector-icons": "^4.4.2",
+		"realm": "^2.1.1"
 	},
 	"devDependencies": {
 		"babel-jest": "21.2.0",

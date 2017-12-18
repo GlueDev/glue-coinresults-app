@@ -1,44 +1,49 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
-import Colors from '../../Colors.json';
 
 import Finance from '../../utils/Finance';
+import realm from '../../realm';
 
 class AssetCardComponent extends Component {
   /**
    * Define the possible props.
    */
   static propTypes = {
-    portfolio: PropTypes.object.isRequired,
-    navigator: PropTypes.object.isRequired,
+    portfolio: PropTypes.string.isRequired,
+    navigate:  PropTypes.func.isRequired,
   };
 
   /**
-   * Navigate action
+   * Grab data and setup listeners.
+   *
+   * @param props
    */
-  navigateTo = () => {
-    const portfolioName = this.props.portfolio.name;
-    this.props.navigator.push({
-      screen: 'CR.PF.DetailsScreen',
+  constructor (props) {
+    super(props);
 
-      passProps: {
-        portfolioName: this.props.portfolio.name,
-      },
-    });
-  };
+    this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
+    realm.addListener('change', () => this.forceUpdate());
+  }
+
+  /**
+   * Remove any listeners.
+   */
+  componentWillUnmount () {
+    realm.removeAllListeners();
+  }
 
   /**
    * Render the view.
    */
   render = () => (
-    <TouchableWithoutFeedback onPress={this.navigateTo}>
+    <TouchableWithoutFeedback onPress={this.props.navigate}>
       <View style={styles.container}>
-        <Text style={[styles.assetName, {color: Colors[2]}]}>Diederik</Text>
+        <Text style={[styles.assetName]}>{this.portfolio.name}</Text>
 
         <View style={styles.assetValueView}>
-          <Text style={[styles.assetValueInFIAT, {color: Colors[2]}]}>
-            {Finance.formatFIAT(32564.41)}
+          <Text style={[styles.assetValueInFIAT]}>
+            {Finance.formatFIAT(this.portfolio.totalInvestments)}
           </Text>
         </View>
       </View>

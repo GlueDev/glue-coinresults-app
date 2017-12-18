@@ -1,9 +1,10 @@
 import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
-import { FlatList, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
+import realm from '../../realm';
 
 @inject('user', 'cryptos') @observer
 export default class OverviewScreen extends Component {
@@ -15,30 +16,23 @@ export default class OverviewScreen extends Component {
   };
 
   /**
-   * Set the default state.
+   * Define the component's state.
+   *
+   * @param props
    */
   constructor (props) {
     super(props);
 
-    this.state = {refreshing: false};
+    this.portfolios = realm.objects('Portfolio');
+    this.portfolios.addListener(() => this.forceUpdate());
   }
 
   /**
-   * Grab up to date rates.
+   * Navigate to the details page of a portfolio.
    */
-  componentWillMount () {
-    this.loadData();
-  }
-
-  /**
-   * Load the most recent data.
-   *
-   * @returns {Promise.<void>}
-   */
-  async loadData () {
-    await this.props.cryptos.getMarketCap();
-    this.state.refreshing = false;
-  }
+  _navigateToDetails = () => {
+    console.log('clicked');
+  };
 
   /**
    * Render the view.
@@ -46,23 +40,17 @@ export default class OverviewScreen extends Component {
   render = () => (
     <View style={styles.container}>
       <MarketCapComponent
-        marketCap={this.props.cryptos.marketCap.total}
-        btcDominance={this.props.cryptos.marketCap.btcDominance}
+        marketCap={500}
+        btcDominance={63.56}
         lastVisit={519312}/>
 
-      <ScrollView
-        style={styles.scrollView}
-        contentInset={{top: this.state.refreshing ? 30 : 0}}
-        refreshControl={<RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this.loadData.bind(this)}
-          tintColor={'rgba(0, 0, 0, 0.25)'}/>}>
+      <ScrollView style={styles.scrollView}>
         <FlatList
           style={styles.flatList}
-          data={this.props.cryptos.portfolios}
+          data={this.portfolios}
           renderItem={({item}) => <PortfolioCardComponent
-            portfolio={item}
-            navigator={this.props.navigator}/>}
+            portfolio={item.name}
+            navigate={() => this._navigateToDetails()}/>}
           keyExtractor={(item, index) => index}
         />
       </ScrollView>
