@@ -1,12 +1,10 @@
-import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
 
-@inject('user', 'cryptos') @observer
 export default class OverviewScreen extends Component {
   /**
    * Set the screen's navigator style.
@@ -25,6 +23,13 @@ export default class OverviewScreen extends Component {
 
     this.portfolios = realm.objects('Portfolio');
     this.portfolios.addListener(() => this.forceUpdate());
+  }
+
+  /**
+   * Remove listeners.
+   */
+  componentWillUnmount () {
+    realm.removeAllListeners();
   }
 
   /**

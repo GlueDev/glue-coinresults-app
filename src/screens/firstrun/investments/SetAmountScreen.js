@@ -1,13 +1,12 @@
-import { inject, observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 
-import Container from '../../components/firstrun/ContainerComponent';
-import Input from '../../components/ui/InputComponent';
+import Container from '../../../components/firstrun/ContainerComponent';
+import Input from '../../../components/ui/InputComponent';
+import realm from '../../../realm';
 
-@inject('cryptos') @observer
-export default class SetAmountScreen extends Component {
+export default class SetInvestmentScreen extends Component {
   /**
    * Set the screen's navigator style.
    */
@@ -19,7 +18,6 @@ export default class SetAmountScreen extends Component {
    * Define the possible props.
    */
   static PropTypes = {
-    ticker:        PropTypes.string.isRequired,
     portfolioName: PropTypes.string.isRequired,
   };
 
@@ -39,13 +37,22 @@ export default class SetAmountScreen extends Component {
       return;
     }
 
-    const { ticker, portfolioName } = this.props;
-    this.props.cryptos.createOrUpdateAsset(portfolioName, {
-      ticker,
-      amount: this.state.amount,
-    });
+    try {
+      const {ticker, portfolioName} = this.props;
+      const amount                  = parseFloat(this.state.amount);
 
-    this.props.navigator.dismissAllModals();
+      realm.write(() => {
+        // Update the portfolio containing the new asset.
+        const portfolio = realm.objectForPrimaryKey('Portfolio', portfolioName);
+        portfolio.investments.push({ticker, amount});
+      });
+
+      this.props.navigator.resetTo({
+        screen: 'CR.PF.OverviewScreen',
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   /**
@@ -55,7 +62,7 @@ export default class SetAmountScreen extends Component {
     <Input
       onChangeText={amount => this.setState({amount})}
       onSubmitEditing={() => this.handleSubmit}
-      label={'Amount'}
+      label={'Invested'}
       keyboardType={'numeric'}/>
   );
 
@@ -65,14 +72,14 @@ export default class SetAmountScreen extends Component {
   render () {
     const buttons = [
       {text: 'Continue', onPress: () => this.handleSubmit()},
-      {text: 'Cancel', onPress: () => this.props.navigator.dismissAllModals()},
     ];
 
     return (
       <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
         <Container
-          title={'Add an amount'}
-          body={`Enter how much ${this.props.ticker} you own. Remember, we will not be able to access this data.`}
+          title={'Investments'}
+          body={'Enter the total amount of FIAT currency you have invested in your portfolio. ' +
+          'This is used to calculate your profit and return on investment.'}
           action={this.renderAction()}
           buttons={buttons}/>
       </KeyboardAvoidingView>

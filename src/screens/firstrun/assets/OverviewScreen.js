@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
-import { inject, observer } from 'mobx-react/native';
-import { toJS } from 'mobx';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import Container from '../../components/firstrun/ContainerComponent';
+import Container from '../../../components/firstrun/ContainerComponent';
 
-import Finance from '../../utils/Finance';
+import realm from '../../../realm';
+import Finance from '../../../utils/Finance';
 
-@inject('cryptos') @observer
-export default class AssetsScreen extends Component {
+export default class AssetsOverviewScreen extends Component {
   /**
    * Set the screen's navigator style.
    */
@@ -26,11 +24,31 @@ export default class AssetsScreen extends Component {
   };
 
   /**
+   * Construct.
+   */
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      portfolio: realm.objectForPrimaryKey('Portfolio', this.props.portfolioName),
+    };
+
+    realm.addListener('change', () => this.forceUpdate());
+  }
+
+  /**
+   * Remove listeners.
+   */
+  componentWillUnmount () {
+    realm.removeAllListeners();
+  }
+
+  /**
    * Show the asset modal.
    */
   addAsset = () => {
     this.props.navigator.showModal({
-      screen: 'CR.FR.AddTickerScreen',
+      screen: 'CR.FR.Assets.SetTickerScreen',
 
       passProps: {
         portfolioName: this.props.portfolioName,
@@ -42,23 +60,22 @@ export default class AssetsScreen extends Component {
    * Remove an asset.
    */
   removeAsset = (asset) => {
-    this.props.cryptos.removeAsset(this.props.portfolioName, asset.ticker);
+    try {
+      realm.write(() => {
+        realm.delete(asset);
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   /**
-   * Save the portfolio to iCloud.
+   * Render the asset table.
    */
-  savePortfolio = () => {
-    this.props.cryptos.saveStore();
-  };
-
-  /**
-   * Render the action.
-   */
-  renderAction = () => (
+  renderTable = () => (
     <View style={styles.actionContainer}>
       <FlatList
-        data={toJS(this.props.cryptos.getPortfolio(this.props.portfolioName).assets)}
+        data={this.state.portfolio.assets}
         renderItem={this.renderListItem}
         keyExtractor={item => item.ticker}
       />
@@ -73,7 +90,7 @@ export default class AssetsScreen extends Component {
       {
         text:            'Remove',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        onPress:         () => {this.removeAsset(item)},
+        onPress:         () => {this.removeAsset(item);},
       },
     ];
 
@@ -94,17 +111,23 @@ export default class AssetsScreen extends Component {
    * Render the component.
    */
   render () {
-    const assets = this.props.cryptos.portfolios[0].assets;
-    let body     = '', action;
+    let body    = '', action;
     let buttons = [{text: 'Add asset', onPress: this.addAsset}];
 
-    if (assets === undefined || !assets.length) {
+    if (this.state.portfolio.assets === undefined || !this.state.portfolio.assets.length) {
       body = 'Add at least one asset to your portfolio.';
     } else {
       body   = 'The following asset(s) have been added to your portfolio. Swipe right to remove' +
         ' an asset.';
-      action = this.renderAction();
-      buttons.push({text: 'Continue', onPress: this.savePortfolio});
+      action = this.renderTable();
+      buttons.push({
+        text: 'Continue', onPress: () => this.props.navigator.push({
+          screen: 'CR.FR.Investments.SetAmountScreen',
+          passProps: {
+            portfolioName: this.props.portfolioName,
+          },
+        }),
+      });
     }
 
     return (

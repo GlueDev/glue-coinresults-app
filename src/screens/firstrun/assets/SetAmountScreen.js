@@ -1,13 +1,12 @@
-import { inject, observer } from 'mobx-react/native';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
+import Container from '../../../components/firstrun/ContainerComponent';
+import Input from '../../../components/ui/InputComponent';
 
-import Container from '../../components/firstrun/ContainerComponent';
-import Input from '../../components/ui/InputComponent';
+import realm from '../../../realm';
 
-@inject('cryptos') @observer
-export default class SetInvestmentScreen extends Component {
+export default class SetAssetAmountScreen extends Component {
   /**
    * Set the screen's navigator style.
    */
@@ -19,6 +18,7 @@ export default class SetInvestmentScreen extends Component {
    * Define the possible props.
    */
   static PropTypes = {
+    ticker:        PropTypes.string.isRequired,
     portfolioName: PropTypes.string.isRequired,
   };
 
@@ -34,17 +34,27 @@ export default class SetInvestmentScreen extends Component {
    * Handle setting an amount.
    */
   handleSubmit = () => {
+    console.log(this.props);
     if (!this.state.amount) {
       return;
     }
 
-    const { ticker, portfolioName } = this.props;
-    this.props.cryptos.createOrUpdateAsset(portfolioName, {
-      ticker,
-      amount: this.state.amount,
-    });
+    try {
+      const {ticker, portfolioName} = this.props;
+      const amount                  = parseFloat(this.state.amount);
 
-    this.props.navigator.dismissAllModals();
+      // TODO: Throw error if ticker already exists in the portfolio.
+      realm.write(() => {
+        // Update the portfolio containing the new asset.
+        const portfolio = realm.objectForPrimaryKey('Portfolio', portfolioName);
+        portfolio.assets.push({ticker, amount});
+      });
+
+      // Go back to the overview screen.
+      this.props.navigator.dismissAllModals();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   /**
@@ -54,7 +64,7 @@ export default class SetInvestmentScreen extends Component {
     <Input
       onChangeText={amount => this.setState({amount})}
       onSubmitEditing={() => this.handleSubmit}
-      label={'Invested'}
+      label={'Amount'}
       keyboardType={'numeric'}/>
   );
 
@@ -64,14 +74,14 @@ export default class SetInvestmentScreen extends Component {
   render () {
     const buttons = [
       {text: 'Continue', onPress: () => this.handleSubmit()},
+      {text: 'Cancel', onPress: () => this.props.navigator.dismissAllModals()},
     ];
 
     return (
       <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
         <Container
-          title={'Investments'}
-          body={'Enter the total amount of FIAT currency you have invested in your portfolio. ' +
-          'This is used to calculate your profit and return on investment.'}
+          title={'Add an amount'}
+          body={`Enter how much ${this.props.ticker} you own. Remember, we will not be able to access this data.`}
           action={this.renderAction()}
           buttons={buttons}/>
       </KeyboardAvoidingView>

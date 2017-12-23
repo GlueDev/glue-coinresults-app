@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Picker, StyleSheet } from 'react-native';
 
-import Container from '../../components/firstrun/ContainerComponent';
-import CryptoCurrencies from '../../CryptoCurrencies.json';
+import realm from '../../../realm';
+import Container from '../../../components/firstrun/ContainerComponent';
 
-export default class AddTicker extends Component {
+export default class SetTickerScreen extends Component {
   /**
    * Set the screen's navigator style.
    */
@@ -33,7 +33,7 @@ export default class AddTicker extends Component {
    */
   addAmount = () => (
     this.props.navigator.push({
-      screen:    'CR.FR.SetAmountScreen',
+      screen: 'CR.FR.Assets.SetAmountScreen',
 
       passProps: {
         ticker:        this.state.ticker,
@@ -46,11 +46,12 @@ export default class AddTicker extends Component {
    * Render the action.
    */
   renderAction = () => {
-    const items = CryptoCurrencies.map(asset => {
+    const items = realm.objects('Ticker').slice(0, 20).map(ticker => {
       return (
-        <Picker.Item key={asset.ticker}
-                     value={asset.ticker}
-                     label={asset.ticker}/>
+        <Picker.Item
+          key={ticker.ticker}
+          value={ticker.ticker}
+          label={ticker.ticker}/>
       );
     });
 

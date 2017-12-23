@@ -27,7 +27,7 @@ class AssetCardComponent extends Component {
   }
 
   /**
-   * Remove any listeners.
+   * Remove listeners.
    */
   componentWillUnmount () {
     realm.removeAllListeners();

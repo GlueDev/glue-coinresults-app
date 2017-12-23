@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { inject, observer } from 'mobx-react/native';
 
 import Finance from '../../utils/Finance';
 import BackButtonComponent from '../ui/BackButtonComponent';
 import GradientComponent from '../ui/GradientComponent';
 
-@inject('cryptos') @observer
 export default class ResultComponent extends Component {
   /**
    * Define the possible props.
@@ -15,8 +13,6 @@ export default class ResultComponent extends Component {
   static propTypes = {
     navigator: PropTypes.object.isRequired,
   };
-
-
 
   /**
    * Render the view.

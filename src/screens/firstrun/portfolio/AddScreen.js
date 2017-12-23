@@ -1,12 +1,11 @@
-import { inject, observer } from 'mobx-react/native';
 import React, { Component } from 'react';
 import { AlertIOS, KeyboardAvoidingView } from 'react-native';
 
-import Container from '../../components/firstrun/ContainerComponent';
-import Input from '../../components/ui/InputComponent';
+import realm from '../../../realm';
+import Container from '../../../components/firstrun/ContainerComponent';
+import Input from '../../../components/ui/InputComponent';
 
-@inject('cryptos') @observer
-export default class AssetsScreen extends Component {
+export default class AddPortfolioScreen extends Component {
   /**
    * Set the screen's navigator style.
    */
@@ -35,17 +34,17 @@ export default class AssetsScreen extends Component {
 
     // Try to add the portfolio.
     try {
-      await this.props.cryptos.createPortfolio(portfolioName);
-      this.props.cryptos.activePortfolio = portfolioName;
+      realm.write(() => realm.create('Portfolio', {name: this.state.portfolioName}, true));
+
       this.props.navigator.resetTo({
-        screen: 'CR.FR.AssetsScreen',
+        screen: 'CR.FR.Assets.OverviewScreen',
 
         passProps: {
           portfolioName: this.state.portfolioName,
         },
       });
     } catch (e) {
-      AlertIOS.alert('Oops, something went wrong. Please try again or use a different name!');
+      AlertIOS.alert('Oops, something went wrong. Please try again or use a different name.');
     }
   };
 

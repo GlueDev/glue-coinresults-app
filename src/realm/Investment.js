@@ -7,7 +7,7 @@ export default class Investment {
 
     properties: {
       amount:   'float',
-      date:     'date',
+      date:     {type: 'date', default: new Date},
       currency: {type: 'string', default: 'EUR'},
       owners:   {type: 'linkingObjects', objectType: 'Portfolio', property: 'investments'},
     },

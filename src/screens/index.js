@@ -1,14 +1,14 @@
 import { Navigation } from 'react-native-navigation';
 
+import SetTickerScreen from './firstrun/assets/SetTickerScreen';
+import AssetsOverviewScreen from './firstrun/assets/OverviewScreen';
+import SetAssetAmountScreen from './firstrun/assets/SetAmountScreen';
 import ExplanationScreen from './firstrun/ExplanationScreen';
-import PortfolioScreen from './firstrun/PortfolioScreen';
-import AssetsScreen from './firstrun/AssetsScreen';
-import AddTickerScreen from './firstrun/AddTickerScreen';
-import SetAmountScreen from './firstrun/SetAmountScreen';
-import SetInvestmentScreen from './firstrun/SetInvestmentScreen';
+import SetInvestmentScreen from './firstrun/investments/SetAmountScreen';
+import AddPortfolioScreen from './firstrun/portfolio/AddScreen';
+import DetailsScreen from './portfolio/DetailsScreen';
 
 import OverviewScreen from './portfolio/OverviewScreen';
-import DetailsScreen from './portfolio/DetailsScreen';
 
 export default function registerScreens (Store: {}, Provider: {}) {
   /**
@@ -21,9 +21,9 @@ export default function registerScreens (Store: {}, Provider: {}) {
    * First run screens.
    */
   Navigation.registerComponent('CR.FR.ExplanationScreen', () => ExplanationScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.PortfolioScreen', () => PortfolioScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.AssetsScreen', () => AssetsScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.AddTickerScreen', () => AddTickerScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.SetAmountScreen', () => SetAmountScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.SetInvestmentScreen', () => SetInvestmentScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.Portfolio.AddScreen', () => AddPortfolioScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.Assets.OverviewScreen', () => AssetsOverviewScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.Assets.SetTickerScreen', () => SetTickerScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.Assets.SetAmountScreen', () => SetAssetAmountScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.Investments.SetAmountScreen', () => SetInvestmentScreen, Store, Provider);
 }
