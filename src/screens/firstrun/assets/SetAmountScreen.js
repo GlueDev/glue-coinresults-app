@@ -17,7 +17,7 @@ export default class SetAssetAmountScreen extends Component {
   /**
    * Define the possible props.
    */
-  static PropTypes = {
+  static propTypes = {
     ticker:        PropTypes.string.isRequired,
     portfolioName: PropTypes.string.isRequired,
   };

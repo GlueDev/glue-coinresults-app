@@ -16,7 +16,7 @@ export default class SetTickerScreen extends Component {
   /**
    * Define the possible props.
    */
-  static PropTypes = {
+  static propTypes = {
     portfolioName: PropTypes.string.isRequired,
   };
 

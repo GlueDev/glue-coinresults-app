@@ -42,7 +42,7 @@ class CoinResults extends Component {
       }
     }
 
-    if (!portfolios) {
+    if (!portfolios.length) {
       return this.setNavigationStack('CR.FR.ExplanationScreen');
     }
 

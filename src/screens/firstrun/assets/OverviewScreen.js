@@ -19,7 +19,7 @@ export default class AssetsOverviewScreen extends Component {
   /**
    * Define the possible props.
    */
-  static PropTypes = {
+  static propTypes = {
     portfolioName: PropTypes.string.isRequired,
   };
 
