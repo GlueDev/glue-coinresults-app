@@ -3966,6 +3966,10 @@ react-native-linear-gradient@^2.3.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-local-auth@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-local-auth/-/react-native-local-auth-1.5.0.tgz#66fe93eee91a55a55490f2f6f5c3f8d0138aae42"
+
 react-native-navigation@^1.1.297:
   version "1.1.316"
   resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.316.tgz#f1f50468563737ebea6c2b1b96e90419785ff331"
@@ -4002,10 +4006,6 @@ react-native-swipeout@^2.3.1:
 react-native-textinput-effects@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-textinput-effects/-/react-native-textinput-effects-0.4.2.tgz#05336a8ed9e4992397fc5de714692d774eb91b07"
-
-"react-native-touch-id@https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b":
-  version "3.1.0"
-  resolved "https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b"
 
 react-native-vector-icons@^4.4.2:
   version "4.4.3"

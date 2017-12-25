@@ -1,4 +1,5 @@
 import { Navigation } from 'react-native-navigation';
+import PasscodeScreen from './authentication/PasscodeScreen';
 import AssetsOverviewScreen from './firstrun/assets/OverviewScreen';
 import SetAssetAmountScreen from './firstrun/assets/SetAmountScreen';
 
@@ -11,6 +12,11 @@ import DetailsScreen from './portfolio/DetailsScreen';
 import OverviewScreen from './portfolio/OverviewScreen';
 
 export default function registerScreens (Store: {}, Provider: {}) {
+  /**
+   * Authentication screens.
+   */
+  Navigation.registerComponent('CR.AU.PasscodeScreen', () => PasscodeScreen, Store, Provider);
+
   /**
    * Portfolio screens.
    */
