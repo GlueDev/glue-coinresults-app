@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import realm from '../../realm';
 
 import Finance from '../../utils/Finance';
-import realm from '../../realm';
 
 class AssetCardComponent extends Component {
   /**

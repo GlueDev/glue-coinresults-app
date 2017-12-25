@@ -6,9 +6,9 @@ export default class Ticker {
     name: 'Ticker',
 
     properties: {
-      name: 'string',
+      name:   'string',
       ticker: 'string',
-      color: 'string',
+      color:  'string',
     },
   };
 }

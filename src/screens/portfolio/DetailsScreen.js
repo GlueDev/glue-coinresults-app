@@ -24,7 +24,7 @@ export default class DetailsScreen extends Component {
    */
   render = () => (
     <View>
-      <ResultComponent navigator={this.props.navigator} />
+      <ResultComponent navigator={this.props.navigator}/>
     </View>
   );
 }
