@@ -9,7 +9,7 @@ class RateFetcher {
     const year = date.getFullYear().toString(),
           month = date.getMonth().toString(),
           day = date.getDate(),
-          hours = date.getHours;
+          hours = date.getHours();
 
     const rateKey = year + month + day + hours + ticker + fiat;
 
