@@ -5,7 +5,7 @@ import realm from '../../realm';
 
 import Finance from '../../utils/Finance';
 
-class AssetCardComponent extends Component {
+export default class PortfolioCardComponent extends Component {
   /**
    * Define the possible props.
    */
@@ -105,5 +105,3 @@ const styles = {
     marginLeft: 10,
   },
 };
-
-export default AssetCardComponent;
