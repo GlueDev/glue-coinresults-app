@@ -8,7 +8,7 @@ export default class Asset {
     properties: {
       ticker: 'string',
       amount: 'float',
-      owners:   {type: 'linkingObjects', objectType: 'Portfolio', property: 'assets'},
+      owners: {type: 'linkingObjects', objectType: 'Portfolio', property: 'assets'},
     },
   };
 }

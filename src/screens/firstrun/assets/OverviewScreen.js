@@ -122,7 +122,7 @@ export default class AssetsOverviewScreen extends Component {
       action = this.renderTable();
       buttons.push({
         text: 'Continue', onPress: () => this.props.navigator.push({
-          screen: 'CR.FR.Investments.SetAmountScreen',
+          screen:    'CR.FR.Investments.SetAmountScreen',
           passProps: {
             portfolioName: this.props.portfolioName,
           },

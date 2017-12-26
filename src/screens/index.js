@@ -1,8 +1,8 @@
 import { Navigation } from 'react-native-navigation';
-
-import SetTickerScreen from './firstrun/assets/SetTickerScreen';
 import AssetsOverviewScreen from './firstrun/assets/OverviewScreen';
 import SetAssetAmountScreen from './firstrun/assets/SetAmountScreen';
+
+import SetTickerScreen from './firstrun/assets/SetTickerScreen';
 import ExplanationScreen from './firstrun/ExplanationScreen';
 import SetInvestmentScreen from './firstrun/investments/SetAmountScreen';
 import AddPortfolioScreen from './firstrun/portfolio/AddScreen';
