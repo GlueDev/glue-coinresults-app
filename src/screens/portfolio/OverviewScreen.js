@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View, Button } from 'react-native';
 
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
+
+import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**
@@ -40,6 +42,13 @@ export default class OverviewScreen extends Component {
   };
 
   /**
+   * Action used to call the seeder in dev mode
+   */
+  devAction = () => {
+    Seeder.SeedRates();
+  };
+
+  /**
    * Render the view.
    */
   render = () => (
@@ -60,6 +69,10 @@ export default class OverviewScreen extends Component {
         />
       </ScrollView>
 
+      <Button
+        title="Seed data"
+        onPress={this.devAction}
+      />
     </View>
   );
 }
