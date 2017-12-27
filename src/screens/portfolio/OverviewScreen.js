@@ -5,6 +5,7 @@ import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
 
+import RateAPI from '../../utils/RateAPI';
 import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
@@ -42,10 +43,27 @@ export default class OverviewScreen extends Component {
   };
 
   /**
+   * Action used to call the API loader in dev mode
+   */
+  devLoadData = () => {
+    RateAPI.fetchRates('XRP', 'USD');
+  };
+
+  /**
    * Action used to call the seeder in dev mode
    */
-  devAction = () => {
+  devSeedData = () => {
     Seeder.SeedRates();
+  };
+
+  /**
+   * Action used to clear the Realm Rates schema in dev mode
+   */
+  devClearRates = () => {
+    realm.write(() => {
+      let allRates = realm.objects('Rate');
+      realm.delete(allRates);
+    });
   };
 
   /**
@@ -70,8 +88,16 @@ export default class OverviewScreen extends Component {
       </ScrollView>
 
       <Button
+        title="Load API data"
+        onPress={this.devLoadData}
+      />
+      <Button
         title="Seed data"
-        onPress={this.devAction}
+        onPress={this.devSeedData}
+      />
+      <Button
+        title="Clear Realm Rates"
+        onPress={this.devClearRates}
       />
     </View>
   );
