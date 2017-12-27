@@ -11,4 +11,13 @@ export default class Asset {
       owners: {type: 'linkingObjects', objectType: 'Portfolio', property: 'assets'},
     },
   };
+
+  /**
+   * Calculate the value of the asset in FIAT currency.
+   *
+   * @param {string} FIAT
+   */
+  fiatValue (FIAT) {
+    return 300;
+  }
 }

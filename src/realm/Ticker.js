@@ -5,10 +5,12 @@ export default class Ticker {
   static schema = {
     name: 'Ticker',
 
+    primaryKey: 'ticker',
     properties: {
-      name:   'string',
       ticker: 'string',
+      name:   'string',
       color:  'string',
+      rates:  'Rate[]',
     },
   };
 }

@@ -22,7 +22,7 @@ export default class MarketCapComponent extends Component {
     <GradientComponent colors={['#F7BF47', '#EC405C']} style={styles.container}>
       <Text style={styles.label} allowFontScaling={false}>Market cap</Text>
       <Text style={styles.marketCap} allowFontScaling={false}>
-        {Finance.formatFIAT(this.props.marketCap, false)}
+        {Finance.formatFIAT(this.props.marketCap, 'EUR', false)}
       </Text>
       <Text style={styles.btcDominance} allowFontScaling={false}>
         Bitcoin dominance: {Finance.formatPercentage(this.props.btcDominance)}

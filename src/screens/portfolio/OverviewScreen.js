@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { FlatList, ScrollView, StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 
+import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
-
 import RateAPI from '../../utils/RateAPI';
 import Seeder from '../../utils/Seeder';
 
@@ -17,52 +17,40 @@ export default class OverviewScreen extends Component {
   };
 
   /**
-   * Define the component's state.
-   *
-   * @param props
+   * Grab all portfolios.
    */
   constructor (props) {
     super(props);
 
     this.portfolios = realm.objects('Portfolio');
-    this.portfolios.addListener(() => this.forceUpdate());
   }
 
   /**
-   * Remove listeners.
+   * Get rates.
    */
-  componentWillUnmount () {
-    realm.removeAllListeners();
+  devGetRates = () => {
+    RateAPI.fetchRates('BTC', 'EUR');
+    RateAPI.fetchRates('ETH', 'EUR');
+    RateAPI.fetchRates('XRP', 'EUR');
   }
 
   /**
-   * Navigate to the details page of a portfolio.
-   */
-  _navigateToDetails = () => {
-    console.log('clicked');
-  };
-
-  /**
-   * Action used to call the API loader in dev mode
-   */
-  devLoadData = () => {
-    RateAPI.fetchRates('XRP', 'USD');
-  };
-
-  /**
-   * Action used to call the seeder in dev mode
-   */
-  devSeedData = () => {
-    Seeder.SeedRates();
-  };
-
-  /**
-   * Action used to clear the Realm Rates schema in dev mode
+   * Action used to clear the Realm Rates schema in dev mode.
    */
   devClearRates = () => {
     realm.write(() => {
       let allRates = realm.objects('Rate');
       realm.delete(allRates);
+    });
+  };
+
+  /**
+   * Navigate to the details page of a portfolio.
+   */
+  navigateToDetails = (portfolioName) => {
+    this.props.navigator.push({
+      screen:    'CR.PF.DetailsScreen',
+      passProps: {portfolioName},
     });
   };
 
@@ -76,29 +64,22 @@ export default class OverviewScreen extends Component {
         btcDominance={63.56}
         lastVisit={519312}/>
 
-      <ScrollView style={styles.scrollView}>
-        <FlatList
-          style={styles.flatList}
-          data={this.portfolios}
-          renderItem={({item}) => <PortfolioCardComponent
-            portfolio={item.name}
-            navigate={() => this._navigateToDetails()}/>}
-          keyExtractor={(item, index) => index}
-        />
-      </ScrollView>
+      <CardListComponent
+        data={this.portfolios}
+        renderItem={({item}) => <PortfolioCardComponent
+          portfolio={item.name}
+          navigate={this.navigateToDetails}/>}/>
 
-      <Button
-        title="Load API data"
-        onPress={this.devLoadData}
-      />
-      <Button
-        title="Seed data"
-        onPress={this.devSeedData}
-      />
-      <Button
-        title="Clear Realm Rates"
-        onPress={this.devClearRates}
-      />
+      <View style={{paddingBottom: 60}}>
+        <Button
+          title="Load API data"
+          onPress={this.devGetRates}/>
+
+        <Button
+          title="Clear API data"
+          onPress={this.devClearRates}/>
+      </View>
+
     </View>
   );
 }
@@ -107,13 +88,5 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F7F6FB',
     flex:            1,
-  },
-
-  scrollView: {
-    marginTop: -40,
-  },
-
-  flatList: {
-    paddingBottom: 40,
   },
 });

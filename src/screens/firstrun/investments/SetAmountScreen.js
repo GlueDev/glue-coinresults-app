@@ -40,12 +40,9 @@ export default class SetInvestmentScreen extends Component {
     try {
       const {ticker, portfolioName} = this.props;
       const amount                  = parseFloat(this.state.amount);
+      const portfolio               = realm.objectForPrimaryKey('Portfolio', portfolioName);
 
-      realm.write(() => {
-        // Update the portfolio containing the new asset.
-        const portfolio = realm.objectForPrimaryKey('Portfolio', portfolioName);
-        portfolio.investments.push({ticker, amount});
-      });
+      realm.write(() => portfolio.investments.push({ticker, amount}));
 
       this.props.navigator.resetTo({
         screen: 'CR.PF.OverviewScreen',

@@ -1,0 +1,152 @@
+[
+  {
+    "ticker": "BTC",
+    "name": "Bitcoin",
+    "color": "#ECA24C"
+  },
+  {
+    "ticker": "ETH",
+    "name": "Ethereum",
+    "color": "#1A1A1A"
+  },
+  {
+    "ticker": "BCH",
+    "name": "Bitcoin Cash",
+    "color": "#ECA24C"
+  },
+  {
+    "ticker": "XRP",
+    "name": "Ripple",
+    "color": "#4294CA"
+  },
+  {
+    "ticker": "LTC",
+    "name": "Litecoin",
+    "color": "#B8B8B8"
+  },
+  {
+    "ticker": "MIOTA",
+    "name": "IOTA",
+    "color": "#B8B8B8"
+  },
+  {
+    "ticker": "ADA",
+    "name": "Cardano",
+    "color": "#729EEA"
+  },
+  {
+    "ticker": "DASH",
+    "name": "DASH",
+    "color": "#5A90C2"
+  },
+  {
+    "ticker": "XEM",
+    "name": "NEM",
+    "color": "#5CB7AD"
+  },
+  {
+    "ticker": "XMR",
+    "name": "Monero",
+    "color": "#ED702E"
+  },
+  {
+    "ticker": "EOS",
+    "name": "EOS",
+    "color": "#0A0A0B"
+  },
+  {
+    "ticker": "BTG",
+    "name": "Bitcoin Gold",
+    "color": "#E1AF4B"
+  },
+  {
+    "ticker": "NEO",
+    "name": "NEO",
+    "color": "#86BB47"
+  },
+  {
+    "ticker": "QTUM",
+    "name": "Qtum",
+    "color": "#A5CEE7"
+  },
+  {
+    "ticker": "XLM",
+    "name": "Stellar",
+    "color": "#E0F0F6"
+  },
+  {
+    "ticker": "ETC",
+    "name": "Ethereum Classic",
+    "color": "#7E9D83"
+  },
+  {
+    "ticker": "LSK",
+    "name": "Lisk",
+    "color": "#26425E"
+  },
+  {
+    "ticker": "BCC",
+    "name": "Bitconnect",
+    "color": "#EB8D37"
+  },
+  {
+    "ticker": "XVG",
+    "name": "Verge",
+    "color": "#4498BC"
+  },
+  {
+    "ticker": "TRX",
+    "name": "TRON",
+    "color": "#222423"
+  },
+  {
+    "ticker": "ZEC",
+    "name": "Zcash",
+    "color": "#E3B458"
+  },
+  {
+    "ticker": "NXT",
+    "name": "Nxt",
+    "color": "#D3AF51"
+  },
+  {
+    "ticker": "ARDR",
+    "name": "Ardor",
+    "color": "#31649F"
+  },
+  {
+    "ticker": "OMG",
+    "name": "OmiseGo",
+    "color": "#2855E7"
+  },
+  {
+    "ticker": "BTS",
+    "name": "Bitshares",
+    "color": "#ADCFDF"
+  },
+  {
+    "ticker": "ICX",
+    "name": "ICON",
+    "color": "#6CCBD0"
+  },
+  {
+    "ticker": "WAVES",
+    "name": "Waves",
+    "color": "#5FB3D1"
+  },
+  {
+    "ticker": "PPT",
+    "name": "Populous",
+    "color": "#BBC0C1"
+  },
+  {
+    "ticker": "STRAT",
+    "name": "Stratis",
+    "color": "#BED6E9"
+  },
+  {
+    "ticker": "XRB",
+    "name": "RaiBlocks",
+    "color": "#468197"
+  }
+]

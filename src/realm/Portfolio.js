@@ -17,6 +17,10 @@ export default class Portfolio {
    * Calculate the sum of the investments.
    */
   get totalInvestments () {
+    if (this.investments.length < 2) {
+      return this.investments[0].amount;
+    }
+
     return this.investments.reduce((a, b) => a.amount + b.amount);
   }
 

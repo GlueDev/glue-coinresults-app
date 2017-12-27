@@ -26,16 +26,16 @@ class CoinResults extends Component {
     // Grab data from realm.
     const [portfolios, tickers] = [realm.objects('Portfolio'), realm.objects('Ticker')];
 
-    // Make sure we have the top 100 tickers in Realm.
+    // Make sure we insert the tickers in to realm if necessary.
     if (!tickers.length) {
       try {
-        let cmc = new ccxt.coinmarketcap();
-        cmc.publicGetTicker().then(tickers => {
-          tickers.forEach(ticker => realm.write(() => realm.create('Ticker', {
-            name:   ticker.name,
-            ticker: ticker.symbol,
-            color:  '#000000',
-          })));
+        const tickerList = require('./src/Tickers');
+        realm.write(() => {
+          tickerList.forEach(ticker => realm.create('Ticker', {
+            ticker: ticker.ticker,
+            name: ticker.name,
+            color: ticker.color,
+          }));
         });
       } catch (e) {
         console.error(e);

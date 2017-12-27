@@ -12,6 +12,7 @@ export default class Rate {
       ticker: 'string',
       fiat:   'string',
       rate:   'float',
+      owners: {type: 'linkingObjects', objectType: 'Ticker', property: 'rates'},
     },
   };
 }

@@ -26,7 +26,7 @@ export default class ResultComponent extends Component {
       <Text
         style={styles.totalProfit}
         allowFontScaling={false}>
-        {Finance.formatFIAT(22668.54)}
+        {Finance.formatFIAT(22668.54, 'EUR')}
       </Text>
 
       <Text style={styles.lastVisitResult}>
@@ -43,9 +43,10 @@ export default class ResultComponent extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding:      60,
-    paddingLeft:  30,
-    paddingRight: 30,
+    paddingTop:    60,
+    paddingBottom: 80,
+    paddingLeft:   30,
+    paddingRight:  30,
   },
 
   totalProfit: {
