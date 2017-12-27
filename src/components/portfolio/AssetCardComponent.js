@@ -33,7 +33,7 @@ export default class AssetCardComponent extends Component {
   render = () => (
     <CardComponent>
       <AssetGraphComponent
-        dataPoints={[31, 49, 57, 49, 61, 73]}
+        dataPoints={this.ticker.rates.rate}
         color={this.ticker.color}/>
 
       <View style={styles.container}>
