@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
+import RateAPI from '../../utils/RateAPI';
 import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
@@ -25,6 +26,25 @@ export default class OverviewScreen extends Component {
   }
 
   /**
+   * Get rates.
+   */
+  devGetRates = () => {
+    RateAPI.fetchRates('BTC', 'EUR');
+    RateAPI.fetchRates('ETH', 'EUR');
+    RateAPI.fetchRates('XRP', 'EUR');
+  }
+
+  /**
+   * Action used to clear the Realm Rates schema in dev mode.
+   */
+  devClearRates = () => {
+    realm.write(() => {
+      let allRates = realm.objects('Rate');
+      realm.delete(allRates);
+    });
+  };
+
+  /**
    * Navigate to the details page of a portfolio.
    */
   navigateToDetails = (portfolioName) => {
@@ -32,13 +52,6 @@ export default class OverviewScreen extends Component {
       screen:    'CR.PF.DetailsScreen',
       passProps: {portfolioName},
     });
-  };
-
-  /**
-   * Action used to call the seeder in dev mode
-   */
-  devAction = () => {
-    Seeder.SeedRates();
   };
 
   /**
@@ -57,9 +70,16 @@ export default class OverviewScreen extends Component {
           portfolio={item.name}
           navigate={this.navigateToDetails}/>}/>
 
-      {/* <Button
-       title="Seed data"
-       onPress={this.devAction}/> */}
+      <View style={{paddingBottom: 60}}>
+        <Button
+          title="Load API data"
+          onPress={this.devGetRates}/>
+
+        <Button
+          title="Clear API data"
+          onPress={this.devClearRates}/>
+      </View>
+
     </View>
   );
 }

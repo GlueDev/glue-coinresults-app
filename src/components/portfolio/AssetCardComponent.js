@@ -25,6 +25,7 @@ export default class AssetCardComponent extends Component {
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName);
     this.asset     = this.portfolio.assets.filtered('ticker = $0', this.props.ticker)[0];
     this.ticker    = realm.objectForPrimaryKey('Ticker', this.props.ticker);
+    this.dataPoints = this.ticker.rates.map(rate => rate.rate);
   }
 
   /**
@@ -33,7 +34,7 @@ export default class AssetCardComponent extends Component {
   render = () => (
     <CardComponent>
       <AssetGraphComponent
-        dataPoints={this.ticker.rates.rate}
+        dataPoints={this.dataPoints}
         color={this.ticker.color}/>
 
       <View style={styles.container}>
