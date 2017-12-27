@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
 import RateAPI from '../../utils/RateAPI';
-import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**
@@ -32,7 +31,7 @@ export default class OverviewScreen extends Component {
     RateAPI.fetchRates('BTC', 'EUR');
     RateAPI.fetchRates('ETH', 'EUR');
     RateAPI.fetchRates('XRP', 'EUR');
-  }
+  };
 
   /**
    * Action used to clear the Realm Rates schema in dev mode.

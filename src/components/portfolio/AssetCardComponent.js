@@ -22,9 +22,9 @@ export default class AssetCardComponent extends Component {
   constructor (props) {
     super(props);
 
-    this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName);
-    this.asset     = this.portfolio.assets.filtered('ticker = $0', this.props.ticker)[0];
-    this.ticker    = realm.objectForPrimaryKey('Ticker', this.props.ticker);
+    this.portfolio  = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName);
+    this.asset      = this.portfolio.assets.filtered('ticker = $0', this.props.ticker)[0];
+    this.ticker     = realm.objectForPrimaryKey('Ticker', this.props.ticker);
     this.dataPoints = this.ticker.rates.map(rate => rate.rate);
   }
 
