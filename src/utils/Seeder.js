@@ -1,8 +1,8 @@
-import RateFetcher from './RateFetcher';
+import RateAPI from './RateAPI';
 
-class Seeder {
+export default class Seeder {
   /**
-   * Returns a random number between min (inclusive) and max (exclusive)
+   * Seeds the RateAPI.saveRate function with ticker data
    */
   static async SeedRates () {
     /**
@@ -87,10 +87,11 @@ class Seeder {
             rate     = this.getRandomArbitrary(ticker.rateLow, ticker.rateHigh);
 
         // Save the rate
-        RateFetcher.saveRate(loopHour, ticker.ticker, ticker.fiat, rate);
+        RateAPI.saveRate(loopHour, ticker.ticker, ticker.fiat, rate);
       }
     });
 
+    return true;
   };
 
   /**
@@ -100,5 +101,3 @@ class Seeder {
     return Math.random() * (max - min) + min;
   }
 }
-
-export default Seeder;
