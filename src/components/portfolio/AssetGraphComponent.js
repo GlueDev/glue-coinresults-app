@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AreaChart } from 'react-native-svg-charts'
-import { LinearGradient, Stop } from 'react-native-svg'
+import { LinearGradient, Stop } from 'react-native-svg';
+import { AreaChart } from 'react-native-svg-charts';
 
 export default class AssetGraphComponent extends Component {
   /**
    * Define the possible props.
    */
   static propTypes = {
-    style: PropTypes.number,
+    style:      PropTypes.number,
     dataPoints: PropTypes.array.isRequired,
-    color: PropTypes.string.isRequired,
+    color:      PropTypes.string.isRequired,
   };
 
   /**
@@ -35,10 +35,10 @@ export default class AssetGraphComponent extends Component {
         gridMax={this.gridMax}
         showGrid={false}
 
-        style={{ width: '100%', height: '100%' }}
-        contentInset={{ top: 10, bottom: 0 }}
-        strokeColor={ 'transparent' }
-        animate={ false }
+        style={{width: '100%', height: '100%'}}
+        contentInset={{top: 10, bottom: 0}}
+        strokeColor={'transparent'}
+        animate={false}
 
         renderGradient={({id}) => (
           <LinearGradient id={id} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
@@ -48,14 +48,14 @@ export default class AssetGraphComponent extends Component {
         )}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: '100%',
-    height: 110,
+    width:    '100%',
+    height:   110,
   },
 
 });

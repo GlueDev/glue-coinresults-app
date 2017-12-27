@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
@@ -57,9 +57,9 @@ export default class OverviewScreen extends Component {
           portfolio={item.name}
           navigate={this.navigateToDetails}/>}/>
 
-      { /* <Button
-        title="Seed data"
-        onPress={this.devAction}/> */ }
+      {/* <Button
+       title="Seed data"
+       onPress={this.devAction}/> */}
     </View>
   );
 }

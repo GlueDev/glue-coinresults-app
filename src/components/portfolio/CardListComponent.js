@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, FlatList } from 'react-native';
+import { FlatList, ScrollView, StyleSheet } from 'react-native';
 
 export default class CardListComponent extends Component {
   /**

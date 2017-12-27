@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
+import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
-import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
 import ResultComponent from '../../components/portfolio/ResultComponent';
 import realm from '../../realm';
 
