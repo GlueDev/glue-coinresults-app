@@ -1,3 +1,5 @@
+import realm from '../realm';
+
 export default class Asset {
   /**
    * Define this model's schema.
@@ -18,6 +20,7 @@ export default class Asset {
    * @param {string} FIAT
    */
   fiatValue (FIAT) {
-    return 300;
+    let recentRate = realm.objects('Rate').filtered('ticker = $0 AND FIAT = $1', this.ticker, FIAT).sorted('date', true);
+    return this.amount * recentRate[0].rate;
   }
 }
