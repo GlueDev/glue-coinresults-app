@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View, AlertIOS } from 'react-native';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
@@ -27,10 +27,25 @@ export default class OverviewScreen extends Component {
   /**
    * Get rates.
    */
-  devGetRates = () => {
-    RateAPI.fetchRates('BTC', 'EUR');
-    RateAPI.fetchRates('ETH', 'EUR');
-    RateAPI.fetchRates('XRP', 'EUR');
+  devGetRates = async () => {
+    const t1 = new Date().getTime();
+    await RateAPI.fetchRates('BTC', 'EUR');
+    await RateAPI.fetchRates('ETH', 'EUR');
+    await RateAPI.fetchRates('XRP', 'EUR');
+    // await RateAPI.fetchRates('DASH', 'EUR');
+    // await RateAPI.fetchRates('XMR', 'EUR');
+    // await RateAPI.fetchRates('IOT', 'EUR');
+    // await RateAPI.fetchRates('BTG', 'EUR');
+    // await RateAPI.fetchRates('NEO', 'EUR');
+    // await RateAPI.fetchRates('XLM', 'EUR');
+    // await RateAPI.fetchRates('ADA', 'EUR');
+    // await RateAPI.fetchRates('PAY', 'EUR');
+    // await RateAPI.fetchRates('MAID', 'EUR');
+    // await RateAPI.fetchRates('OMG', 'EUR');
+    // await RateAPI.fetchRates('POWR', 'EUR');
+    const t2 = new Date().getTime();
+
+    AlertIOS.alert(`Exec took ${t2 - t1}ms`);
   };
 
   /**

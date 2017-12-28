@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"accounting": "^0.4.1",
+		"axios": "^0.17.1",
 		"ccxt": "^1.10.353",
 		"moment": "^2.19.3",
 		"numeral": "^2.0.6",
