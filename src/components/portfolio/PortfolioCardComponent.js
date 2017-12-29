@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 
 import realm from '../../realm';
 import Finance from '../../utils/Finance';
@@ -24,6 +25,16 @@ export default class PortfolioCardComponent extends Component {
     super(props);
 
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
+  };
+
+  componentDidMount() {
+    this.listener = EventRegister.on('tickerUpdate', () => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    EventRegister.rm(this.listener);
   }
 
   /**
@@ -36,9 +47,13 @@ export default class PortfolioCardComponent extends Component {
 
         <View style={styles.portfolioValueView}>
           <Text style={[styles.portfolioValueInFiat]}>
-            {Finance.formatFIAT(this.portfolio.totalInvestments, 'EUR')}
+            {Finance.formatFIAT(this.portfolio.totalValue, 'EUR')}
           </Text>
         </View>
+
+        <Text style={[styles.portfolioInvestmentInFiat]}>
+          {Finance.formatFIAT(this.portfolio.totalInvestments, 'EUR')}
+        </Text>
       </CardComponent>
     </TouchableOpacity>
   );
@@ -68,4 +83,11 @@ const styles = StyleSheet.create({
     fontSize:        18,
     fontWeight:      'bold',
   },
+
+  portfolioInvestmentInFiat: {
+    backgroundColor: 'transparent',
+    fontSize:        12,
+    color:           '#5E5E5E',
+    marginTop:       10,
+  }
 });

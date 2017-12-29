@@ -1152,9 +1152,9 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-ccxt@^1.10.353:
-  version "1.10.456"
-  resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-1.10.456.tgz#dd77f95e13ee887f553dc8b7ad26f61351224920"
+ccxt@^1.10.508:
+  version "1.10.508"
+  resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-1.10.508.tgz#12ceb5925850e385cdcfff55dd7df146bacc9cb3"
   dependencies:
     crypto-js "3.1.9-1"
     fetch-ponyfill "^4.1.0"
@@ -3969,6 +3969,12 @@ react-native-device-info@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.13.0.tgz#81051eebd3db6959e4f1d2cb0ae8df74105040cf"
 
+react-native-event-listeners@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-event-listeners/-/react-native-event-listeners-1.0.3.tgz#8e210491b0eab8f714317a0f8c2d322bb2036268"
+  dependencies:
+    type-detect "4.0.3"
+
 react-native-haptic@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-haptic/-/react-native-haptic-1.0.5.tgz#91fff9233a0eb0a4e420a00c2bf5cf29610946ed"
@@ -3979,9 +3985,9 @@ react-native-linear-gradient@^2.3.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-navigation@^1.1.297:
-  version "1.1.316"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.316.tgz#f1f50468563737ebea6c2b1b96e90419785ff331"
+react-native-navigation@^1.1.323:
+  version "1.1.323"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.323.tgz#4c47d1ba6bbb5e9a4e8e29773f1a0f4e44ee925d"
   dependencies:
     lodash "4.x.x"
 
@@ -4893,6 +4899,10 @@ type-check@~0.3.2:
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.3.2.tgz#5884cab512cf1d355e3fb784f30804b2b520db72"
   dependencies:
     prelude-ls "~1.1.2"
+
+type-detect@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.3.tgz#0e3f2670b44099b0b46c284d136a7ef49c74c2ea"
 
 type-is@~1.6.6:
   version "1.6.15"

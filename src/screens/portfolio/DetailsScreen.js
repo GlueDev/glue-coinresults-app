@@ -36,7 +36,10 @@ export default class DetailsScreen extends Component {
    */
   render = () => (
     <View style={styles.container}>
-      <ResultComponent navigator={this.props.navigator}/>
+      <ResultComponent
+        navigator={this.props.navigator}
+        portfolio={this.portfolio}
+      />
 
       <CardListComponent
         data={this.portfolio.assets}

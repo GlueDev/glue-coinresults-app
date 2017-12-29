@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View, AlertIOS } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
 import RateAPI from '../../utils/RateAPI';
+import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**
@@ -46,6 +48,16 @@ export default class OverviewScreen extends Component {
     const t2 = new Date().getTime();
 
     AlertIOS.alert(`Exec took ${t2 - t1}ms`);
+
+    EventRegister.emit('tickerUpdate');
+  };
+
+  /**
+   * Action used to seed the Realm Rates schema in dev mode.
+   */
+  devSeedRates = () => {
+    Seeder.SeedRates();
+    EventRegister.emit('tickerUpdate');
   };
 
   /**
@@ -56,6 +68,8 @@ export default class OverviewScreen extends Component {
       let allRates = realm.objects('Rate');
       realm.delete(allRates);
     });
+
+    EventRegister.emit('tickerUpdate');
   };
 
   /**
@@ -88,6 +102,10 @@ export default class OverviewScreen extends Component {
         <Button
           title="Load API data"
           onPress={this.devGetRates}/>
+
+        <Button
+          title="Seed API data"
+          onPress={this.devSeedRates}/>
 
         <Button
           title="Clear API data"

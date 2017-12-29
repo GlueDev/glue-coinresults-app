@@ -28,7 +28,15 @@ export default class Portfolio {
    * Calculate the current total value.
    */
   get totalValue () {
+    let portfolioValue = 0;
 
+    if(this.assets.length > 0) {
+      this.assets.forEach((asset) => {
+        portfolioValue += asset.fiatValue('EUR');
+      });
+    }
+
+    return portfolioValue;
   }
 
   /**

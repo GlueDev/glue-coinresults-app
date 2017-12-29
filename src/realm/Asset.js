@@ -21,6 +21,11 @@ export default class Asset {
    */
   fiatValue (FIAT) {
     let recentRate = realm.objects('Rate').filtered('ticker = $0 AND FIAT = $1', this.ticker, FIAT).sorted('date', true);
-    return this.amount * recentRate[0].rate;
-  }
+
+    if(recentRate.length > 0) {
+      return this.amount * recentRate[0].rate;
+    }
+
+    return 0;
+  };
 }

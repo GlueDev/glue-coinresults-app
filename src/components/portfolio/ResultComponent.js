@@ -26,7 +26,7 @@ export default class ResultComponent extends Component {
       <Text
         style={styles.totalProfit}
         allowFontScaling={false}>
-        {Finance.formatFIAT(22668.54, 'EUR')}
+        {Finance.formatFIAT(this.props.portfolio.totalValue, 'EUR')}
       </Text>
 
       <Text style={styles.lastVisitResult}>
