@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 
 import realm from '../../realm';
 import Finance from '../../utils/Finance';
@@ -26,6 +27,16 @@ export default class PortfolioCardComponent extends Component {
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
   };
 
+  componentDidMount() {
+    this.listener = EventRegister.on('tickerUpdate', () => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    EventRegister.rm(this.listener);
+  }
+
   /**
    * Render the view.
    */
@@ -46,10 +57,6 @@ export default class PortfolioCardComponent extends Component {
       </CardComponent>
     </TouchableOpacity>
   );
-
-  componentWillUnmount() {
-    // Todo: close listener?
-  }
 }
 
 const styles = StyleSheet.create({

@@ -1152,9 +1152,9 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-ccxt@^1.10.353:
-  version "1.10.456"
-  resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-1.10.456.tgz#dd77f95e13ee887f553dc8b7ad26f61351224920"
+ccxt@^1.10.508:
+  version "1.10.508"
+  resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-1.10.508.tgz#12ceb5925850e385cdcfff55dd7df146bacc9cb3"
   dependencies:
     crypto-js "3.1.9-1"
     fetch-ponyfill "^4.1.0"
@@ -3985,9 +3985,9 @@ react-native-linear-gradient@^2.3.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-navigation@^1.1.297:
-  version "1.1.316"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.316.tgz#f1f50468563737ebea6c2b1b96e90419785ff331"
+react-native-navigation@^1.1.323:
+  version "1.1.323"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.323.tgz#4c47d1ba6bbb5e9a4e8e29773f1a0f4e44ee925d"
   dependencies:
     lodash "4.x.x"
 

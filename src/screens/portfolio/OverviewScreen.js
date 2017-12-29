@@ -26,14 +26,6 @@ export default class OverviewScreen extends Component {
     this.portfolios = realm.objects('Portfolio');
   }
 
-  componentWillMount() {
-    this.listener = EventRegister.on('tickerUpdate', () => AlertIOS.alert('emitted'));
-  }
-
-  componentWillUnmount() {
-    EventRegister.rm(this.listener);
-  }
-
   /**
    * Get rates.
    */
@@ -56,6 +48,8 @@ export default class OverviewScreen extends Component {
     const t2 = new Date().getTime();
 
     AlertIOS.alert(`Exec took ${t2 - t1}ms`);
+
+    EventRegister.emit('tickerUpdate');
   };
 
   /**
@@ -63,6 +57,7 @@ export default class OverviewScreen extends Component {
    */
   devSeedRates = () => {
     Seeder.SeedRates();
+    EventRegister.emit('tickerUpdate');
   };
 
   /**
@@ -73,6 +68,8 @@ export default class OverviewScreen extends Component {
       let allRates = realm.objects('Rate');
       realm.delete(allRates);
     });
+
+    EventRegister.emit('tickerUpdate');
   };
 
   /**

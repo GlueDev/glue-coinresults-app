@@ -1,4 +1,3 @@
-import { EventRegister } from 'react-native-event-listeners';
 import axios from 'axios';
 import moment from 'moment';
 import realm from '../realm';
@@ -21,8 +20,6 @@ export default class RateAPI {
 
     const response = request.data.Data;
     response.map(rate => this.saveRate(rate.time, ticker, FIAT, rate.close));
-
-    EventRegister.emit('tickerUpdate');
   }
 
   /**
