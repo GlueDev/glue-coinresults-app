@@ -26,17 +26,6 @@ export default class PortfolioCardComponent extends Component {
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
   };
 
-  componentWillMount() {
-    console.log('componentWillMount');
-    realm.objects('Rate').addListener((rates, changes) => {
-      console.log('rateListener');
-      if(changes.deletions.length > 0 || changes.insertions.length > 0 || changes.modifications.length > 0 ) {
-        console.log('rateListener');
-        this.forceUpdate();
-      }
-
-    });
-  };
   /**
    * Render the view.
    */

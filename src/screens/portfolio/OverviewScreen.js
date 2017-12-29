@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View, AlertIOS } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
@@ -23,6 +24,14 @@ export default class OverviewScreen extends Component {
     super(props);
 
     this.portfolios = realm.objects('Portfolio');
+  }
+
+  componentWillMount() {
+    this.listener = EventRegister.on('tickerUpdate', () => AlertIOS.alert('emitted'));
+  }
+
+  componentWillUnmount() {
+    EventRegister.rm(this.listener);
   }
 
   /**

@@ -16,6 +16,7 @@
 		"react": "16.2.0",
 		"react-native": "0.51.0",
 		"react-native-device-info": "^0.13.0",
+		"react-native-event-listeners": "^1.0.3",
 		"react-native-haptic": "^1.0.5",
 		"react-native-linear-gradient": "^2.3.0",
 		"react-native-navigation": "^1.1.297",
