@@ -1308,7 +1308,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.development.diederik.coinresults;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.coinresults;
 				PRODUCT_NAME = CoinResults;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1339,7 +1339,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.development.diederik.coinresults;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.coinresults;
 				PRODUCT_NAME = CoinResults;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
