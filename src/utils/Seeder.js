@@ -1,4 +1,5 @@
 import RateAPI from './RateAPI';
+import moment from 'moment';
 
 export default class Seeder {
   /**
@@ -16,17 +17,17 @@ export default class Seeder {
         'fiat':     'EUR',
         'rateLow':  12000,
         'rateHigh': 16000,
-      }, {
+      }/*, {
         'ticker':   'ETH',
         'fiat':     'EUR',
         'rateLow':  500,
         'rateHigh': 800,
       }, {
-        'ticker':   'XMR',
+        'ticker':   'XRP',
         'fiat':     'EUR',
-        'rateLow':  200,
-        'rateHigh': 500,
-      }, {
+        'rateLow':  1,
+        'rateHigh': 1.8,
+      }/*, {
         'ticker':   'BCH',
         'fiat':     'EUR',
         'rateLow':  200,
@@ -71,25 +72,28 @@ export default class Seeder {
         'fiat':     'EUR',
         'rateLow':  200,
         'rateHigh': 500,
-      },
+      },*/
     ],
         oneWeekAgo = new Date,
         today      = new Date;
 
     // Set the startTime for the datetime loop (today minus 7 days)
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 1);
+
+    console.log('devSeedRates started');
 
     // Loop through the tickers
     tickers.forEach((ticker) => {
       // Loop through oneWeekAgo and today by one hour (1000 * 60 * 60 = 3.600.000)
       for (let loopTime = oneWeekAgo.getTime(); loopTime < today.getTime(); loopTime += 3600000) {
-        let loopHour = new Date(loopTime),
-            rate     = this.getRandomArbitrary(ticker.rateLow, ticker.rateHigh);
+        let rate     = this.getRandomArbitrary(ticker.rateLow, ticker.rateHigh);
 
         // Save the rate
-        RateAPI.saveRate(loopHour, ticker.ticker, ticker.fiat, rate);
+        RateAPI.saveRate(loopTime/1000, ticker.ticker, ticker.fiat, rate);
       }
     });
+
+    console.log('devSeedRates finished');
 
     return true;
   };

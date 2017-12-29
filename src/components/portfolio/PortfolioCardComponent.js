@@ -24,8 +24,19 @@ export default class PortfolioCardComponent extends Component {
     super(props);
 
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
-  }
+  };
 
+  componentWillMount() {
+    console.log('componentWillMount');
+    realm.objects('Rate').addListener((rates, changes) => {
+      console.log('rateListener');
+      if(changes.deletions.length > 0 || changes.insertions.length > 0 || changes.modifications.length > 0 ) {
+        console.log('rateListener');
+        this.forceUpdate();
+      }
+
+    });
+  };
   /**
    * Render the view.
    */
@@ -36,12 +47,20 @@ export default class PortfolioCardComponent extends Component {
 
         <View style={styles.portfolioValueView}>
           <Text style={[styles.portfolioValueInFiat]}>
-            {Finance.formatFIAT(this.portfolio.totalInvestments, 'EUR')}
+            {Finance.formatFIAT(this.portfolio.totalValue, 'EUR')}
           </Text>
         </View>
+
+        <Text style={[styles.portfolioInvestmentInFiat]}>
+          {Finance.formatFIAT(this.portfolio.totalInvestments, 'EUR')}
+        </Text>
       </CardComponent>
     </TouchableOpacity>
   );
+
+  componentWillUnmount() {
+    // Todo: close listener?
+  }
 }
 
 const styles = StyleSheet.create({
@@ -68,4 +87,11 @@ const styles = StyleSheet.create({
     fontSize:        18,
     fontWeight:      'bold',
   },
+
+  portfolioInvestmentInFiat: {
+    backgroundColor: 'transparent',
+    fontSize:        12,
+    color:           '#5E5E5E',
+    marginTop:       10,
+  }
 });

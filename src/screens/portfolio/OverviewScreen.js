@@ -6,6 +6,7 @@ import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
 import RateAPI from '../../utils/RateAPI';
+import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**
@@ -49,6 +50,13 @@ export default class OverviewScreen extends Component {
   };
 
   /**
+   * Action used to seed the Realm Rates schema in dev mode.
+   */
+  devSeedRates = () => {
+    Seeder.SeedRates();
+  };
+
+  /**
    * Action used to clear the Realm Rates schema in dev mode.
    */
   devClearRates = () => {
@@ -88,6 +96,10 @@ export default class OverviewScreen extends Component {
         <Button
           title="Load API data"
           onPress={this.devGetRates}/>
+
+        <Button
+          title="Seed API data"
+          onPress={this.devSeedRates}/>
 
         <Button
           title="Clear API data"

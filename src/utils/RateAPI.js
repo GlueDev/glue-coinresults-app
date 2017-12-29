@@ -50,7 +50,7 @@ export default class RateAPI {
       }));
     }
     catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 
