@@ -30,17 +30,20 @@ platform :ios do
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
   lane :beta do
-    # sync_code_signing(type: "appstore") # more information: https://codesigning.guide
-    build_app(scheme: "CoinResults Release") # more options available
-    upload_to_testflight
+    sync_code_signing(type: "appstore")
 
-    # sh "your_script.sh"
-    # You can also use other beta testing services here (run `fastlane actions`)
+    ensure_git_status_clean
+    increment_build_number
+    add_git_tag
+    push_to_git_remote
+
+    build_app(scheme: "CoinResults Release")
+    upload_to_testflight
   end
 
   desc "Deploy a new version to the App Store"
   lane :release do
-    # sync_code_signing(type: "appstore")
+    sync_code_signing(type: "appstore")
     capture_screenshots
     build_app(scheme: "CoinResults Release") # more options available
     upload_to_app_store(force: true)
