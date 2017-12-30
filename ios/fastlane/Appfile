@@ -1,0 +1,7 @@
+app_identifier "com.apprelated.coinresults" # The bundle identifier of your app
+apple_id "diederik@apprelated.nl" # Your Apple email address
+
+team_id "FXWBM48678" # Developer Portal Team ID
+
+# you can even provide different app identifiers, Apple IDs and team names per lane:
+# More information: https://docs.fastlane.tools/advanced/#appfile
