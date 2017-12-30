@@ -82,6 +82,12 @@ export default class OverviewScreen extends Component {
     });
   };
 
+  navigateToCameraScreen = () => {
+    this.props.navigator.push({
+      screen:    'CR.FR.CameraScreen',
+    });
+  };
+
   /**
    * Render the view.
    */
@@ -99,6 +105,11 @@ export default class OverviewScreen extends Component {
           navigate={this.navigateToDetails}/>}/>
 
       <View style={{paddingBottom: 60}}>
+
+        <Button
+          title="Camera Screen"
+          onPress={this.navigateToCameraScreen}/>
+
         <Button
           title="Load API data"
           onPress={this.devGetRates}/>
