@@ -7,4 +7,4 @@
 # Feel free to remove the following line if you use fastlane (which you should)
 
 app_identifier "com.apprelated.coinresults" # The bundle identifier of your app
-username "diederik@apprelated.nl" # your Apple ID user
+username "apple@apprelated.nl" # your Apple ID user
