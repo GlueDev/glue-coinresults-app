@@ -32,6 +32,7 @@
 		6A2A0381063C474DBB7A80CA /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C774196FA8344D04A4787371 /* libReactNativeNavigation.a */; };
 		6FEECC76C72B47D0BF0A8699 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 445D37B76BF84F6389C6C58F /* libRNSVG.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		9E50C55D1FF690B0007B0A3E /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E50C55A1FF69082007B0A3E /* libRCTCamera.a */; };
 		A2983E6CD9BB4F2E8F4C9A3E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27CBB3C0007844209392CE5C /* MaterialCommunityIcons.ttf */; };
 		A6D23F7DB84A4F17ABD28F37 /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F783D4D8FE3943768D67ACE4 /* libRealmReact.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -1318,7 +1319,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+<<<<<<< HEAD
 				CODE_SIGN_STYLE = Manual;
+=======
+				CODE_SIGN_STYLE = Automatic;
+>>>>>>> feature/camera-experiment
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = FXWBM48678;
@@ -1343,8 +1348,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.coinresults;
 				PRODUCT_NAME = CoinResults;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "90818e41-4f0f-4688-8357-af4bf12f170e";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.apprelated.coinresults";
+=======
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+>>>>>>> feature/camera-experiment
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1355,7 +1365,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+<<<<<<< HEAD
 				CODE_SIGN_STYLE = Manual;
+=======
+				CODE_SIGN_STYLE = Automatic;
+>>>>>>> feature/camera-experiment
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FXWBM48678;
 				HEADER_SEARCH_PATHS = (
@@ -1379,8 +1393,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.coinresults;
 				PRODUCT_NAME = CoinResults;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "90818e41-4f0f-4688-8357-af4bf12f170e";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.apprelated.coinresults";
+=======
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+>>>>>>> feature/camera-experiment
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

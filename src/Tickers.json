@@ -148,5 +148,30 @@
     "ticker": "XRB",
     "name": "RaiBlocks",
     "color": "#468197"
+  },
+  {
+    "ticker": "POWR",
+    "name": "PowerLedger",
+    "color": "#7EAB55"
+  },
+  {
+    "ticker": "VEN",
+    "name": "VeChain",
+    "color": "#3273A5"
+  },
+  {
+    "ticker": "DGB",
+    "name": "DigiBytes",
+    "color": "#2965C5"
+  },
+  {
+    "ticker": "PAY",
+    "name": "TenX",
+    "color": "#000000"
+  },
+  {
+    "ticker": "MAID",
+    "name": "MaidSafeCoin",
+    "color": "#6392D2"
   }
 ]

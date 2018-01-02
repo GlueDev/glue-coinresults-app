@@ -9,6 +9,7 @@ import AddPortfolioScreen from './firstrun/portfolio/AddScreen';
 import DetailsScreen from './portfolio/DetailsScreen';
 
 import OverviewScreen from './portfolio/OverviewScreen';
+import CameraScreen from './firstrun/CameraScreen';
 
 export default function registerScreens (Store: {}, Provider: {}) {
   /**
@@ -26,4 +27,6 @@ export default function registerScreens (Store: {}, Provider: {}) {
   Navigation.registerComponent('CR.FR.Assets.SetTickerScreen', () => SetTickerScreen, Store, Provider);
   Navigation.registerComponent('CR.FR.Assets.SetAmountScreen', () => SetAssetAmountScreen, Store, Provider);
   Navigation.registerComponent('CR.FR.Investments.SetAmountScreen', () => SetInvestmentScreen, Store, Provider);
+
+  Navigation.registerComponent('CR.FR.CameraScreen', () => CameraScreen, Store, Provider);
 }
