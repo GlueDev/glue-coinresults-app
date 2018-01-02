@@ -45,4 +45,13 @@ export default class Portfolio {
   get totalResult () {
 
   }
+
+  /**
+   * List all the tickers in this portfolio.
+   *
+   * @return {array}
+   */
+  get allTickers () {
+    return this.assets.map(asset => asset.ticker);
+  }
 }

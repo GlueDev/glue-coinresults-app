@@ -31,22 +31,15 @@ export default class OverviewScreen extends Component {
    */
   devGetRates = async () => {
     const t1 = new Date().getTime();
-    await RateAPI.fetchRates('BTC', 'EUR');
-    await RateAPI.fetchRates('ETH', 'EUR');
-    await RateAPI.fetchRates('XRP', 'EUR');
-    // await RateAPI.fetchRates('DASH', 'EUR');
-    // await RateAPI.fetchRates('XMR', 'EUR');
-    // await RateAPI.fetchRates('IOT', 'EUR');
-    // await RateAPI.fetchRates('BTG', 'EUR');
-    // await RateAPI.fetchRates('NEO', 'EUR');
-    // await RateAPI.fetchRates('XLM', 'EUR');
-    // await RateAPI.fetchRates('ADA', 'EUR');
-    // await RateAPI.fetchRates('PAY', 'EUR');
-    // await RateAPI.fetchRates('MAID', 'EUR');
-    // await RateAPI.fetchRates('OMG', 'EUR');
-    // await RateAPI.fetchRates('POWR', 'EUR');
-    const t2 = new Date().getTime();
 
+    const allTickers = this.portfolios.map(portfolio => portfolio.allTickers);
+    const uniqueTickers = allTickers.reduce((a, b) => a.concat(b));
+
+    for (const i in uniqueTickers) {
+      await RateAPI.fetchRates(uniqueTickers[i], 'EUR');
+    }
+
+    const t2 = new Date().getTime();
     AlertIOS.alert(`Exec took ${t2 - t1}ms`);
 
     EventRegister.emit('tickerUpdate');

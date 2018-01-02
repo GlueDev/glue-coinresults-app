@@ -1,5 +1,5 @@
 app_identifier "com.apprelated.coinresults" # The bundle identifier of your app
-apple_id "diederik@apprelated.nl" # Your Apple email address
+apple_id "apple@apprelated.nl" # Your Apple email address
 
 team_id "FXWBM48678" # Developer Portal Team ID
 
