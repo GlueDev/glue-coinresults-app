@@ -34,17 +34,22 @@ export default class OverviewScreen extends Component {
     await RateAPI.fetchRates('BTC', 'EUR');
     await RateAPI.fetchRates('ETH', 'EUR');
     await RateAPI.fetchRates('XRP', 'EUR');
-    // await RateAPI.fetchRates('DASH', 'EUR');
-    // await RateAPI.fetchRates('XMR', 'EUR');
-    // await RateAPI.fetchRates('IOT', 'EUR');
-    // await RateAPI.fetchRates('BTG', 'EUR');
-    // await RateAPI.fetchRates('NEO', 'EUR');
-    // await RateAPI.fetchRates('XLM', 'EUR');
-    // await RateAPI.fetchRates('ADA', 'EUR');
-    // await RateAPI.fetchRates('PAY', 'EUR');
-    // await RateAPI.fetchRates('MAID', 'EUR');
-    // await RateAPI.fetchRates('OMG', 'EUR');
-    // await RateAPI.fetchRates('POWR', 'EUR');
+    await RateAPI.fetchRates('DASH', 'EUR');
+    await RateAPI.fetchRates('XMR', 'EUR');
+    await RateAPI.fetchRates('IOT', 'EUR');
+    await RateAPI.fetchRates('BTG', 'EUR');
+    await RateAPI.fetchRates('NEO', 'EUR');
+    await RateAPI.fetchRates('XLM', 'EUR');
+    await RateAPI.fetchRates('ADA', 'EUR');
+    await RateAPI.fetchRates('PAY', 'EUR');
+    await RateAPI.fetchRates('MAID', 'EUR');
+    await RateAPI.fetchRates('OMG', 'EUR');
+    await RateAPI.fetchRates('POWR', 'EUR');
+    await RateAPI.fetchRates('VEN', 'EUR');
+    await RateAPI.fetchRates('EOS', 'EUR');
+    await RateAPI.fetchRates('POWR', 'EUR');
+    await RateAPI.fetchRates('DGB', 'EUR');
+    await RateAPI.fetchRates('XEM', 'EUR');
     const t2 = new Date().getTime();
 
     AlertIOS.alert(`Exec took ${t2 - t1}ms`);
@@ -113,10 +118,6 @@ export default class OverviewScreen extends Component {
         <Button
           title="Load API data"
           onPress={this.devGetRates}/>
-
-        <Button
-          title="Seed API data"
-          onPress={this.devSeedRates}/>
 
         <Button
           title="Clear API data"

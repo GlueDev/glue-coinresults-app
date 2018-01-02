@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  Dimensions,
+  FlatList,
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
-  AlertIOS,
-  TouchableOpacity
+  Vibration,
+  TouchableOpacity,
 } from 'react-native';
-import Camera from 'react-native-camera';
 
+import Camera from 'react-native-camera';
+import Swipeout from 'react-native-swipeout';
 import Container from '../../components/firstrun/ContainerComponent';
+import Finance from '../../utils/Finance';
+import realm from '../../realm';
 
 export default class CameraScreen extends Component {
+
   /**
    * Set the screen's navigator style.
    */
@@ -21,128 +23,295 @@ export default class CameraScreen extends Component {
     navBarHidden: true,
   };
 
+  /**
+   * Initialize the camera and state variables
+   * @param props
+   */
   constructor (props) {
     super(props);
 
     this.camera = null;
 
     this.state = {
-      camera: {
-        aspect: Camera.constants.Aspect.fill,
-        captureTarget: Camera.constants.CaptureTarget.cameraRoll,
+      showCamera: true,
+      QRData:     false,
+      camera:     {
         type: Camera.constants.Type.back,
-        orientation: Camera.constants.Orientation.auto,
-        flashMode: Camera.constants.FlashMode.auto,
       },
-      isRecording: false
     };
   }
+
   /**
-   * Navigate to the next screen.
+   * Handle the bar code scan
+   * @param e
    */
-  nextScreen = () => (
+  onBarCodeRead = (e) => {
+    // Check if QRData has already been scanned to avoid continously scanning the QR code
+    if (this.state.QRData === false) {
+      try {
+        let QRData = JSON.parse(e.data);
+
+        // Check if the provided QR code contains the data we need
+        if (QRData.portfolio_name && QRData.investment && QRData.assets) {
+
+          // Vibrate
+          Vibration.vibrate();
+
+          // Unmount the camera
+          this.camera = null;
+
+          // Save the QR Data + set showCamera to fallse
+          this.setState({
+            QRData,
+            showCamera: false,
+          });
+
+          return;
+        }
+
+        throw 'QR/JSON does not provide sufficient data (make sure it contains portfolio_name,' +
+        ' investment and assets)';
+
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  /**
+   * Navigate to the previous screen.
+   */
+  previousScreen = () => {
+    // Unmount the camera
+    this.camera = null;
+
+    // Navigate to back to the OverviewScreen
     this.props.navigator.resetTo({
-      screen: 'CR.FR.Portfolio.AddScreen',
-    })
-  );
+      screen: 'CR.PF.OverviewScreen',
+    });
+  };
 
-  onBarCodeRead(e) {
-    if(e.type == Camera.constants.BarCodeType.qr) {
-      console.log(
-        "QR Found!",
-        "Type: " + e.type + "\nData: " + e.data
-      );
+  /**
+   * Handler for the addPortfolio button
+   * @returns {Promise.<void>}
+   */
+  addPortfolio = async () => {
+    try {
+      const portfolioName = this.state.QRData.portfolio_name;
+      const assets        = this.state.QRData.assets;
+      let portfolio;
 
-      // Todo: check if found data (e.g. json) is matching our format
-      // Todo: vibrate perhaps?
+      // Save the portfolio and investment in Realm
+      realm.write(() => {
+        portfolio = realm.create('Portfolio', {name: portfolioName}, true);
+        portfolio.investments.push({amount: this.state.QRData.investment});
+      });
 
+      // Loop through the assets and add each asset to the portfolio
+      assets.forEach((asset) => {
+        let ticker = realm.objects('Ticker').filtered('ticker = $0', asset.ticker);
+
+        // We can only add the asset if the ticker is present in the local realm database
+        if (ticker.length) {
+          realm.write(() => {
+            portfolio.assets.push({ticker: asset.ticker, amount: asset.amount});
+          });
+        } else {
+          console.log('asset.ticker does not exist in Realm/Ticker.json', asset.ticker);
+        }
+      });
+
+      // Navigate back to the overview
       this.props.navigator.resetTo({
         screen: 'CR.PF.OverviewScreen',
       });
 
-      this.state = null;
-      // AlertIOS.alert("Type: " + e.type + "\nData: " + e.data);
+    } catch (e) {
+      console.error(e);
     }
-  }
 
-  takePicture() {
-    const options = {};
-    //options.location = ...
-    this.camera.capture({metadata: options})
-        .then((data) => console.log(data))
-        .catch(err => console.error(err));
-  }
+  };
 
   /**
-   * Navigate to the next screen.
+   * Render the asset table.
    */
-  previousScreen = () => (
-    this.props.navigator.resetTo({
-      screen: 'CR.PF.OverviewScreen',
-    })
+  renderTable = () => (
+    <View style={styles.actionContainer}>
+      <FlatList
+        data={this.state.QRData.assets}
+        renderItem={this.renderListItem}
+        keyExtractor={item => item.ticker}
+      />
+    </View>
   );
 
   /**
-   * Render the component.
+   * Remove an asset.
    */
-  render () {
-    const buttons = [
-      {text: 'Continue', onPress: this.nextScreen},
+  removeAsset = (index) => {
+    const start = this.state.QRData.assets.slice(0, index);
+    const end   = this.state.QRData.assets.slice(index + 1);
+
+    this.setState({
+      QRData: {
+        assets: start.concat(end),
+      },
+    });
+  };
+
+  /**
+   * Render a list item.
+   */
+  renderListItem = ({item, index}) => {
+    const listItemButton = [
+      {
+        text:            'Remove',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        onPress:         () => {this.removeAsset(index);},
+      },
     ];
 
     return (
-      <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          style={styles.preview}
-          aspect={this.state.camera.aspect}
-          captureTarget={this.state.camera.captureTarget}
-          type={this.state.camera.type}
-          onBarCodeRead={this.onBarCodeRead.bind(this)}
-        />
+      <Swipeout
+        sensitivity={20}
+        backgroundColor={'transparent'}
+        right={listItemButton}>
+        <View style={styles.listItem}>
+          <Text style={styles.listItemTicker}>{item.ticker}</Text>
+          <Text style={styles.listItemAmount}>{Finance.formatCrypto(item.amount)}</Text>
+        </View>
+      </Swipeout>
+    );
+  };
+
+  /**
+   * Render the camera view
+   * @returns {XML}
+   */
+  renderCameraView = () => (
+    <View style={styles.container}>
+      <Camera
+        ref={(cam) => {
+          this.camera = cam;
+        }}
+        style={styles.preview}
+        type={this.state.camera.type}
+        onBarCodeRead={this.onBarCodeRead.bind(this)}
+        barCodeTypes={[Camera.constants.BarCodeType.qr]}
+      >
         <View style={styles.navigator}>
           <TouchableOpacity style={styles.touchable} onPress={this.previousScreen}>
             <Text style={styles.button}>Back</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Camera>
+    </View>
+  );
+
+  /**
+   * Render the post scan view
+   * @returns {XML}
+   */
+  renderPostScanView = () => {
+    let body, action;
+    let buttons = [
+      {
+        text:    'Add portfolio',
+        onPress: this.addPortfolio,
+      },
+      {
+        text:    'Back',
+        onPress: this.previousScreen,
+      },
+    ];
+
+    body   = 'This portfolio consists of the following assets. Swipe right to remove an asset.';
+    action = this.renderTable();
+
+    // Todo: show investment (with option to change it?)
+    // Todo: show portfolio name (with option to change it?)
+
+    return (
+      <Container
+        title={'Add portfolio'}
+        buttons={buttons}
+        action={action}
+        body={body}/>
     );
+  };
+
+  /**
+   * Render the component.
+   * @returns {XML}
+   */
+  render () {
+    if (this.state.showCamera) {
+      return this.renderCameraView();
+    } else {
+      return this.renderPostScanView();
+    }
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    flex:           1,
+    flexDirection:  'column',
+    justifyContent: 'space-between',
   },
+
   navigator: {
     backgroundColor: 'transparent',
-    alignItems: 'center'
+    alignItems:      'center',
   },
+
   preview: {
-    flex: 1,
+    flex:           1,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems:     'center',
   },
+
   button: {
     backgroundColor: 'transparent',
-    color:           '#489DD0',
+    color:           '#ffffff',
     fontWeight:      'bold',
     textAlign:       'center',
     paddingTop:      12,
     paddingBottom:   12,
   },
+
   touchable: {
-    backgroundColor: 'rgba(255,255,255,0.85)',
+    backgroundColor: 'rgba(0,0,0,0.85)',
     width:           300,
-    shadowColor:     '#595959',
-    shadowOpacity:   0.5,
-    shadowOffset:    {width: 0, height: 2},
-    shadowRadius:    4,
-    borderRadius:    4,
     marginBottom:    20,
+    borderWidth:     2,
+    borderRadius:    4,
+    borderColor:     '#ffffff',
+  },
+
+  actionContainer: {
+    width:  300,
+    height: 160,
+  },
+
+  listItem: {
+    backgroundColor:   'transparent',
+    flexDirection:     'row',
+    alignItems:        'center',
+    padding:           12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+  },
+
+  listItemTicker: {
+    width:      75,
+    color:      '#FFF',
+    fontWeight: 'bold',
+    fontSize:   14,
+  },
+
+  listItemAmount: {
+    color:    '#FFF',
+    fontSize: 12,
   },
 });
