@@ -18,7 +18,13 @@ export default class Portfolio {
    */
   get totalInvestments () {
     if (this.investments.length < 2) {
-      return this.investments[0].amount;
+      // Check if amount property is exists - if no investments are present we simply want to
+      // return 0 instead of an undefined error
+      if (this.investments[0] && this.investments[0].amount) {
+        return this.investments[0].amount;
+      }
+
+      return 0;
     }
 
     return this.investments.reduce((a, b) => a.amount + b.amount);

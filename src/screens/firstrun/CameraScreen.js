@@ -60,7 +60,7 @@ export default class CameraScreen extends Component {
           // Unmount the camera
           this.camera = null;
 
-          // Save the QR Data + set showCamera to fallse
+          // Save the QR Data + set showCamera to false
           this.setState({
             QRData,
             showCamera: false,
@@ -104,6 +104,17 @@ export default class CameraScreen extends Component {
       // Save the portfolio and investment in Realm
       realm.write(() => {
         portfolio = realm.create('Portfolio', {name: portfolioName}, true);
+
+        // Delete old portfolio investments
+        if(portfolio.investments) {
+          realm.delete(portfolio.investments);
+        }
+
+        // Delete old portfolio assets
+        if(portfolio.assets) {
+          realm.delete(portfolio.assets);
+        }
+
         portfolio.investments.push({amount: this.state.QRData.investment});
       });
 
@@ -120,6 +131,8 @@ export default class CameraScreen extends Component {
           console.log('asset.ticker does not exist in Realm/Ticker.json', asset.ticker);
         }
       });
+
+      // Todo: fire an event here to have trigger the RateAPI.fetchRates()?
 
       // Navigate back to the overview
       this.props.navigator.resetTo({

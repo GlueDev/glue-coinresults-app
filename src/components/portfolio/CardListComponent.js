@@ -8,7 +8,10 @@ export default class CardListComponent extends Component {
    */
   static propTypes = {
     style:      PropTypes.number,
-    data:       PropTypes.object.isRequired,
+    data:       PropTypes.oneOfType([
+      PropTypes.object.isRequired,
+      PropTypes.array.isRequired
+    ]),
     renderItem: PropTypes.func.isRequired,
   };
 
