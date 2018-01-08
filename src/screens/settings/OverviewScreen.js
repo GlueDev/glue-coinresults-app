@@ -4,7 +4,6 @@ import realm from '../../realm';
 
 import { EventRegister } from 'react-native-event-listeners';
 import RateAPI from '../../utils/RateAPI';
-import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**

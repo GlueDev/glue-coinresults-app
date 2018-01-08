@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   settingsIcon: {
     backgroundColor:  'transparent',
     position:         'absolute',
-    top:              35,
+    top:              45,
     right:            25,
   }
 });
