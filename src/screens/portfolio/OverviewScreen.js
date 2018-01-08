@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View, AlertIOS } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
+import { StyleSheet, View } from 'react-native';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
-import RateAPI from '../../utils/RateAPI';
-import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**
@@ -27,45 +24,6 @@ export default class OverviewScreen extends Component {
   }
 
   /**
-   * Get rates.
-   */
-  devGetRates = async () => {
-    const t1 = new Date().getTime();
-
-    const allTickers = this.portfolios.map(portfolio => portfolio.allTickers);
-    const uniqueTickers = allTickers.reduce((a, b) => a.concat(b));
-
-    for (const i in uniqueTickers) {
-      await RateAPI.fetchRates(uniqueTickers[i], 'EUR');
-    }
-
-    const t2 = new Date().getTime();
-    AlertIOS.alert(`Exec took ${t2 - t1}ms`);
-
-    EventRegister.emit('tickerUpdate');
-  };
-
-  /**
-   * Action used to seed the Realm Rates schema in dev mode.
-   */
-  devSeedRates = () => {
-    Seeder.SeedRates();
-    EventRegister.emit('tickerUpdate');
-  };
-
-  /**
-   * Action used to clear the Realm Rates schema in dev mode.
-   */
-  devClearRates = () => {
-    realm.write(() => {
-      let allRates = realm.objects('Rate');
-      realm.delete(allRates);
-    });
-
-    EventRegister.emit('tickerUpdate');
-  };
-
-  /**
    * Navigate to the details page of a portfolio.
    */
   navigateToDetails = (portfolioName) => {
@@ -75,9 +33,12 @@ export default class OverviewScreen extends Component {
     });
   };
 
-  navigateToCameraScreen = () => {
+  /**
+   * Navigate to the settings overview screen
+   */
+  navigateToSettingsScreen = () => {
     this.props.navigator.push({
-      screen:    'CR.FR.CameraScreen',
+      screen:    'CR.ST.OverviewScreen',
     });
   };
 
@@ -89,29 +50,16 @@ export default class OverviewScreen extends Component {
       <MarketCapComponent
         marketCap={500}
         btcDominance={63.56}
-        lastVisit={519312}/>
+        lastVisit={519312}
+        navigate={this.navigateToSettingsScreen}
+        navigateIcon="gear"
+      />
 
       <CardListComponent
         data={this.portfolios}
         renderItem={({item}) => <PortfolioCardComponent
           portfolio={item.name}
           navigate={this.navigateToDetails}/>}/>
-
-      <View style={{paddingBottom: 60}}>
-
-        <Button
-          title="Camera Screen"
-          onPress={this.navigateToCameraScreen}/>
-
-        <Button
-          title="Load API data"
-          onPress={this.devGetRates}/>
-
-        <Button
-          title="Clear API data"
-          onPress={this.devClearRates}/>
-      </View>
-
     </View>
   );
 }
