@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View, AlertIOS } from 'react-native';
+import { AlertIOS, Button, StyleSheet, View, RefreshControl } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
@@ -7,7 +7,6 @@ import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
 import RateAPI from '../../utils/RateAPI';
-import Seeder from '../../utils/Seeder';
 
 export default class OverviewScreen extends Component {
   /**
@@ -24,6 +23,7 @@ export default class OverviewScreen extends Component {
     super(props);
 
     this.portfolios = realm.objects('Portfolio');
+    this.loading    = false;
   }
 
   /**
@@ -32,25 +32,24 @@ export default class OverviewScreen extends Component {
   devGetRates = async () => {
     const t1 = new Date().getTime();
 
-    const allTickers = this.portfolios.map(portfolio => portfolio.allTickers);
+    const allTickers    = this.portfolios.map(portfolio => portfolio.allTickers);
     const uniqueTickers = allTickers.reduce((a, b) => a.concat(b));
 
-    for (const i in uniqueTickers) {
-      await RateAPI.fetchRates(uniqueTickers[i], 'EUR');
+    try {
+      this.loading = true;
+      for (const i in uniqueTickers) {
+        await RateAPI.fetchRates(uniqueTickers[i], 'EUR');
+      }
+
+      const t2 = new Date().getTime();
+      console.info(`Exec took ${t2 - t1}ms`);
+
+      EventRegister.emit('tickerUpdate');
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+      AlertIOS.alert('Unable to connect to the API.');
     }
-
-    const t2 = new Date().getTime();
-    AlertIOS.alert(`Exec took ${t2 - t1}ms`);
-
-    EventRegister.emit('tickerUpdate');
-  };
-
-  /**
-   * Action used to seed the Realm Rates schema in dev mode.
-   */
-  devSeedRates = () => {
-    Seeder.SeedRates();
-    EventRegister.emit('tickerUpdate');
   };
 
   /**
@@ -77,7 +76,7 @@ export default class OverviewScreen extends Component {
 
   navigateToCameraScreen = () => {
     this.props.navigator.push({
-      screen:    'CR.FR.CameraScreen',
+      screen: 'CR.FR.CameraScreen',
     });
   };
 
@@ -93,6 +92,10 @@ export default class OverviewScreen extends Component {
 
       <CardListComponent
         data={this.portfolios}
+        refreshControl={<RefreshControl
+          tintColor={'#FFFFFF'}
+          refreshing={this.loading}
+          onRefresh={this.devGetRates}/>}
         renderItem={({item}) => <PortfolioCardComponent
           portfolio={item.name}
           navigate={this.navigateToDetails}/>}/>

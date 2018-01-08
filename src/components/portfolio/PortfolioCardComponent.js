@@ -41,7 +41,7 @@ export default class PortfolioCardComponent extends Component {
    * Render the view.
    */
   render = () => (
-    <TouchableOpacity onPress={() => this.props.navigate(this.portfolio.name)}>
+    <TouchableOpacity onPress={() => this.props.navigate(this.portfolio.name)} activeOpacity={1}>
       <CardComponent style={styles.container}>
         <Text style={[styles.portfolioName]}>{this.portfolio.name}</Text>
 
