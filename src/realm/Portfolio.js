@@ -51,15 +51,22 @@ export default class Portfolio {
    * Calculate the current total result.
    */
   get totalResult () {
+    // Check if both the totalInvestments and totalVelue are set properly to avoid nasty errors
+    if(Finance.isNumeric(this.totalInvestments) && Finance.isNumeric(this.totalValue)) {
+      return this.totalValue - this.totalInvestments;
+    }
 
+    return 0;
   }
 
   /**
-   * Return the ROI of the portfolio
+   * Retur the ROI of the portfolio
+   *
+   * ROI calculation: (gains - cost)/cost * 100% (gains = current value of portfolio)
+   * @returns {*}
+   * @constructor
    */
   get ROI() {
-    // ROI calculation: (gains - cost)/cost * 100% (gains = current value of portfolio)
-
     // Check if both the totalInvestments and totalVelue are set properly to avoid nasty errors
     if(Finance.isNumeric(this.totalInvestments) && Finance.isNumeric(this.totalValue)) {
       let ROI = ( ( this.totalValue - this.totalInvestments ) / this.totalInvestments ) * 100;
