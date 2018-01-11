@@ -60,7 +60,7 @@ export default class ResultComponent extends Component {
       </TouchableOpacity>
 
       <Text style={styles.lastVisitResult}>
-        €513,41 profit since yesterday
+        Portfolio value changed {Finance.formatFIAT(this.props.portfolio.valueChangeToday, 'EUR')} since 00:00.
       </Text>
 
       <Text style={styles.ROI}>
