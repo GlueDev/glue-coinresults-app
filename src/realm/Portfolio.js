@@ -1,3 +1,5 @@
+import Finance from '../utils/Finance';
+
 export default class Portfolio {
   /**
    * Define this model's schema.
@@ -46,10 +48,59 @@ export default class Portfolio {
   }
 
   /**
+   * Calculate the current total value.
+   */
+  get totalValueYesterday () {
+    let portfolioValue = 0;
+
+    if(this.assets.length > 0) {
+      this.assets.forEach((asset) => {
+        portfolioValue += asset.fiatValue('EUR', 'yesterday');
+      });
+    }
+
+    return portfolioValue;
+  }
+
+  /**
+   * Output the portfolio value change of today
+   */
+  get valueChangeToday() {
+    // Check if both the totalInvestments and totalVelue are set properly to avoid nasty errors
+    if(Finance.isNumeric(this.totalValueYesterday) && Finance.isNumeric(this.totalValue)) {
+      return this.totalValue - this.totalValueYesterday;
+    }
+
+    return 0;
+  }
+  /**
    * Calculate the current total result.
    */
   get totalResult () {
+    // Check if both the totalInvestments and totalVelue are set properly to avoid nasty errors
+    if(Finance.isNumeric(this.totalInvestments) && Finance.isNumeric(this.totalValue)) {
+      return this.totalValue - this.totalInvestments;
+    }
 
+    return 0;
+  }
+
+  /**
+   * Retur the ROI of the portfolio
+   *
+   * ROI calculation: (gains - cost)/cost * 100% (gains = current value of portfolio)
+   * @returns {*}
+   * @constructor
+   */
+  get ROI() {
+    // Check if both the totalInvestments and totalVelue are set properly to avoid nasty errors
+    if(Finance.isNumeric(this.totalInvestments) && Finance.isNumeric(this.totalValue)) {
+      let ROI = ( ( this.totalValue - this.totalInvestments ) / this.totalInvestments ) * 100;
+
+      return Finance.formatPercentage(ROI);
+    }
+
+    return 0;
   }
 
   /**
