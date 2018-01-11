@@ -34,7 +34,7 @@ export default class ResultComponent extends Component {
       </Text>
 
       <Text style={styles.ROI}>
-        Your ROI is currently {Finance.formatPercentage(215.98)}
+        Your ROI is currently {Finance.formatPercentage(this.props.portfolio.ROI)}.
       </Text>
 
     </GradientComponent>

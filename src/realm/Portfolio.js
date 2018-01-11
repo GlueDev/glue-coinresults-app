@@ -1,3 +1,5 @@
+import Finance from '../utils/Finance';
+
 export default class Portfolio {
   /**
    * Define this model's schema.
@@ -50,6 +52,22 @@ export default class Portfolio {
    */
   get totalResult () {
 
+  }
+
+  /**
+   * Return the ROI of the portfolio
+   */
+  get ROI() {
+    // ROI calculation: (gains - cost)/cost * 100% (gains = current value of portfolio)
+
+    // Check if both the totalInvestments and totalVelue are set properly to avoid nasty errors
+    if(Finance.isNumeric(this.totalInvestments) && Finance.isNumeric(this.totalValue)) {
+      let ROI = ( ( this.totalValue - this.totalInvestments ) / this.totalInvestments ) * 100;
+
+      return Finance.formatPercentage(ROI);
+    }
+
+    return 0;
   }
 
   /**
