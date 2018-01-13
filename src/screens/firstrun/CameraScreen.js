@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Vibration,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, Vibration, View, } from 'react-native';
 
 import Camera from 'react-native-camera';
 import Swipeout from 'react-native-swipeout';
 import Container from '../../components/firstrun/ContainerComponent';
-import Finance from '../../utils/Finance';
 import realm from '../../realm';
+import Finance from '../../utils/Finance';
 
 export default class CameraScreen extends Component {
 
@@ -106,12 +99,12 @@ export default class CameraScreen extends Component {
         portfolio = realm.create('Portfolio', {name: portfolioName}, true);
 
         // Delete old portfolio investments
-        if(portfolio.investments) {
+        if (portfolio.investments) {
           realm.delete(portfolio.investments);
         }
 
         // Delete old portfolio assets
-        if(portfolio.assets) {
+        if (portfolio.assets) {
           realm.delete(portfolio.assets);
         }
 

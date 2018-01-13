@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import realm from '../../realm';
+import { EventRegister } from 'react-native-event-listeners';
 
 import Finance from '../../utils/Finance';
 import BackButtonComponent from '../ui/BackButtonComponent';
@@ -22,8 +22,22 @@ export default class ResultComponent extends Component {
     super(props);
 
     this.state = {
-      mainNumber: this.props.portfolio.totalValue
+      mainNumber: this.props.portfolio.totalValue,
     };
+  }
+
+  /**
+   * Listen for portfolio changes.
+   */
+  componentDidMount () {
+    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
+  }
+
+  /**
+   * Remove listeners.
+   */
+  componentWillUnmount () {
+    EventRegister.rm(this.listener);
   }
 
   /**
@@ -33,13 +47,13 @@ export default class ResultComponent extends Component {
   _onMainNumberTouch = () => {
     let mainNumber;
 
-    if(this.state.mainNumber === this.props.portfolio.totalValue) {
+    if (this.state.mainNumber === this.props.portfolio.totalValue) {
       mainNumber = this.props.portfolio.totalResult;
     } else {
       mainNumber = this.props.portfolio.totalValue;
     }
 
-    this.setState({ mainNumber });
+    this.setState({mainNumber});
   };
 
   /**
@@ -60,7 +74,8 @@ export default class ResultComponent extends Component {
       </TouchableOpacity>
 
       <Text style={styles.lastVisitResult}>
-        Portfolio value changed {Finance.formatFIAT(this.props.portfolio.valueChangeToday, 'EUR')} since 00:00.
+        Portfolio value
+        changed {Finance.formatFIAT(this.props.portfolio.valueChangeToday, 'EUR')} since 00:00.
       </Text>
 
       <Text style={styles.ROI}>

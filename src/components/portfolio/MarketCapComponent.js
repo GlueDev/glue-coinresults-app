@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Finance from '../../utils/Finance';
@@ -24,8 +24,12 @@ export default class MarketCapComponent extends Component {
   render = () => {
     let navigateIcon = null;
 
-    if(this.props.navigateIcon) {
-      navigateIcon = <Icon name={this.props.navigateIcon} size={25} color="#FFF" style={styles.settingsIcon} onPress={this.props.navigate}/>
+    if (this.props.navigateIcon) {
+      navigateIcon = <Icon name={this.props.navigateIcon}
+                           size={25}
+                           color="#FFF"
+                           style={styles.settingsIcon}
+                           onPress={this.props.navigate}/>;
     }
 
     return <GradientComponent colors={['#F7BF47', '#EC405C']} style={styles.container}>
@@ -84,9 +88,9 @@ const styles = StyleSheet.create({
   },
 
   settingsIcon: {
-    backgroundColor:  'transparent',
-    position:         'absolute',
-    top:              45,
-    right:            25,
-  }
+    backgroundColor: 'transparent',
+    position:        'absolute',
+    top:             45,
+    right:           25,
+  },
 });

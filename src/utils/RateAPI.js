@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import realm from '../realm';
+import { EventRegister } from 'react-native-event-listeners';
 
 export default class RateAPI {
   /**
@@ -11,7 +12,8 @@ export default class RateAPI {
    */
   static async fetchRates (ticker, FIAT) {
     const request = await axios.get('https://min-api.cryptocompare.com/data/histohour', {
-      params: {
+      timeout: 5000,
+      params:  {
         fsym:  ticker,
         tsym:  FIAT,
         limit: this.getHours(ticker, FIAT),
@@ -84,5 +86,34 @@ export default class RateAPI {
 
     // Only request
     return difference;
+  }
+
+  /**
+   * Return an array of unique tickers.
+   *
+   * @param {array} portfolios
+   */
+  static getTickers (portfolios) {
+    const allTickers = portfolios.map(portfolio => portfolio.allTickers);
+    return allTickers.reduce((a, b) => a.concat(b));
+  }
+
+  /**
+   * Update the portfolios with up to date rates.
+   *
+   * @param {array} portfolios
+   */
+  static async updatePortfolios (portfolios) {
+    const t1      = new Date().getTime(),
+          tickers = this.getTickers(portfolios);
+
+    for (const i in tickers) await RateAPI.fetchRates(tickers[i], 'EUR');
+
+    if (__DEV__) {
+      const t2 = new Date().getTime();
+      console.info(`Execution took ${t2 - t1} ms`);
+    }
+
+    EventRegister.emit('tickerUpdate');
   }
 }

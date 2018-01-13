@@ -7,16 +7,22 @@ export default class CardListComponent extends Component {
    * Define the possible props.
    */
   static propTypes = {
-    style:      PropTypes.number,
-    data:       PropTypes.oneOfType([
+    style:          PropTypes.number,
+    renderItem:     PropTypes.func.isRequired,
+    refreshControl: PropTypes.object,
+    data:           PropTypes.oneOfType([
       PropTypes.object.isRequired,
-      PropTypes.array.isRequired
+      PropTypes.array.isRequired,
     ]),
-    renderItem: PropTypes.func.isRequired,
   };
 
+  /**
+   * Render the view.
+   */
   render = () => (
-    <ScrollView style={[styles.container, this.props.style]}>
+    <ScrollView
+      refreshControl={this.props.refreshControl}
+      style={[styles.container, this.props.style]}>
       <FlatList
         style={styles.flatList}
         data={this.props.data}
@@ -29,7 +35,7 @@ export default class CardListComponent extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: -40,
+    marginTop: -55,
   },
 
   flatList: {

@@ -27,13 +27,17 @@ export default class PortfolioCardComponent extends Component {
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
   };
 
-  componentDidMount() {
-    this.listener = EventRegister.on('tickerUpdate', () => {
-      this.forceUpdate();
-    });
+  /**
+   * Listen for portfolio changes.
+   */
+  componentDidMount () {
+    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
   }
 
-  componentWillUnmount() {
+  /**
+   * Remove listeners.
+   */
+  componentWillUnmount () {
     EventRegister.rm(this.listener);
   }
 
@@ -41,7 +45,7 @@ export default class PortfolioCardComponent extends Component {
    * Render the view.
    */
   render = () => (
-    <TouchableOpacity onPress={() => this.props.navigate(this.portfolio.name)}>
+    <TouchableOpacity onPress={() => this.props.navigate(this.portfolio.name)} activeOpacity={1}>
       <CardComponent style={styles.container}>
         <Text style={[styles.portfolioName]}>{this.portfolio.name}</Text>
 
@@ -89,5 +93,5 @@ const styles = StyleSheet.create({
     fontSize:        12,
     color:           '#5E5E5E',
     marginTop:       10,
-  }
+  },
 });
