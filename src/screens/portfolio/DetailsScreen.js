@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, View, RefreshControl } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
 import CardListComponent from '../../components/portfolio/CardListComponent';
@@ -36,7 +36,7 @@ export default class DetailsScreen extends Component {
     let assets = this.portfolio.assets.slice();
     assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
 
-    this.assets = assets;
+    this.assets  = assets;
     this.loading = false;
   }
 

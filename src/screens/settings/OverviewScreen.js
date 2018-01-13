@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AlertIOS, Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 
 import { EventRegister } from 'react-native-event-listeners';
 import realm from '../../realm';
