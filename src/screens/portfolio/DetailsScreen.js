@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View, RefreshControl } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import ResultComponent from '../../components/portfolio/ResultComponent';
@@ -44,8 +45,9 @@ export default class DetailsScreen extends Component {
    */
   updatePortfolio = async () => {
     this.loading = true;
-    await RateAPI.updatePortfolios([this.portfolio]);
+    await RateAPI.updatePortfolios(this.portfolios);
     this.loading = false;
+    EventRegister.emit('tickerUpdate');
   };
 
   /**

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
 import realm from '../realm';
-import { EventRegister } from 'react-native-event-listeners';
 
 export default class RateAPI {
   /**
@@ -113,7 +112,5 @@ export default class RateAPI {
       const t2 = new Date().getTime();
       console.info(`Execution took ${t2 - t1} ms`);
     }
-
-    EventRegister.emit('tickerUpdate');
   }
 }

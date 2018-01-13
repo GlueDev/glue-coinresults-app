@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
@@ -51,6 +52,7 @@ export default class OverviewScreen extends Component {
     this.loading = true;
     await RateAPI.updatePortfolios(this.portfolios);
     this.loading = false;
+    EventRegister.emit('tickerUpdate');
   };
 
   /**
