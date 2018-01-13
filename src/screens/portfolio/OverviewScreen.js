@@ -38,7 +38,7 @@ export default class OverviewScreen extends Component {
    */
   navigateToSettingsScreen = () => {
     this.props.navigator.push({
-      screen:    'CR.ST.OverviewScreen',
+      screen: 'CR.ST.OverviewScreen',
     });
   };
 

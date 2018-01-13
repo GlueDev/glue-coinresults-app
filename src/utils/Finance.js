@@ -32,7 +32,7 @@ class Finance {
    * @param value
    * @returns {boolean}
    */
-  static isNumeric(value) {
+  static isNumeric (value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
   }
 }

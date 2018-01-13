@@ -27,13 +27,13 @@ export default class PortfolioCardComponent extends Component {
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
   };
 
-  componentDidMount() {
+  componentDidMount () {
     this.listener = EventRegister.on('tickerUpdate', () => {
       this.forceUpdate();
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     EventRegister.rm(this.listener);
   }
 
@@ -89,5 +89,5 @@ const styles = StyleSheet.create({
     fontSize:        12,
     color:           '#5E5E5E',
     marginTop:       10,
-  }
+  },
 });

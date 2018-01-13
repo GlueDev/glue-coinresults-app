@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View, AlertIOS } from 'react-native';
-import realm from '../../realm';
+import { AlertIOS, Button, StyleSheet, View } from 'react-native';
 
 import { EventRegister } from 'react-native-event-listeners';
+import realm from '../../realm';
 import RateAPI from '../../utils/RateAPI';
 
 export default class OverviewScreen extends Component {
@@ -30,7 +30,7 @@ export default class OverviewScreen extends Component {
   devGetRates = async () => {
     const t1 = new Date().getTime();
 
-    const allTickers = this.portfolios.map(portfolio => portfolio.allTickers);
+    const allTickers    = this.portfolios.map(portfolio => portfolio.allTickers);
     const uniqueTickers = allTickers.reduce((a, b) => a.concat(b));
 
     for (const i in uniqueTickers) {
@@ -60,7 +60,7 @@ export default class OverviewScreen extends Component {
    */
   navigateToCameraScreen = () => {
     this.props.navigator.push({
-      screen:    'CR.FR.CameraScreen',
+      screen: 'CR.FR.CameraScreen',
     });
   };
 
@@ -69,17 +69,17 @@ export default class OverviewScreen extends Component {
    */
   render = () => (
     <View style={styles.container}>
-        <Button
-          title="Camera Screen"
-          onPress={this.navigateToCameraScreen}/>
+      <Button
+        title="Camera Screen"
+        onPress={this.navigateToCameraScreen}/>
 
-        <Button
-          title="Load API data"
-          onPress={this.devGetRates}/>
+      <Button
+        title="Load API data"
+        onPress={this.devGetRates}/>
 
-        <Button
-          title="Clear API data"
-          onPress={this.devClearRates}/>
+      <Button
+        title="Clear API data"
+        onPress={this.devClearRates}/>
     </View>
   );
 }
