@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, RefreshControl } from 'react-native';
 import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
-
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import ResultComponent from '../../components/portfolio/ResultComponent';
 import realm from '../../realm';
+import RateAPI from '../../utils/RateAPI';
 
 export default class DetailsScreen extends Component {
   /**
@@ -36,7 +36,17 @@ export default class DetailsScreen extends Component {
     assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
 
     this.assets = assets;
+    this.loading = false;
   }
+
+  /**
+   * Update the portfolios.
+   */
+  updatePortfolio = async () => {
+    this.loading = true;
+    await RateAPI.updatePortfolios([this.portfolio]);
+    this.loading = false;
+  };
 
   /**
    * Render the view.
@@ -50,6 +60,10 @@ export default class DetailsScreen extends Component {
 
       <CardListComponent
         data={this.assets}
+        refreshControl={<RefreshControl
+          tintColor={'#FFFFFF'}
+          refreshing={this.loading}
+          onRefresh={this.updatePortfolio}/>}
         renderItem={({item}) => <AssetCardComponent
           portfolioName={this.props.portfolioName}
           ticker={item.ticker}/>}/>

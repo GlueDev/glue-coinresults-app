@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 
 import Finance from '../../utils/Finance';
 import BackButtonComponent from '../ui/BackButtonComponent';
@@ -23,6 +24,20 @@ export default class ResultComponent extends Component {
     this.state = {
       mainNumber: this.props.portfolio.totalValue,
     };
+  }
+
+  /**
+   * Listen for portfolio changes.
+   */
+  componentDidMount () {
+    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
+  }
+
+  /**
+   * Remove listeners.
+   */
+  componentWillUnmount () {
+    EventRegister.rm(this.listener);
   }
 
   /**

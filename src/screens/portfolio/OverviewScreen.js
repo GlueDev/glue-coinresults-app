@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 
 import CardListComponent from '../../components/portfolio/CardListComponent';
 import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
 import realm from '../../realm';
+import RateAPI from '../../utils/RateAPI';
 
 export default class OverviewScreen extends Component {
   /**
@@ -21,6 +22,7 @@ export default class OverviewScreen extends Component {
     super(props);
 
     this.portfolios = realm.objects('Portfolio');
+    this.loading    = false;
   }
 
   /**
@@ -43,6 +45,15 @@ export default class OverviewScreen extends Component {
   };
 
   /**
+   * Update the portfolios.
+   */
+  updatePortfolios = async () => {
+    this.loading = true;
+    await RateAPI.updatePortfolios(this.portfolios);
+    this.loading = false;
+  };
+
+  /**
    * Render the view.
    */
   render = () => (
@@ -57,6 +68,10 @@ export default class OverviewScreen extends Component {
 
       <CardListComponent
         data={this.portfolios}
+        refreshControl={<RefreshControl
+          tintColor={'#FFFFFF'}
+          refreshing={this.loading}
+          onRefresh={this.updatePortfolios}/>}
         renderItem={({item}) => <PortfolioCardComponent
           portfolio={item.name}
           navigate={this.navigateToDetails}/>}/>

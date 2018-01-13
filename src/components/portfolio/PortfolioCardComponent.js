@@ -27,12 +27,16 @@ export default class PortfolioCardComponent extends Component {
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
   };
 
+  /**
+   * Listen for portfolio changes.
+   */
   componentDidMount () {
-    this.listener = EventRegister.on('tickerUpdate', () => {
-      this.forceUpdate();
-    });
+    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
   }
 
+  /**
+   * Remove listeners.
+   */
   componentWillUnmount () {
     EventRegister.rm(this.listener);
   }
