@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import realm from '../../realm';
 
 import Finance from '../../utils/Finance';
 import BackButtonComponent from '../ui/BackButtonComponent';
@@ -15,6 +16,33 @@ export default class ResultComponent extends Component {
   };
 
   /**
+   * Grab all portfolios.
+   */
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      mainNumber: this.props.portfolio.totalValue
+    };
+  }
+
+  /**
+   * Flip between the totalValue and totalResult of the portfolio
+   * @private
+   */
+  _onMainNumberTouch = () => {
+    let mainNumber;
+
+    if(this.state.mainNumber === this.props.portfolio.totalValue) {
+      mainNumber = this.props.portfolio.totalResult;
+    } else {
+      mainNumber = this.props.portfolio.totalValue;
+    }
+
+    this.setState({ mainNumber });
+  };
+
+  /**
    * Render the view.
    */
   render = () => (
@@ -23,18 +51,20 @@ export default class ResultComponent extends Component {
         onPress={() => this.props.navigator.pop()}
         label={'Portfolio overview'}/>
 
-      <Text
-        style={styles.totalProfit}
-        allowFontScaling={false}>
-        {Finance.formatFIAT(this.props.portfolio.totalValue, 'EUR')}
-      </Text>
+      <TouchableOpacity onPress={this._onMainNumberTouch}>
+        <Text
+          style={styles.totalProfit}
+          allowFontScaling={false}>
+          {Finance.formatFIAT(this.state.mainNumber, 'EUR')}
+        </Text>
+      </TouchableOpacity>
 
       <Text style={styles.lastVisitResult}>
-        €513,41 profit since your last visit yesterday
+        Portfolio value changed {Finance.formatFIAT(this.props.portfolio.valueChangeToday, 'EUR')} since 00:00.
       </Text>
 
       <Text style={styles.ROI}>
-        Your ROI is currently {Finance.formatPercentage(215.98)}
+        Your ROI is currently {Finance.formatPercentage(this.props.portfolio.ROI)}.
       </Text>
 
     </GradientComponent>

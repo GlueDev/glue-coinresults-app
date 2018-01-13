@@ -11,6 +11,8 @@ import DetailsScreen from './portfolio/DetailsScreen';
 import OverviewScreen from './portfolio/OverviewScreen';
 import CameraScreen from './firstrun/CameraScreen';
 
+import SettingsOverviewScreen from './settings/OverviewScreen';
+
 export default function registerScreens (Store: {}, Provider: {}) {
   /**
    * Portfolio screens.
@@ -27,6 +29,10 @@ export default function registerScreens (Store: {}, Provider: {}) {
   Navigation.registerComponent('CR.FR.Assets.SetTickerScreen', () => SetTickerScreen, Store, Provider);
   Navigation.registerComponent('CR.FR.Assets.SetAmountScreen', () => SetAssetAmountScreen, Store, Provider);
   Navigation.registerComponent('CR.FR.Investments.SetAmountScreen', () => SetInvestmentScreen, Store, Provider);
-
   Navigation.registerComponent('CR.FR.CameraScreen', () => CameraScreen, Store, Provider);
+
+  /**
+   * Settings screens
+   */
+  Navigation.registerComponent('CR.ST.OverviewScreen', () => SettingsOverviewScreen, Store, Provider);
 }

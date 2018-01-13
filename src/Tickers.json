@@ -173,5 +173,15 @@
     "ticker": "MAID",
     "name": "MaidSafeCoin",
     "color": "#6392D2"
+  },
+  {
+    "ticker": "AION",
+    "name": "Aion",
+    "color": "#1B454E"
+  },
+  {
+    "ticker": "BAT",
+    "name": "Basic Attention Token",
+    "color": "#912B61"
   }
 ]

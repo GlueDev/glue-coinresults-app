@@ -29,6 +29,13 @@ export default class DetailsScreen extends Component {
     super(props);
 
     this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName);
+
+    // Sort the assets based on fiatValue
+    // Todo: replace hardcoded EUR for the preference of the user
+    let assets = this.portfolio.assets.slice();
+    assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
+
+    this.assets = assets;
   }
 
   /**
@@ -42,7 +49,7 @@ export default class DetailsScreen extends Component {
       />
 
       <CardListComponent
-        data={this.portfolio.assets}
+        data={this.assets}
         renderItem={({item}) => <AssetCardComponent
           portfolioName={this.props.portfolioName}
           ticker={item.ticker}/>}/>

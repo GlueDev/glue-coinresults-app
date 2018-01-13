@@ -24,7 +24,16 @@ class Finance {
   }
 
   static formatPercentage (value) {
-    return `${Accounting.toFixed(value, 2)}%`;
+    return `${Accounting.toFixed(value)}%`;
+  }
+
+  /**
+   * Checks whether the given value is numeric
+   * @param value
+   * @returns {boolean}
+   */
+  static isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
   }
 }
 
