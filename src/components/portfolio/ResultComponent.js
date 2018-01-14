@@ -22,7 +22,9 @@ export default class ResultComponent extends Component {
     super(props);
 
     this.state = {
-      mainNumber: this.props.portfolio.totalValue,
+      mainNumber: 0,
+      portfolioValue: 0,
+      ROI: 0,
     };
   }
 
@@ -31,6 +33,18 @@ export default class ResultComponent extends Component {
    */
   componentDidMount () {
     this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
+  }
+
+  componentWillReceiveProps(props) {
+    let mainNumber = props.portfolio.totalValue,
+        portfolioValue = props.portfolio.valueChangeToday,
+        ROI = props.portfolio.ROI;
+
+    this.setState({
+      mainNumber,
+      portfolioValue,
+      ROI
+    });
   }
 
   /**
@@ -74,12 +88,11 @@ export default class ResultComponent extends Component {
       </TouchableOpacity>
 
       <Text style={styles.lastVisitResult}>
-        Portfolio value
-        changed {Finance.formatFIAT(this.props.portfolio.valueChangeToday, 'EUR')} since 00:00.
+        Portfolio value changed {Finance.formatFIAT(this.state.portfolioValue, 'EUR')} since 00:00.
       </Text>
 
       <Text style={styles.ROI}>
-        Your ROI is currently {Finance.formatPercentage(this.props.portfolio.ROI)}.
+        Your ROI is currently {Finance.formatPercentage(this.state.ROI)}.
       </Text>
 
     </GradientComponent>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, View, InteractionManager } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
 import CardListComponent from '../../components/portfolio/CardListComponent';
@@ -29,15 +29,28 @@ export default class DetailsScreen extends Component {
   constructor (props) {
     super(props);
 
-    this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName);
+    this.state = {
+      portfolio: null,
+      assets: []
+    };
 
-    // Sort the assets based on fiatValue
-    // Todo: replace hardcoded EUR for the preference of the user
-    let assets = this.portfolio.assets.slice();
-    assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
-
-    this.assets  = assets;
     this.loading = false;
+  };
+
+  componentDidMount() {
+    // Use InteractionManager to avoid white screen flickering
+    InteractionManager.runAfterInteractions(() => {
+      let portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName),
+          assets = portfolio.assets.slice();
+
+      // Todo: replace hardcoded EUR for the preference of the user
+      assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
+
+      this.setState({
+        portfolio,
+        assets
+      });
+    });
   }
 
   /**
@@ -53,24 +66,26 @@ export default class DetailsScreen extends Component {
   /**
    * Render the view.
    */
-  render = () => (
-    <View style={styles.container}>
-      <ResultComponent
-        navigator={this.props.navigator}
-        portfolio={this.portfolio}
-      />
+  render = () => {
+    return (
+      <View style={styles.container}>
+        <ResultComponent
+          navigator={this.props.navigator}
+          portfolio={this.state.portfolio}
+        />
 
-      <CardListComponent
-        data={this.assets}
-        refreshControl={<RefreshControl
-          tintColor={'#FFFFFF'}
-          refreshing={this.loading}
-          onRefresh={this.updatePortfolio}/>}
-        renderItem={({item}) => <AssetCardComponent
-          portfolioName={this.props.portfolioName}
-          ticker={item.ticker}/>}/>
-    </View>
-  );
+        <CardListComponent
+          data={this.state.assets}
+          refreshControl={<RefreshControl
+            tintColor={'#FFFFFF'}
+            refreshing={this.loading}
+            onRefresh={this.updatePortfolio}/>}
+          renderItem={({item}) => <AssetCardComponent
+            portfolioName={this.props.portfolioName}
+            ticker={item.ticker}/>}/>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
