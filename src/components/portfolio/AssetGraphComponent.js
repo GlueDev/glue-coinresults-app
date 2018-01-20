@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { LinearGradient, Stop } from 'react-native-svg';
 import { AreaChart } from 'react-native-svg-charts';
 
 export default class AssetGraphComponent extends Component {
@@ -25,6 +24,26 @@ export default class AssetGraphComponent extends Component {
   }
 
   /**
+   * Shade HEX colors.
+   *
+   * @param color
+   * @param percent
+   *
+   * @returns {string}
+   */
+  shadeColor = (color, percent) => {
+    const f = parseInt(color.slice(1), 16),
+          t = percent < 0 ? 0 : 255,
+          p = percent < 0 ? percent * -1 : percent,
+          R = f >> 16,
+          G = f >> 8 & 0x00FF,
+          B = f & 0x0000FF;
+    return '#' + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B))
+      .toString(16)
+      .slice(1);
+  };
+
+  /**
    * Render the view.
    */
   render = () => (
@@ -36,16 +55,12 @@ export default class AssetGraphComponent extends Component {
         showGrid={false}
 
         style={{width: '100%', height: '100%'}}
-        contentInset={{top: 10, bottom: 0}}
-        strokeColor={'transparent'}
         animate={false}
 
-        renderGradient={({id}) => (
-          <LinearGradient id={id} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
-            <Stop offset={'0%'} stopColor={this.props.color} stopOpacity={0.5}/>
-            <Stop offset={'100%'} stopColor={'#FFFFFF'} stopOpacity={0.4}/>
-          </LinearGradient>
-        )}
+        svg={{
+          fill:   this.shadeColor(this.props.color, 0.85),
+          stroke: this.props.color,
+        }}
       />
     </View>
   );
@@ -53,8 +68,10 @@ export default class AssetGraphComponent extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    width:    '100%',
-    height:   110,
+    width:        '100%',
+    height:       90,
+    alignSelf:    'flex-end',
+    borderRadius: 4,
+    overflow:     'hidden',
   },
 });
