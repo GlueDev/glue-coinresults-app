@@ -49,18 +49,24 @@ export default class AssetCardComponent extends Component {
     <CardComponent style={styles.container}>
       <View style={styles.textContainer}>
         <View style={styles.leftTextContainer}>
-          <Text style={[styles.assetName, {color: this.ticker.color}]}>{this.ticker.name}</Text>
+          <Text
+            allowFontScaling={false}
+            style={[styles.assetName, {color: this.ticker.color}]}>{this.ticker.name}</Text>
         </View>
 
         <View style={styles.rightTextContainer}>
-          <Text style={[styles.assetName, {color: this.ticker.color}]}>
+          <Text
+            allowFontScaling={false}
+            style={[styles.assetName, {color: this.ticker.color}]}>
             {Finance.formatFIAT(this.asset.fiatValue('EUR'), 'EUR')}
           </Text>
         </View>
       </View>
 
       <View style={styles.divider}>
-        <Text style={styles.dividerText}>7 DAYS</Text>
+        <Text
+          allowFontScaling={false}
+          style={styles.dividerText}>7 DAYS</Text>
       </View>
 
       <AssetGraphComponent
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
 
   textContainer: {
     overflow:          'hidden',
-    padding:           20,
+    margin: 20,
     paddingBottom:     20,
     borderColor:       '#DFDFDF',
     borderBottomWidth: 1,
@@ -96,7 +102,6 @@ const styles = StyleSheet.create({
   },
 
   assetName: {
-    backgroundColor: 'transparent',
     fontWeight:      'bold',
     fontSize:        16,
   },

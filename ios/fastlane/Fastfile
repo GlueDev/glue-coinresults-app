@@ -17,11 +17,12 @@ platform :ios do
   lane :beta do
     sync_code_signing(type: "appstore")
 
-    increment_build_number(
-        build_number: latest_testflight_build_number + 1
-    )
     build_app(scheme: "CoinResults Release")
-    upload_to_testflight
+    hockey(
+        api_token: "a4e9897081b049d6bde312d845e74be9"
+        create_update: true
+        ipa: "./CoinResults.ipa"
+    )
   end
 
   desc "Deploy a new version to the App Store"
