@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
-
 import Finance from '../../utils/Finance';
 import BackButtonComponent from '../ui/BackButtonComponent';
 import GradientComponent from '../ui/GradientComponent';
@@ -22,43 +21,33 @@ export default class ResultComponent extends Component {
     super(props);
 
     this.state = {
-      mainNumber: 0,
+      mainNumber:     0,
       portfolioValue: 0,
-      ROI: 0,
+      ROI:            0,
     };
+
+    console.log('aaa');
   }
 
   /**
-   * Listen for portfolio changes.
+   * Wait for the props.
    */
-  componentDidMount () {
-    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
-  }
-
-  componentWillReceiveProps(props) {
-    let mainNumber = props.portfolio.totalValue,
+  componentWillReceiveProps (props) {
+    let mainNumber     = props.portfolio.totalValue,
         portfolioValue = props.portfolio.valueChangeToday,
-        ROI = props.portfolio.ROI;
+        ROI            = props.portfolio.ROI;
 
     this.setState({
       mainNumber,
       portfolioValue,
-      ROI
+      ROI,
     });
   }
 
   /**
-   * Remove listeners.
-   */
-  componentWillUnmount () {
-    EventRegister.rm(this.listener);
-  }
-
-  /**
    * Flip between the totalValue and totalResult of the portfolio
-   * @private
    */
-  _onMainNumberTouch = () => {
+  onMainNumberTouch = () => {
     let mainNumber;
 
     if (this.state.mainNumber === this.props.portfolio.totalValue) {
@@ -79,7 +68,7 @@ export default class ResultComponent extends Component {
         onPress={() => this.props.navigator.pop()}
         label={'Portfolio overview'}/>
 
-      <TouchableOpacity onPress={this._onMainNumberTouch}>
+      <TouchableOpacity onPress={this.onMainNumberTouch}>
         <Text
           style={styles.totalProfit}
           allowFontScaling={false}>

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
 import realm from '../../realm';
 import Finance from '../../utils/Finance';
 
@@ -26,6 +27,20 @@ export default class AssetCardComponent extends Component {
     this.asset      = this.portfolio.assets.filtered('ticker = $0', this.props.ticker)[0];
     this.ticker     = realm.objectForPrimaryKey('Ticker', this.props.ticker);
     this.dataPoints = this.ticker.rates.map(rate => rate.rate);
+  }
+
+  /**
+   * Listen for portfolio changes.
+   */
+  componentDidMount () {
+    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
+  }
+
+  /**
+   * Remove listeners.
+   */
+  componentWillUnmount () {
+    EventRegister.rm(this.listener);
   }
 
   /**

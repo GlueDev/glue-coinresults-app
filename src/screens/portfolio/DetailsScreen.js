@@ -31,7 +31,8 @@ export default class DetailsScreen extends Component {
 
     this.state = {
       portfolio: null,
-      assets: []
+      assets: [],
+      lastUpdated: null,
     };
 
     this.loading = false;
@@ -60,6 +61,12 @@ export default class DetailsScreen extends Component {
     this.loading = true;
     await RateAPI.updatePortfolios([this.state.portfolio]);
     await EventRegister.emit('tickerUpdate');
+
+    await this.setState({
+      ...this.state,
+      lastUpdated: new Date()
+    });
+
     this.loading = false;
   };
 
@@ -72,6 +79,7 @@ export default class DetailsScreen extends Component {
         <ResultComponent
           navigator={this.props.navigator}
           portfolio={this.state.portfolio}
+          ref={'ResultComponent'}
         />
 
         <CardListComponent
