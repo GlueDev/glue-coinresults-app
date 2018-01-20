@@ -11,7 +11,7 @@ export default class RateAPI {
    */
   static async fetchRates (ticker, FIAT) {
     const request = await axios.get('https://min-api.cryptocompare.com/data/histohour', {
-      timeout: 5000,
+      timeout: 1000,
       params:  {
         fsym:  ticker,
         tsym:  FIAT,
@@ -106,7 +106,7 @@ export default class RateAPI {
     const t1      = new Date().getTime(),
           tickers = this.getTickers(portfolios);
 
-    for (const i in tickers) await RateAPI.fetchRates(tickers[i], 'EUR');
+    tickers.forEach(async ticker => await RateAPI.fetchRates(ticker, 'EUR'));
 
     if (__DEV__) {
       const t2 = new Date().getTime();

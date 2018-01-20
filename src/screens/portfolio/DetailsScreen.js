@@ -58,9 +58,9 @@ export default class DetailsScreen extends Component {
    */
   updatePortfolio = async () => {
     this.loading = true;
-    await RateAPI.updatePortfolios(this.portfolios);
+    await RateAPI.updatePortfolios([this.state.portfolio]);
+    await EventRegister.emit('tickerUpdate');
     this.loading = false;
-    EventRegister.emit('tickerUpdate');
   };
 
   /**
