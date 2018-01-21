@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
 import Finance from '../../utils/Finance';
 import BackButtonComponent from '../ui/BackButtonComponent';
 import GradientComponent from '../ui/GradientComponent';

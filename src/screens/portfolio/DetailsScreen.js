@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { RefreshControl, StyleSheet, View, InteractionManager } from 'react-native';
+import { InteractionManager, RefreshControl, StyleSheet, View } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
 import CardListComponent from '../../components/portfolio/CardListComponent';
@@ -30,26 +30,26 @@ export default class DetailsScreen extends Component {
     super(props);
 
     this.state = {
-      portfolio: null,
-      assets: [],
+      portfolio:   null,
+      assets:      [],
       lastUpdated: null,
     };
 
     this.loading = false;
   };
 
-  componentDidMount() {
+  componentDidMount () {
     // Use InteractionManager to avoid white screen flickering
     InteractionManager.runAfterInteractions(() => {
       let portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName),
-          assets = portfolio.assets.slice();
+          assets    = portfolio.assets.slice();
 
       // Todo: replace hardcoded EUR for the preference of the user
       assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
 
       this.setState({
         portfolio,
-        assets
+        assets,
       });
     });
   }
@@ -64,7 +64,7 @@ export default class DetailsScreen extends Component {
 
     await this.setState({
       ...this.state,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     });
 
     this.loading = false;
@@ -93,7 +93,7 @@ export default class DetailsScreen extends Component {
             ticker={item.ticker}/>}/>
       </View>
     );
-  }
+  };
 }
 
 const styles = StyleSheet.create({

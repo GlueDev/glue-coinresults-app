@@ -56,7 +56,7 @@ export default class AssetCardComponent extends Component {
    */
   componentDidMount () {
     EventRegister.on('ratesUpdate', () => this.forceUpdate());
-    EventRegister.on('fiatAmountSwitcher', () => this.fiatAmountSwitcher())
+    EventRegister.on('fiatAmountSwitcher', () => this.fiatAmountSwitcher());
   }
 
   /**
