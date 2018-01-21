@@ -1,11 +1,10 @@
+import CardComponent from 'components/ui/CardComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
-
-import realm from '../../realm';
-import Finance from '../../utils/Finance';
-import CardComponent from '../ui/CardComponent';
+import realm from 'realm';
+import Finance from 'utils/Finance';
 
 export default class PortfolioCardComponent extends Component {
   /**
@@ -31,7 +30,7 @@ export default class PortfolioCardComponent extends Component {
    * Listen for portfolio changes.
    */
   componentDidMount () {
-    this.listener = EventRegister.on('ratesUpdate', () => this.forceUpdate());
+    this.listener = EventRegister.on('dataRefreshed', () => this.forceUpdate());
   }
 
   /**

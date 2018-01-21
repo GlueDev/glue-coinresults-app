@@ -1,12 +1,11 @@
+import AssetCardComponent from 'components/portfolio/AssetCardComponent';
+import CardListComponent from 'components/portfolio/CardListComponent';
+import ResultComponent from 'components/portfolio/ResultComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { InteractionManager, RefreshControl, StyleSheet, View } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
-import AssetCardComponent from '../../components/portfolio/AssetCardComponent';
-import CardListComponent from '../../components/portfolio/CardListComponent';
-import ResultComponent from '../../components/portfolio/ResultComponent';
-import realm from '../../realm';
-import RateAPI from '../../utils/RateAPI';
+import realm from 'realm';
+import RateAPI from 'utils/RateAPI';
 
 export default class DetailsScreen extends Component {
   /**
@@ -59,8 +58,7 @@ export default class DetailsScreen extends Component {
    */
   updatePortfolio = async () => {
     this.loading = true;
-    await RateAPI.updatePortfolios([this.state.portfolio]);
-    await EventRegister.emit('ratesUpdate');
+    await RateAPI.refreshData([this.state.portfolio]);
 
     await this.setState({
       ...this.state,

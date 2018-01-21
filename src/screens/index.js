@@ -1,16 +1,13 @@
 import { Navigation } from 'react-native-navigation';
 import AssetsOverviewScreen from './firstrun/assets/OverviewScreen';
 import SetAssetAmountScreen from './firstrun/assets/SetAmountScreen';
-
 import SetTickerScreen from './firstrun/assets/SetTickerScreen';
 import CameraScreen from './firstrun/CameraScreen';
 import ExplanationScreen from './firstrun/ExplanationScreen';
 import SetInvestmentScreen from './firstrun/investments/SetAmountScreen';
 import AddPortfolioScreen from './firstrun/portfolio/AddScreen';
 import DetailsScreen from './portfolio/DetailsScreen';
-
 import OverviewScreen from './portfolio/OverviewScreen';
-
 import SettingsOverviewScreen from './settings/OverviewScreen';
 
 export default function registerScreens (Store: {}, Provider: {}) {

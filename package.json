@@ -30,6 +30,7 @@
 	},
 	"devDependencies": {
 		"babel-jest": "22.0.4",
+		"babel-plugin-module-resolver": "^3.0.0",
 		"babel-preset-react-native": "4.0.0",
 		"babel-preset-react-native-stage-0": "^1.0.1",
 		"jest": "22.0.4",

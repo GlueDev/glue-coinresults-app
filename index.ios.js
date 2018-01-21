@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Navigation } from 'react-native-navigation';
-
 import realm from './src/realm';
-import RegisterScreens from './src/screens';
+import RegisterScreens from 'screens';
 
 /**
  * Register screens.
@@ -32,8 +31,8 @@ class CoinResults extends Component {
         realm.write(() => {
           tickerList.forEach(ticker => realm.create('Ticker', {
             ticker: ticker.ticker,
-            name: ticker.name,
-            color: ticker.color,
+            name:   ticker.name,
+            color:  ticker.color,
           }));
         });
       } catch (e) {

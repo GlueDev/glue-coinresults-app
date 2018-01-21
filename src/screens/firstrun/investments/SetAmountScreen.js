@@ -1,10 +1,9 @@
+import Container from 'components/firstrun/ContainerComponent';
+import Input from 'components/ui/InputComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
-
-import Container from '../../../components/firstrun/ContainerComponent';
-import Input from '../../../components/ui/InputComponent';
-import realm from '../../../realm';
+import realm from 'realm';
 
 export default class SetInvestmentScreen extends Component {
   /**

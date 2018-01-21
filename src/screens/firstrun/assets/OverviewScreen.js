@@ -1,11 +1,10 @@
+import Container from 'components/firstrun/ContainerComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import Container from '../../../components/firstrun/ContainerComponent';
-
-import realm from '../../../realm';
-import Finance from '../../../utils/Finance';
+import realm from 'realm';
+import Finance from 'utils/Finance';
 
 export default class AssetsOverviewScreen extends Component {
   /**

@@ -1,4 +1,4 @@
-import realm from '../realm';
+import realm from 'realm';
 
 export default class Asset {
   /**

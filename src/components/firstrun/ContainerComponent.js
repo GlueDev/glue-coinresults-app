@@ -1,8 +1,7 @@
+import Gradient from 'components/ui/GradientComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-import Gradient from '../../components/ui/GradientComponent';
 
 export default class ContainerComponent extends Component {
   /**

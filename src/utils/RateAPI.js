@@ -1,8 +1,40 @@
 import axios from 'axios';
 import moment from 'moment';
-import realm from '../realm';
+import { EventRegister } from 'react-native-event-listeners';
+import realm from 'realm';
+import { AlertIOS } from 'react-native';
 
 export default class RateAPI {
+  /**
+   * Update the portfolios with up to date rates.
+   * Update the market caps.
+   *
+   * @param {array} portfolios
+   */
+  static async refreshData (portfolios) {
+    const t1      = new Date().getTime(),
+          tickers = this.getTickers(portfolios);
+
+    try {
+      // Fetch rates.
+      tickers.forEach(async ticker => await RateAPI.fetchRates(ticker, 'EUR'));
+
+      // Fetch market caps.
+      await this.fetchMarketCaps();
+
+      // Emit update event.
+      await EventRegister.emit('dataRefreshed');
+    } catch (e) {
+      AlertIOS.alert('Refreshing failed', 'We were unable to connect to the API.');
+    }
+
+    // Log exec time when in dev mode.
+    if (__DEV__) {
+      const t2 = new Date().getTime();
+      console.info(`Execution took ${t2 - t1} ms`);
+    }
+  }
+
   /**
    * Fetch ticker data from the API.
    *
@@ -40,19 +72,14 @@ export default class RateAPI {
     const date    = new Date(timestamp * 1000),
           rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
 
-    try {
-      const tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
-      realm.write(() => tickerObject.rates.push({
-        id: rateKey,
-        date,
-        ticker,
-        FIAT,
-        rate,
-      }));
-    }
-    catch (e) {
-      // console.log(e);
-    }
+    const tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
+    return realm.write(() => tickerObject.rates.push({
+      id: rateKey,
+      date,
+      ticker,
+      FIAT,
+      rate,
+    }));
   }
 
   /**
@@ -98,19 +125,20 @@ export default class RateAPI {
   }
 
   /**
-   * Update the portfolios with up to date rates.
-   *
-   * @param {array} portfolios
+   * Get market cap information.
    */
-  static async updatePortfolios (portfolios) {
-    const t1      = new Date().getTime(),
-          tickers = this.getTickers(portfolios);
+  static async fetchMarketCaps () {
+    const request = await axios.get('https://api.coinmarketcap.com/v1/global/', {
+      timeout: 2500,
+      params: {convert: 'EUR'},
+    });
 
-    tickers.forEach(async ticker => await RateAPI.fetchRates(ticker, 'EUR'));
-
-    if (__DEV__) {
-      const t2 = new Date().getTime();
-      console.info(`Execution took ${t2 - t1} ms`);
-    }
+    const response = request.data;
+    return realm.write(async () => await realm.create('MarketData', {
+      date: moment().format('l'),
+      marketCapEUR: response.total_market_cap_eur,
+      marketCapUSD: response.total_market_cap_usd,
+      dominanceBTC: response.bitcoin_percentage_of_market_cap,
+    }, true));
   }
 }

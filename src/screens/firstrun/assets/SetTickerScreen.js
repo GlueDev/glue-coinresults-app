@@ -1,9 +1,8 @@
+import Container from 'components/firstrun/ContainerComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Picker, StyleSheet } from 'react-native';
-import Container from '../../../components/firstrun/ContainerComponent';
-
-import realm from '../../../realm';
+import realm from 'realm';
 
 export default class SetTickerScreen extends Component {
   /**

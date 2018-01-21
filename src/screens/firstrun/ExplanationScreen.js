@@ -1,6 +1,5 @@
+import Container from 'components/firstrun/ContainerComponent';
 import React, { Component } from 'react';
-
-import Container from '../../components/firstrun/ContainerComponent';
 
 export default class ExplanationScreen extends Component {
   /**

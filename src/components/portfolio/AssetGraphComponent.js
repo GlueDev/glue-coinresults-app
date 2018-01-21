@@ -19,9 +19,28 @@ export default class AssetGraphComponent extends Component {
   constructor (props) {
     super(props);
 
-    this.gridMin = Math.min.apply(Math, this.props.dataPoints) - Math.min.apply(Math, this.props.dataPoints) * 0.03;
-    this.gridMax = Math.max.apply(Math, this.props.dataPoints) + Math.max.apply(Math, this.props.dataPoints) * 0.03;
+    this.state = {
+      gridMin: 0,
+      gridMax: 0,
+    };
   }
+
+  /**
+   * Wait for props before updating the component.
+   */
+  componentWillReceiveProps () {
+    this.updateComponent();
+  }
+
+  /**
+   * Update component with the data.
+   */
+  updateComponent = async () => {
+    this.setState({
+      gridMin: Math.min.apply(Math, this.props.dataPoints) - Math.min.apply(Math, this.props.dataPoints) * 0.03,
+      gridMax: Math.max.apply(Math, this.props.dataPoints) + Math.max.apply(Math, this.props.dataPoints) * 0.03,
+    });
+  };
 
   /**
    * Shade HEX colors.
@@ -50,8 +69,8 @@ export default class AssetGraphComponent extends Component {
     <View style={[styles.container, this.props.style]}>
       <AreaChart
         dataPoints={this.props.dataPoints}
-        gridMin={this.gridMin}
-        gridMax={this.gridMax}
+        gridMin={this.state.gridMin}
+        gridMax={this.state.gridMax}
         showGrid={false}
 
         style={{width: '100%', height: '100%'}}

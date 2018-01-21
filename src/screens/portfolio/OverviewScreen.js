@@ -1,12 +1,10 @@
+import CardListComponent from 'components/portfolio/CardListComponent';
+import MarketCapComponent from 'components/portfolio/MarketCapComponent';
+import PortfolioCardComponent from 'components/portfolio/PortfolioCardComponent';
 import React, { Component } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
-
-import CardListComponent from '../../components/portfolio/CardListComponent';
-import MarketCapComponent from '../../components/portfolio/MarketCapComponent';
-import PortfolioCardComponent from '../../components/portfolio/PortfolioCardComponent';
-import realm from '../../realm';
-import RateAPI from '../../utils/RateAPI';
+import realm from 'realm';
+import RateAPI from 'utils/RateAPI';
 
 export default class OverviewScreen extends Component {
   /**
@@ -17,13 +15,22 @@ export default class OverviewScreen extends Component {
   };
 
   /**
-   * Grab all portfolios.
+   * Create the store.
    */
   constructor (props) {
     super(props);
 
-    this.portfolios = realm.objects('Portfolio');
-    this.loading    = false;
+    this.state = {
+      portfolios: [],
+      loading:    false,
+    };
+  }
+
+  /**
+   * Fill the store.
+   */
+  componentDidMount () {
+    this.setState({portfolios: realm.objects('Portfolio')});
   }
 
   /**
@@ -49,10 +56,9 @@ export default class OverviewScreen extends Component {
    * Update the portfolios.
    */
   updatePortfolios = async () => {
-    this.loading = true;
-    await RateAPI.updatePortfolios(this.portfolios);
-    await EventRegister.emit('ratesUpdate');
-    this.loading = false;
+    this.setState({loading: true});
+    await RateAPI.refreshData(this.state.portfolios);
+    this.setState({loading: false});
   };
 
   /**
@@ -69,10 +75,10 @@ export default class OverviewScreen extends Component {
       />
 
       <CardListComponent
-        data={this.portfolios}
+        data={this.state.portfolios}
         refreshControl={<RefreshControl
           tintColor={'#FFFFFF'}
-          refreshing={this.loading}
+          refreshing={this.state.loading}
           onRefresh={this.updatePortfolios}/>}
         renderItem={({item}) => <PortfolioCardComponent
           portfolio={item.name}

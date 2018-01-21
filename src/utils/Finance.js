@@ -1,4 +1,5 @@
 import Accounting from 'accounting';
+import Numeral from 'numeral';
 
 class Finance {
   static formatFIAT (value, FIAT, decimals = 2) {
@@ -26,7 +27,11 @@ class Finance {
   }
 
   static formatPercentage (value) {
-    return `${Accounting.toFixed(value)}%`;
+    return `${Accounting.toFixed(value, 2)}%`;
+  }
+
+  static formatMarketCap (value) {
+    return Numeral(value).format('(0.00 a)');
   }
 
   /**

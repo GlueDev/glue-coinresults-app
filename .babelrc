@@ -1,3 +1,10 @@
 {
-  "presets": ["react-native", "react-native-stage-0/decorator-support"]
+  "presets": ["react-native"],
+  "plugins": [
+    ["module-resolver", {
+      "cwd": "babelrc",
+      "root": ["./src"],
+      "extensions": [".js"]
+    }]
+  ]
 }

@@ -1,9 +1,10 @@
+import BackButtonComponent from 'components/ui/BackButtonComponent';
+import GradientComponent from 'components/ui/GradientComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Finance from '../../utils/Finance';
-import BackButtonComponent from '../ui/BackButtonComponent';
-import GradientComponent from '../ui/GradientComponent';
+import { EventRegister } from 'react-native-event-listeners';
+import Finance from 'utils/Finance';
 
 export default class ResultComponent extends Component {
   /**
@@ -20,40 +21,56 @@ export default class ResultComponent extends Component {
     super(props);
 
     this.state = {
-      mainNumber:     0,
-      portfolioValue: 0,
-      ROI:            0,
+      valueChange: '...',
+      ROI:         '...',
+
+      valueResultSwitcher: {
+        active: 'value',
+        values: {value: '...'},
+      },
     };
+  }
+
+  /**
+   * Listen for portfolio changes.
+   */
+  componentDidMount () {
+    EventRegister.on('dataRefreshed', () => this.updateComponent(this.props));
   }
 
   /**
    * Wait for the props.
    */
   componentWillReceiveProps (props) {
-    let mainNumber     = props.portfolio.totalValue,
-        portfolioValue = props.portfolio.valueChangeToday,
-        ROI            = props.portfolio.ROI;
-
-    this.setState({
-      mainNumber,
-      portfolioValue,
-      ROI,
-    });
+    this.updateComponent(props);
   }
 
   /**
-   * Flip between the totalValue and totalResult of the portfolio
+   * Remove listeners.
    */
-  onMainNumberTouch = () => {
-    let mainNumber;
+  componentWillUnmount () {
+    EventRegister.rmAll();
+  }
 
-    if (this.state.mainNumber === this.props.portfolio.totalValue) {
-      mainNumber = this.props.portfolio.totalResult;
-    } else {
-      mainNumber = this.props.portfolio.totalValue;
-    }
+  /**
+   * Update component with the data.
+   */
+  updateComponent = async (props = false) => {
+    const valueChange = Finance.formatFIAT(props.portfolio.valueChangeToday, 'EUR'),
+          ROI         = Finance.formatPercentage(props.portfolio.ROI);
 
-    this.setState({mainNumber});
+    this.setState({
+      valueChange,
+      ROI,
+
+      valueResultSwitcher: {
+        ...this.state.valueResultSwitcher,
+        values: {
+          value:  Finance.formatFIAT(props.portfolio.totalValue, 'EUR'),
+          result: Finance.formatFIAT(props.portfolio.totalResult, 'EUR'),
+        },
+      },
+    });
   };
 
   /**
@@ -65,20 +82,20 @@ export default class ResultComponent extends Component {
         onPress={() => this.props.navigator.pop()}
         label={'Portfolio overview'}/>
 
-      <TouchableOpacity onPress={this.onMainNumberTouch}>
+      <TouchableOpacity onPress={() => {}}>
         <Text
           style={styles.totalProfit}
           allowFontScaling={false}>
-          {Finance.formatFIAT(this.state.mainNumber, 'EUR')}
+          {this.state.valueResultSwitcher.values[this.state.valueResultSwitcher.active]}
         </Text>
       </TouchableOpacity>
 
       <Text style={styles.lastVisitResult}>
-        Portfolio value changed {Finance.formatFIAT(this.state.portfolioValue, 'EUR')} since 00:00.
+        Portfolio value changed {this.state.portfolioValue} since 00:00.
       </Text>
 
       <Text style={styles.ROI}>
-        Your ROI is currently {Finance.formatPercentage(this.state.ROI)}.
+        Your ROI is currently {this.state.ROI}.
       </Text>
 
     </GradientComponent>

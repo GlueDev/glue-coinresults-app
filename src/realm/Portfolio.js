@@ -1,4 +1,4 @@
-import Finance from '../utils/Finance';
+import Finance from 'utils/Finance';
 
 export default class Portfolio {
   /**

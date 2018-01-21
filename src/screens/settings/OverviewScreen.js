@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
-
 import { EventRegister } from 'react-native-event-listeners';
-import realm from '../../realm';
-import RateAPI from '../../utils/RateAPI';
+import realm from 'realm';
+import RateAPI from 'utils/RateAPI';
 
 export default class OverviewScreen extends Component {
   /**
@@ -28,7 +27,7 @@ export default class OverviewScreen extends Component {
    * Get rates.
    */
   devGetRates = async () => {
-    RateAPI.updatePortfolios(this.portfolios);
+    RateAPI.refreshData(this.portfolios);
   };
 
   /**
@@ -40,7 +39,7 @@ export default class OverviewScreen extends Component {
       realm.delete(allRates);
     });
 
-    EventRegister.emit('ratesUpdate');
+    EventRegister.emit('dataRefreshed');
   };
 
   /**
