@@ -1,3 +1,4 @@
+import moment from 'moment/moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList, ScrollView, StyleSheet } from 'react-native';
@@ -17,6 +18,22 @@ export default class CardListComponent extends Component {
   };
 
   /**
+   * Define the store.
+   */
+  constructor (props) {
+    super(props);
+
+    this.state = {data: []};
+  }
+
+  /**
+   * Update the state when new props arrive.
+   */
+  componentWillReceiveProps (props) {
+    this.setState({data: props.data});
+  }
+
+  /**
    * Render the view.
    */
   render = () => (
@@ -25,7 +42,8 @@ export default class CardListComponent extends Component {
       style={[styles.container, this.props.style]}>
       <FlatList
         style={styles.flatList}
-        data={this.props.data}
+        data={this.state.data}
+        extraData={this.state}
         renderItem={this.props.renderItem}
         keyExtractor={(item, index) => index}
       />

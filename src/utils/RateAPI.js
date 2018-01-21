@@ -1,6 +1,5 @@
 import axios from 'axios';
 import moment from 'moment';
-import { EventRegister } from 'react-native-event-listeners';
 import realm from 'realm';
 import { AlertIOS } from 'react-native';
 
@@ -22,16 +21,14 @@ export default class RateAPI {
       // Fetch market caps.
       await this.fetchMarketCaps();
 
-      // Emit update event.
-      await EventRegister.emit('dataRefreshed');
+      // Log exec time when in dev mode.
+      if (__DEV__) {
+        const t2 = new Date().getTime();
+        console.info(`Execution took ${t2 - t1} ms`);
+      }
     } catch (e) {
-      AlertIOS.alert('Refreshing failed', 'We were unable to connect to the API.');
-    }
-
-    // Log exec time when in dev mode.
-    if (__DEV__) {
-      const t2 = new Date().getTime();
-      console.info(`Execution took ${t2 - t1} ms`);
+      AlertIOS.alert('Whoops!', 'Something went wrong connecting to the server.');
+      console.info(e);
     }
   }
 
@@ -43,7 +40,7 @@ export default class RateAPI {
    */
   static async fetchRates (ticker, FIAT) {
     const request = await axios.get('https://min-api.cryptocompare.com/data/histohour', {
-      timeout: 1000,
+      timeout: 500,
       params:  {
         fsym:  ticker,
         tsym:  FIAT,
@@ -52,7 +49,7 @@ export default class RateAPI {
     });
 
     const response = request.data.Data;
-    response.map(rate => this.saveRate(rate.time, ticker, FIAT, rate.close));
+    return response.map(rate => this.saveRate(rate.time, ticker, FIAT, rate.close));
   }
 
   /**
@@ -73,7 +70,7 @@ export default class RateAPI {
           rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
 
     const tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
-    return realm.write(() => tickerObject.rates.push({
+    realm.write(() => tickerObject.rates.push({
       id: rateKey,
       date,
       ticker,
@@ -129,13 +126,13 @@ export default class RateAPI {
    */
   static async fetchMarketCaps () {
     const request = await axios.get('https://api.coinmarketcap.com/v1/global/', {
-      timeout: 2500,
-      params: {convert: 'EUR'},
+      timeout: 1000,
+      params:  {convert: 'EUR'},
     });
 
     const response = request.data;
-    return realm.write(async () => await realm.create('MarketData', {
-      date: moment().format('l'),
+    realm.write(async () => await realm.create('MarketData', {
+      date:         moment().format('ll'),
       marketCapEUR: response.total_market_cap_eur,
       marketCapUSD: response.total_market_cap_usd,
       dominanceBTC: response.bitcoin_percentage_of_market_cap,

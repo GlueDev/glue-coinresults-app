@@ -1,4 +1,7 @@
+import React from 'react';
 import { Navigation } from 'react-native-navigation';
+import { RealmProvider } from 'react-native-realm';
+import realm from 'realm';
 import AssetsOverviewScreen from './firstrun/assets/OverviewScreen';
 import SetAssetAmountScreen from './firstrun/assets/SetAmountScreen';
 import SetTickerScreen from './firstrun/assets/SetTickerScreen';
@@ -10,26 +13,26 @@ import DetailsScreen from './portfolio/DetailsScreen';
 import OverviewScreen from './portfolio/OverviewScreen';
 import SettingsOverviewScreen from './settings/OverviewScreen';
 
-export default function registerScreens (Store: {}, Provider: {}) {
+export default function registerScreens () {
   /**
    * Portfolio screens.
    */
-  Navigation.registerComponent('CR.PF.OverviewScreen', () => OverviewScreen, Store, Provider);
-  Navigation.registerComponent('CR.PF.DetailsScreen', () => DetailsScreen, Store, Provider);
+  Navigation.registerComponent('CR.PF.OverviewScreen', () => OverviewScreen, realm, RealmProvider);
+  Navigation.registerComponent('CR.PF.DetailsScreen', () => DetailsScreen, realm, RealmProvider);
 
   /**
    * First run screens.
    */
-  Navigation.registerComponent('CR.FR.ExplanationScreen', () => ExplanationScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.Portfolio.AddScreen', () => AddPortfolioScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.Assets.OverviewScreen', () => AssetsOverviewScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.Assets.SetTickerScreen', () => SetTickerScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.Assets.SetAmountScreen', () => SetAssetAmountScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.Investments.SetAmountScreen', () => SetInvestmentScreen, Store, Provider);
-  Navigation.registerComponent('CR.FR.CameraScreen', () => CameraScreen, Store, Provider);
+  Navigation.registerComponent('CR.FR.ExplanationScreen', () => ExplanationScreen);
+  Navigation.registerComponent('CR.FR.Portfolio.AddScreen', () => AddPortfolioScreen);
+  Navigation.registerComponent('CR.FR.Assets.OverviewScreen', () => AssetsOverviewScreen);
+  Navigation.registerComponent('CR.FR.Assets.SetTickerScreen', () => SetTickerScreen);
+  Navigation.registerComponent('CR.FR.Assets.SetAmountScreen', () => SetAssetAmountScreen);
+  Navigation.registerComponent('CR.FR.Investments.SetAmountScreen', () => SetInvestmentScreen);
+  Navigation.registerComponent('CR.FR.CameraScreen', () => CameraScreen);
 
   /**
    * Settings screens
    */
-  Navigation.registerComponent('CR.ST.OverviewScreen', () => SettingsOverviewScreen, Store, Provider);
+  Navigation.registerComponent('CR.ST.OverviewScreen', SettingsOverviewScreen, realm, RealmProvider);
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Navigation } from 'react-native-navigation';
+import RateAPI from './src/utils/RateAPI';
 import realm from './src/realm';
 import RegisterScreens from 'screens';
 
@@ -15,7 +16,7 @@ class CoinResults extends Component {
   /**
    * Determine which screen to show.
    */
-  static startApp () {
+  static async startApp () {
     // Echo the realm path to console
     if (__DEV__) {
       console.info(`DEBUG: Realm path at ${realm.path}`);
@@ -43,6 +44,9 @@ class CoinResults extends Component {
     if (!portfolios.length) {
       return this.setNavigationStack('CR.FR.ExplanationScreen');
     }
+
+    // Refresh data.
+    await RateAPI.refreshData(portfolios);
 
     // Show the overview screen.
     return this.setNavigationStack('CR.PF.OverviewScreen');

@@ -31,8 +31,6 @@ export default class AssetsOverviewScreen extends Component {
     this.state = {
       portfolio: realm.objectForPrimaryKey('Portfolio', this.props.portfolioName),
     };
-
-    realm.addListener('change', () => this.forceUpdate());
   }
 
   /**

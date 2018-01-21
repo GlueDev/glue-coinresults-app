@@ -2,8 +2,6 @@ import CardComponent from 'components/ui/CardComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
-import realm from 'realm';
 import Finance from 'utils/Finance';
 
 export default class PortfolioCardComponent extends Component {
@@ -11,51 +9,52 @@ export default class PortfolioCardComponent extends Component {
    * Define the possible props.
    */
   static propTypes = {
-    portfolio: PropTypes.string.isRequired,
+    portfolio: PropTypes.object.isRequired,
     navigate:  PropTypes.func.isRequired,
   };
 
   /**
-   * Grab data and setup listeners.
-   *
-   * @param props
+   * Define the store.
    */
   constructor (props) {
     super(props);
 
-    this.portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolio);
-  };
-
-  /**
-   * Listen for portfolio changes.
-   */
-  componentDidMount () {
-    this.listener = EventRegister.on('dataRefreshed', () => this.forceUpdate());
+    this.state = {
+      name:             '...',
+      totalValue:       '...',
+      totalInvestments: '...',
+    };
   }
 
   /**
-   * Remove listeners.
+   * Update the state when new props arrive.
    */
-  componentWillUnmount () {
-    EventRegister.rm(this.listener);
+  componentWillReceiveProps (props) {
+    this.setState({
+      name:             props.portfolio.name,
+      totalValue:       props.portfolio.totalValue,
+      totalInvestments: props.portfolio.totalInvestments,
+    });
   }
 
   /**
    * Render the view.
    */
   render = () => (
-    <TouchableOpacity onPress={() => this.props.navigate(this.portfolio.name)} activeOpacity={1}>
+    <TouchableOpacity
+      onPress={() => this.props.navigate(this.state.name)}
+      activeOpacity={1}>
       <CardComponent style={styles.container}>
-        <Text style={[styles.portfolioName]}>{this.portfolio.name}</Text>
+        <Text style={[styles.portfolioName]}>{this.state.name}</Text>
 
         <View style={styles.portfolioValueView}>
           <Text style={[styles.portfolioValueInFiat]}>
-            {Finance.formatFIAT(this.portfolio.totalValue, 'EUR')}
+            {Finance.formatFIAT(this.state.totalValue, 'EUR')}
           </Text>
         </View>
 
         <Text style={[styles.portfolioInvestmentInFiat]}>
-          {Finance.formatFIAT(this.portfolio.totalInvestments, 'EUR')}
+          {Finance.formatFIAT(this.state.totalInvestments, 'EUR')}
         </Text>
       </CardComponent>
     </TouchableOpacity>

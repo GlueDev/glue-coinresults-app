@@ -1,18 +1,17 @@
 import GradientComponent from 'components/ui/GradientComponent';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Finance from 'utils/Finance';
-import realm from 'realm';
-import moment from 'moment';
-import { EventRegister } from 'react-native-event-listeners';
 
 export default class MarketCapComponent extends Component {
   /**
    * Define the possible props.
    */
   static propTypes = {
+    marketData:   PropTypes.object.isRequired,
     navigate:     PropTypes.func,
     navigateIcon: PropTypes.string,
   };
@@ -31,31 +30,16 @@ export default class MarketCapComponent extends Component {
   }
 
   /**
-   * Fill the store.
+   * Update the state when new props arrive.
    */
-  componentDidMount () {
-    this.updateComponent();
-    EventRegister.on('dataRefreshed', () => this.updateComponent())
-  }
-
-  /**
-   * Remove listeners.
-   */
-  componentWillUnmount () {
-    EventRegister.rmAll();
-  }
-
-  /**
-   * Update component with the data.
-   */
-  updateComponent = async () => {
-    const marketData = await realm.objectForPrimaryKey('MarketData', moment().format('l'));
+  componentWillReceiveProps (props) {
+    const marketData = this.props.marketData.filtered('date == $0', moment().format('ll'))[0];
     this.setState({
       marketCapEUR: Finance.formatMarketCap(marketData.marketCapEUR),
       marketCapUSD: Finance.formatMarketCap(marketData.marketCapUSD),
       dominanceBTC: Finance.formatPercentage(marketData.dominanceBTC),
     });
-  };
+  }
 
   /**
    * Render the component's view.
