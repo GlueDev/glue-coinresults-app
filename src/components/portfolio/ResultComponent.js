@@ -25,8 +25,6 @@ export default class ResultComponent extends Component {
       portfolioValue: 0,
       ROI:            0,
     };
-
-    console.log('aaa');
   }
 
   /**

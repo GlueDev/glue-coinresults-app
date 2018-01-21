@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import realm from '../../realm';
 import Finance from '../../utils/Finance';
@@ -26,6 +26,29 @@ export default class AssetCardComponent extends Component {
     this.asset      = this.portfolio.assets.filtered('ticker = $0', this.props.ticker)[0];
     this.ticker     = realm.objectForPrimaryKey('Ticker', this.props.ticker);
     this.dataPoints = this.ticker.rates.map(rate => rate.rate);
+
+    this.state = {
+      nameTickerSwitcher: {
+        active: 'name',
+        values: {
+          name:   this.ticker.name,
+          ticker: this.ticker.ticker,
+        },
+      },
+
+      usdBtcSwitcher: {
+        active: 'eur',
+        values: [Finance.formatFIAT(this.dataPoints.slice(-1).pop()), 0, 0],
+      },
+
+      fiatAmountSwitcher: {
+        active: 'fiat',
+        values: {
+          fiat:   Finance.formatFIAT(this.asset.fiatValue('EUR'), 'EUR'),
+          amount: `${Finance.formatCrypto(this.asset.amount)} ${this.ticker.ticker}`,
+        },
+      },
+    };
   }
 
   /**
@@ -43,6 +66,20 @@ export default class AssetCardComponent extends Component {
   }
 
   /**
+   * Switch between FIAT currency and amount of coins.
+   */
+  fiatAmountSwitcher = () => {
+    const nextValue = (this.state.fiatAmountSwitcher.active === 'fiat' ? 'amount' : 'fiat');
+
+    this.setState({
+      fiatAmountSwitcher: {
+        ...this.state.fiatAmountSwitcher,
+        active: nextValue,
+      },
+    });
+  };
+
+  /**
    * Render the view.
    */
   render = () => (
@@ -51,15 +88,23 @@ export default class AssetCardComponent extends Component {
         <View style={styles.leftTextContainer}>
           <Text
             allowFontScaling={false}
-            style={[styles.assetName, {color: this.ticker.color}]}>{this.ticker.name}</Text>
+            style={[styles.topSwitchers, {color: this.ticker.color}]}>
+            {this.ticker.name}
+          </Text>
+
+          <Text style={styles.usdBtcSwitcher}>
+            1 XRP = € {this.state.usdBtcSwitcher.values[0]}
+          </Text>
         </View>
 
         <View style={styles.rightTextContainer}>
-          <Text
-            allowFontScaling={false}
-            style={[styles.assetName, {color: this.ticker.color}]}>
-            {Finance.formatFIAT(this.asset.fiatValue('EUR'), 'EUR')}
-          </Text>
+          <TouchableOpacity onPress={this.fiatAmountSwitcher}>
+            <Text
+              allowFontScaling={false}
+              style={[styles.topSwitchers, {color: this.ticker.color}]}>
+              {this.state.fiatAmountSwitcher.values[this.state.fiatAmountSwitcher.active]}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -79,13 +124,13 @@ export default class AssetCardComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     position:       'relative',
-    height:         165,
+    height:         175,
     justifyContent: 'space-between',
   },
 
   textContainer: {
     overflow:          'hidden',
-    margin: 20,
+    padding:           20,
     paddingBottom:     20,
     borderColor:       '#DFDFDF',
     borderBottomWidth: 1,
@@ -101,23 +146,29 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
 
-  assetName: {
-    fontWeight:      'bold',
-    fontSize:        16,
+  topSwitchers: {
+    fontWeight:   'bold',
+    fontSize:     16,
+    marginBottom: 6,
+  },
+
+  usdBtcSwitcher: {
+    fontSize: 11,
+    color:    '#999999',
   },
 
   divider: {
-    backgroundColor: '#FFFFFF',
-    position:        'absolute',
-    left:            0,
-    top:             53,
-    width:           69,
-    alignItems:      'flex-end',
+    position:   'absolute',
+    left:       0,
+    top:        72,
+    width:      '100%',
+    alignItems: 'center',
   },
 
   dividerText: {
     color:        '#919191',
     fontSize:     11,
+    paddingLeft:  10,
     paddingRight: 10,
   },
 });

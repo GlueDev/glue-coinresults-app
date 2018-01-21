@@ -20,7 +20,11 @@ class Finance {
   }
 
   static formatCrypto (value) {
-    return Accounting.formatNumber(value, 4, '.', ',');
+    const decimals = num => (num.toString().split('.')[1] || []).length;
+    const precision = (decimals(value) === 0) ? 0 : 4;
+
+    console.log(decimals(value));
+    return Accounting.formatNumber(value, precision, '.', ',');
   }
 
   static formatPercentage (value) {
