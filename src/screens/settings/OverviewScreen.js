@@ -40,7 +40,7 @@ export default class OverviewScreen extends Component {
       realm.delete(allRates);
     });
 
-    EventRegister.emit('tickerUpdate');
+    EventRegister.emit('ratesUpdate');
   };
 
   /**

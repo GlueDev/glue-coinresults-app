@@ -31,7 +31,7 @@ export default class PortfolioCardComponent extends Component {
    * Listen for portfolio changes.
    */
   componentDidMount () {
-    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
+    this.listener = EventRegister.on('ratesUpdate', () => this.forceUpdate());
   }
 
   /**

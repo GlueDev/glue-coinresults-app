@@ -55,14 +55,15 @@ export default class AssetCardComponent extends Component {
    * Listen for portfolio changes.
    */
   componentDidMount () {
-    this.listener = EventRegister.on('tickerUpdate', () => this.forceUpdate());
+    EventRegister.on('ratesUpdate', () => this.forceUpdate());
+    EventRegister.on('fiatAmountSwitcher', () => this.fiatAmountSwitcher())
   }
 
   /**
    * Remove listeners.
    */
   componentWillUnmount () {
-    EventRegister.rm(this.listener);
+    EventRegister.rmAll();
   }
 
   /**
@@ -93,12 +94,12 @@ export default class AssetCardComponent extends Component {
           </Text>
 
           <Text style={styles.usdBtcSwitcher}>
-            1 XRP = € {this.state.usdBtcSwitcher.values[0]}
+            1 {this.ticker.ticker} = € {this.state.usdBtcSwitcher.values[0]}
           </Text>
         </View>
 
         <View style={styles.rightTextContainer}>
-          <TouchableOpacity onPress={this.fiatAmountSwitcher}>
+          <TouchableOpacity onPress={() => EventRegister.emit('fiatAmountSwitcher')}>
             <Text
               allowFontScaling={false}
               style={[styles.topSwitchers, {color: this.ticker.color}]}>

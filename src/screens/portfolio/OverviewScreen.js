@@ -51,7 +51,7 @@ export default class OverviewScreen extends Component {
   updatePortfolios = async () => {
     this.loading = true;
     await RateAPI.updatePortfolios(this.portfolios);
-    await EventRegister.emit('tickerUpdate');
+    await EventRegister.emit('ratesUpdate');
     this.loading = false;
   };
 
