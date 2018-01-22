@@ -3,7 +3,6 @@ import GradientComponent from 'components/ui/GradientComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
 import Finance from 'utils/Finance';
 
 export default class ResultComponent extends Component {
@@ -11,67 +10,35 @@ export default class ResultComponent extends Component {
    * Define the possible props.
    */
   static propTypes = {
+    portfolio: PropTypes.object.isRequired,
     navigator: PropTypes.object.isRequired,
   };
 
   /**
-   * Grab all portfolios.
+   * Define the store.
    */
   constructor (props) {
     super(props);
 
     this.state = {
-      valueChange: '...',
+      totalValue:  Finance.formatFIAT(props.portfolio.totalValue),
+      totalResult: '...',
       ROI:         '...',
-
-      valueResultSwitcher: {
-        active: 'value',
-        values: {value: '...'},
-      },
+      daysChange:  '...',
     };
   }
 
   /**
-   * Listen for portfolio changes.
-   */
-  componentDidMount () {
-    EventRegister.on('dataRefreshed', () => this.updateComponent(this.props));
-  }
-
-  /**
-   * Wait for the props.
+   * Update the state when new props arrive.
    */
   componentWillReceiveProps (props) {
-    this.updateComponent(props);
-  }
-
-  /**
-   * Remove listeners.
-   */
-  componentWillUnmount () {
-    EventRegister.rmAll();
-  }
-
-  /**
-   * Update component with the data.
-   */
-  updateComponent = async (props = false) => {
-    const valueChange = Finance.formatFIAT(props.portfolio.valueChangeToday, 'EUR'),
-          ROI         = Finance.formatPercentage(props.portfolio.ROI);
-
     this.setState({
-      valueChange,
-      ROI,
-
-      valueResultSwitcher: {
-        ...this.state.valueResultSwitcher,
-        values: {
-          value:  Finance.formatFIAT(props.portfolio.totalValue, 'EUR'),
-          result: Finance.formatFIAT(props.portfolio.totalResult, 'EUR'),
-        },
-      },
+      totalValue:  Finance.formatFIAT(props.portfolio.totalValue),
+      totalResult: Finance.formatFIAT(props.portfolio.totalResult),
+      ROI:         Finance.formatPercentage(props.portfolio.ROI),
+      daysChange:  Finance.formatFIAT(props.portfolio.valueChangeToday, 'EUR'),
     });
-  };
+  }
 
   /**
    * Render the view.
@@ -86,12 +53,12 @@ export default class ResultComponent extends Component {
         <Text
           style={styles.totalProfit}
           allowFontScaling={false}>
-          {this.state.valueResultSwitcher.values[this.state.valueResultSwitcher.active]}
+          € {this.state.totalValue}
         </Text>
       </TouchableOpacity>
 
       <Text style={styles.lastVisitResult}>
-        Portfolio value changed {this.state.portfolioValue} since 00:00.
+        Portfolio value changed € {this.state.daysChange} since 00:00.
       </Text>
 
       <Text style={styles.ROI}>

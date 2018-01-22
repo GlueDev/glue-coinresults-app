@@ -79,9 +79,7 @@ class DetailsScreen extends Component {
       <View style={styles.container}>
         <ResultComponent
           navigator={this.props.navigator}
-          portfolio={this.state.portfolio}
-          ref={'ResultComponent'}
-        />
+          portfolio={this.state.portfolio}/>
 
         <CardListComponent
           data={this.state.assets}

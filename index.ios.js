@@ -46,7 +46,7 @@ class CoinResults extends Component {
     }
 
     // Refresh data.
-    // await RateAPI.refreshData(portfolios);
+    await RateAPI.refreshData(portfolios);
 
     // Show the overview screen.
     return this.setNavigationStack('CR.PF.OverviewScreen');
