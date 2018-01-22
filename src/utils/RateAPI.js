@@ -1,6 +1,5 @@
 import axios from 'axios';
 import moment from 'moment';
-import { AlertIOS } from 'react-native';
 import realm from 'realm';
 
 export default class RateAPI {
@@ -14,25 +13,48 @@ export default class RateAPI {
     const t1      = new Date().getTime(),
           tickers = this.getTickers(portfolios);
 
-    try {
-      // Fetch and save rates.
-      const promises = tickers.map(async ticker => {
-        const req = await Promise.all(await this.fetchRates(ticker, 'EUR'));
-        return {ticker, rates: req};
+    // Fetch market caps.
+    const marketData = await this.fetchMarketData();
+
+    // Fetch and save rates.
+    const rates = await Promise.all(tickers.map(async ticker => await this.fetchRates(ticker, 'EUR')));
+
+    // Commit all changes to realm.
+    await realm.write(() => {
+      realm.create('MarketData', marketData, true);
+      rates.forEach(rates => {
+        const FIAT         = 'EUR',
+              ticker       = rates[0].ticker,
+              tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
+
+        rates.forEach(rate => {
+          const year  = moment.unix(rate.timestamp).year(),
+                month = moment.unix(rate.timestamp).month() + 1, // Months are zero indexed
+                day   = moment.unix(rate.timestamp).date(),
+                hours = moment.unix(rate.timestamp).hour();
+
+          const date    = new Date(rate.timestamp * 1000),
+                rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
+
+          // Delete existing key so we have the most recent data.
+          const oldRate = realm.objectForPrimaryKey('Rate', rateKey);
+          if (oldRate !== undefined) realm.delete(oldRate);
+
+          tickerObject.rates.push({
+            id:   rateKey,
+            rate: rate.rate,
+            date,
+            ticker,
+            FIAT,
+          });
+        });
       });
-      this.saveRates(await Promise.all(promises));
+    });
 
-      // Fetch market caps.
-      await this.fetchMarketCaps();
-
-      // Log exec time when in dev mode.
-      if (__DEV__) {
-        const t2 = new Date().getTime();
-        console.info(`Execution took ${t2 - t1} ms`);
-      }
-    } catch (e) {
-      AlertIOS.alert('Whoops!', 'Something went wrong connecting to the server.');
-      console.info(e);
+    // Log exec time when in dev mode.
+    if (__DEV__) {
+      const t2 = new Date().getTime();
+      console.info(`Execution took ${t2 - t1} ms`);
     }
   }
 
@@ -56,40 +78,9 @@ export default class RateAPI {
     return response.map(rate => ({
       timestamp: rate.time,
       rate:      rate.close,
-      FIAT,
       ticker,
+      FIAT,
     }));
-  }
-
-  /**
-   * Save the rates in the local Realm database.
-   *
-   * @param {array} rates
-   */
-  static saveRates (rates) {
-    realm.write(() => {
-      rates.forEach(({ticker, rates}) => {
-        const tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
-
-        rates.forEach(({timestamp, ticker, FIAT, rate}) => {
-          const year  = moment.unix(timestamp).year(),
-                month = moment.unix(timestamp).month() + 1, // Months are zero indexed
-                day   = moment.unix(timestamp).date(),
-                hours = moment.unix(timestamp).hour();
-
-          const date    = new Date(timestamp * 1000),
-                rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
-
-          tickerObject.rates.push({
-            id: rateKey,
-            date,
-            ticker,
-            FIAT,
-            rate,
-          });
-        });
-      });
-    });
   }
 
   /**
@@ -113,13 +104,6 @@ export default class RateAPI {
           now                 = moment().format('X'),
           difference          = Math.floor((now - mostRecentTimestamp) / 60 / 60);
 
-    /**
-     * The API we currently use always returns the two most recent rates. For that reason, we
-     * remove those two from the database so that we always have an up to date rate, and not the
-     * rate from +- an hour ago.
-     */
-    realm.write(() => realm.delete(rates.sorted('date', true).slice(0, 2)));
-
     // Only request
     return difference;
   }
@@ -137,18 +121,18 @@ export default class RateAPI {
   /**
    * Get market cap information.
    */
-  static async fetchMarketCaps () {
+  static async fetchMarketData () {
     const request = await axios.get('https://api.coinmarketcap.com/v1/global/', {
       timeout: 2000,
       params:  {convert: 'EUR'},
     });
 
     const response = request.data;
-    realm.write(async () => await realm.create('MarketData', {
+    return {
       date:         moment().format('ll'),
       marketCapEUR: response.total_market_cap_eur,
       marketCapUSD: response.total_market_cap_usd,
       dominanceBTC: response.bitcoin_percentage_of_market_cap,
-    }, true));
+    };
   }
 }

@@ -2,7 +2,8 @@ import BackButtonComponent from 'components/ui/BackButtonComponent';
 import GradientComponent from 'components/ui/GradientComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import TextToggleComponent from 'components/ui/TextToggleComponent';
 import Finance from 'utils/Finance';
 
 export default class ResultComponent extends Component {
@@ -21,10 +22,13 @@ export default class ResultComponent extends Component {
     super(props);
 
     this.state = {
-      totalValue:  '...',
-      totalResult: '...',
-      ROI:         '...',
-      daysChange:  '...',
+      ROI:        '...',
+      daysChange: '...',
+
+      valueResultSwitcher: {
+        totalValue:  '...',
+        totalResult: '...',
+      },
     };
   }
 
@@ -33,10 +37,12 @@ export default class ResultComponent extends Component {
    */
   componentWillReceiveProps (props) {
     this.setState({
-      totalValue:  Finance.formatFIAT(props.portfolio.totalValue),
-      totalResult: Finance.formatFIAT(props.portfolio.totalResult),
-      ROI:         Finance.formatPercentage(props.portfolio.ROI),
-      daysChange:  Finance.formatFIAT(props.portfolio.valueChangeToday, 'EUR'),
+      ROI:                 Finance.formatPercentage(props.portfolio.ROI),
+      daysChange:          Finance.formatFIAT(props.portfolio.valueChangeToday, 'EUR'),
+      valueResultSwitcher: {
+        totalValue:  `€ ${Finance.formatFIAT(props.portfolio.totalValue)}`,
+        totalResult: `€ ${Finance.formatFIAT(props.portfolio.totalResult)}`,
+      },
     });
   }
 
@@ -49,13 +55,10 @@ export default class ResultComponent extends Component {
         onPress={() => this.props.navigator.pop()}
         label={'Portfolio overview'}/>
 
-      <TouchableOpacity onPress={() => {}}>
-        <Text
-          style={styles.totalProfit}
-          allowFontScaling={false}>
-          € {this.state.totalValue}
-        </Text>
-      </TouchableOpacity>
+      <TextToggleComponent
+        values={this.state.valueResultSwitcher}
+        style={styles.totalProfit}
+        allowFontScaling={false}/>
 
       <Text style={styles.lastVisitResult}>
         Portfolio value changed € {this.state.daysChange} since 00:00.

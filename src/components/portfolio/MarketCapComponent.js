@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Finance from 'utils/Finance';
+import TextToggleComponent from 'components/ui/TextToggleComponent';
 
 export default class MarketCapComponent extends Component {
   /**
@@ -37,8 +38,10 @@ export default class MarketCapComponent extends Component {
   mapState = (props) => {
     const marketData = props.marketData.filtered('date == $0', moment().format('ll'))[0];
     return {
-      marketCapEUR: Finance.formatMarketCap(marketData.marketCapEUR),
-      marketCapUSD: Finance.formatMarketCap(marketData.marketCapUSD),
+      marketCapSwitcher: {
+        EUR: `€${Finance.formatMarketCap(marketData.marketCapEUR)}`,
+        USD: `$${Finance.formatMarketCap(marketData.marketCapUSD)}`,
+      },
       dominanceBTC: Finance.formatPercentage(marketData.dominanceBTC),
     };
   };
@@ -60,9 +63,10 @@ export default class MarketCapComponent extends Component {
 
     return <GradientComponent colors={['#F7BF47', '#EC405C']} style={styles.container}>
       <Text style={styles.label} allowFontScaling={false}>Market cap</Text>
-      <Text style={styles.marketCap} allowFontScaling={false}>
-        € {this.state.marketCapEUR}
-      </Text>
+      <TextToggleComponent
+        values={this.state.marketCapSwitcher}
+        allowFontScaling={false}
+        style={styles.marketCap}/>
       <Text style={styles.btcDominance} allowFontScaling={false}>
         Bitcoin dominance: {this.state.dominanceBTC}
       </Text>

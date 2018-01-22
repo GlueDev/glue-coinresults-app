@@ -1,7 +1,8 @@
 import CardComponent from 'components/ui/CardComponent';
+import TextToggleComponent from 'components/ui/TextToggleComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Finance from 'utils/Finance';
 import AssetGraphComponent from './AssetGraphComponent';
 
@@ -26,13 +27,17 @@ export default class AssetCardComponent extends Component {
 
       name:   '...',
       ticker: '...',
-      amount: '...',
 
-      totalEur: '...',
+      valueAmountSwitcher: {
+        totalEur: '...',
+        amount:   '...',
+      },
 
-      eurValue: '...',
-      btcValue: '...',
-      usdValue: '...',
+      eurBtcUsdSwitcher: {
+        eurValue: '...',
+        btcValue: '...',
+        usdValue: '...',
+      },
     };
   }
 
@@ -46,13 +51,17 @@ export default class AssetCardComponent extends Component {
 
       name:   props.ticker.name,
       ticker: props.asset.ticker,
-      amount: Finance.formatCrypto(props.asset.amount),
 
-      totalEur: Finance.formatFIAT(props.asset.totalValue('EUR'), 'EUR'),
+      valueAmountSwitcher: {
+        totalEur: Finance.formatFIAT(props.asset.totalValue('EUR'), 'EUR'),
+        amount:   `${Finance.formatCrypto(props.asset.amount)} ${props.asset.ticker}`,
+      },
 
-      eurValue: Finance.formatFIAT(props.asset.valueEUR, 'EUR'),
-      btcValue: 'unk.',
-      usdValue: 'unk.',
+      eurBtcUsdSwitcher: {
+        eurValue: Finance.formatFIAT(props.asset.valueEUR, 'EUR'),
+        btcValue: 'unk.',
+        usdValue: 'unk.',
+      },
     });
   }
 
@@ -71,18 +80,16 @@ export default class AssetCardComponent extends Component {
 
           <Text style={styles.eurUsdBtcSwitcher}>
             1 {this.state.ticker} =
-            € {this.state.eurValue}
+            € {this.state.eurBtcUsdSwitcher.eurValue}
           </Text>
         </View>
 
         <View style={styles.rightTextContainer}>
-          <TouchableOpacity onPress={() => {}}>
-            <Text
-              allowFontScaling={false}
-              style={[styles.topSwitchers, {color: this.state.color}]}>
-              {this.state.totalEur}
-            </Text>
-          </TouchableOpacity>
+          <TextToggleComponent
+            values={this.state.valueAmountSwitcher}
+            emitChange={'valueAmountSwitcher'}
+            allowFontScaling={false}
+            style={[styles.topSwitchers, {color: this.state.color}]}/>
         </View>
       </View>
 
@@ -145,9 +152,9 @@ const styles = StyleSheet.create({
 
   dividerText: {
     backgroundColor: '#FFFFFF',
-    color:        '#919191',
-    fontSize:     11,
-    paddingLeft:  10,
-    paddingRight: 10,
+    color:           '#919191',
+    fontSize:        11,
+    paddingLeft:     10,
+    paddingRight:    10,
   },
 });
