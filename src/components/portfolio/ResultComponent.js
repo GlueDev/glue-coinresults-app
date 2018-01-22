@@ -21,7 +21,7 @@ export default class ResultComponent extends Component {
     super(props);
 
     this.state = {
-      totalValue:  Finance.formatFIAT(props.portfolio.totalValue),
+      totalValue:  '...',
       totalResult: '...',
       ROI:         '...',
       daysChange:  '...',

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
-import realm from 'realm';
 import { AlertIOS } from 'react-native';
+import realm from 'realm';
 
 export default class RateAPI {
   /**
@@ -15,8 +15,12 @@ export default class RateAPI {
           tickers = this.getTickers(portfolios);
 
     try {
-      // Fetch rates.
-      tickers.forEach(async ticker => await RateAPI.fetchRates(ticker, 'EUR'));
+      // Fetch and save rates.
+      const promises = tickers.map(async ticker => {
+        const req = await Promise.all(await this.fetchRates(ticker, 'EUR'));
+        return {ticker, rates: req};
+      });
+      this.saveRates(await Promise.all(promises));
 
       // Fetch market caps.
       await this.fetchMarketCaps();
@@ -48,35 +52,44 @@ export default class RateAPI {
       },
     });
 
-    const response = request.data.Data;
-    return response.map(rate => this.saveRate(rate.time, ticker, FIAT, rate.close));
+    const response = await request.data.Data;
+    return response.map(rate => ({
+      timestamp: rate.time,
+      rate:      rate.close,
+      FIAT,
+      ticker,
+    }));
   }
 
   /**
-   * Save a rate in the local Realm database.
+   * Save the rates in the local Realm database.
    *
-   * @param {int} timestamp
-   * @param {string} ticker
-   * @param {string} FIAT
-   * @param {float} rate
+   * @param {array} rates
    */
-  static async saveRate (timestamp, ticker, FIAT, rate) {
-    const year  = moment.unix(timestamp).year(),
-          month = moment.unix(timestamp).month() + 1, // Months are zero indexed
-          day   = moment.unix(timestamp).date(),
-          hours = moment.unix(timestamp).hour();
+  static saveRates (rates) {
+    realm.write(() => {
+      rates.forEach(({ticker, rates}) => {
+        const tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
 
-    const date    = new Date(timestamp * 1000),
-          rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
+        rates.forEach(({timestamp, ticker, FIAT, rate}) => {
+          const year  = moment.unix(timestamp).year(),
+                month = moment.unix(timestamp).month() + 1, // Months are zero indexed
+                day   = moment.unix(timestamp).date(),
+                hours = moment.unix(timestamp).hour();
 
-    const tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
-    realm.write(() => tickerObject.rates.push({
-      id: rateKey,
-      date,
-      ticker,
-      FIAT,
-      rate,
-    }));
+          const date    = new Date(timestamp * 1000),
+                rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
+
+          tickerObject.rates.push({
+            id: rateKey,
+            date,
+            ticker,
+            FIAT,
+            rate,
+          });
+        });
+      });
+    });
   }
 
   /**
