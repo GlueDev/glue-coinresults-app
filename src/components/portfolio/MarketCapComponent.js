@@ -21,25 +21,27 @@ export default class MarketCapComponent extends Component {
    */
   constructor (props) {
     super(props);
-
-    this.state = {
-      marketCapEUR: '...',
-      marketCapUSD: '...',
-      dominanceBTC: '...',
-    };
+    this.state = this.mapState(props);
   }
 
   /**
    * Update the state when new props arrive.
    */
   componentWillReceiveProps (props) {
-    const marketData = this.props.marketData.filtered('date == $0', moment().format('ll'))[0];
-    this.setState({
+    this.setState(this.mapState(props));
+  }
+
+  /**
+   * Map the props to the state.
+   */
+  mapState = (props) => {
+    const marketData = props.marketData.filtered('date == $0', moment().format('ll'))[0];
+    return {
       marketCapEUR: Finance.formatMarketCap(marketData.marketCapEUR),
       marketCapUSD: Finance.formatMarketCap(marketData.marketCapUSD),
       dominanceBTC: Finance.formatPercentage(marketData.dominanceBTC),
-    });
-  }
+    };
+  };
 
   /**
    * Render the component's view.

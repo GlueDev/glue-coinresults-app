@@ -34,5 +34,5 @@ export default function registerScreens () {
   /**
    * Settings screens
    */
-  Navigation.registerComponent('CR.ST.OverviewScreen', SettingsOverviewScreen, realm, RealmProvider);
+  Navigation.registerComponent('CR.ST.OverviewScreen', SettingsOverviewScreen);
 }

@@ -40,7 +40,7 @@ export default class Portfolio {
 
     if (this.assets.length > 0) {
       this.assets.forEach((asset) => {
-        portfolioValue += asset.fiatValue('EUR');
+        portfolioValue += asset.totalValue('EUR');
       });
     }
 
@@ -55,7 +55,7 @@ export default class Portfolio {
 
     if (this.assets.length > 0) {
       this.assets.forEach((asset) => {
-        portfolioValue += asset.fiatValue('EUR', 'yesterday');
+        portfolioValue += asset.totalValue('EUR', 'yesterday');
       });
     }
 

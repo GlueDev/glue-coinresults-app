@@ -14,7 +14,7 @@ export default class AssetGraphComponent extends Component {
   };
 
   /**
-   * Calculate the grids.
+   * Define the store.
    */
   constructor (props) {
     super(props);
@@ -26,21 +26,14 @@ export default class AssetGraphComponent extends Component {
   }
 
   /**
-   * Wait for props before updating the component.
+   * Update the state when new props arrive.
    */
   componentWillReceiveProps () {
-    this.updateComponent();
-  }
-
-  /**
-   * Update component with the data.
-   */
-  updateComponent = async () => {
     this.setState({
       gridMin: Math.min.apply(Math, this.props.dataPoints) - Math.min.apply(Math, this.props.dataPoints) * 0.03,
       gridMax: Math.max.apply(Math, this.props.dataPoints) + Math.max.apply(Math, this.props.dataPoints) * 0.03,
     });
-  };
+  }
 
   /**
    * Shade HEX colors.

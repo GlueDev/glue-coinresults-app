@@ -18,24 +18,24 @@ export default class PortfolioCardComponent extends Component {
    */
   constructor (props) {
     super(props);
-
-    this.state = {
-      name:             '...',
-      totalValue:       '...',
-      totalInvestments: '...',
-    };
+    this.state = this.mapState(props);
   }
 
   /**
    * Update the state when new props arrive.
    */
   componentWillReceiveProps (props) {
-    this.setState({
-      name:             props.portfolio.name,
-      totalValue:       props.portfolio.totalValue,
-      totalInvestments: props.portfolio.totalInvestments,
-    });
+    this.setState(this.mapState(props));
   }
+
+  /**
+   * Map the props to the state.
+   */
+  mapState = (props) => ({
+    name:             props.portfolio.name,
+    totalValue:       props.portfolio.totalValue,
+    totalInvestments: props.portfolio.totalInvestments,
+  });
 
   /**
    * Render the view.

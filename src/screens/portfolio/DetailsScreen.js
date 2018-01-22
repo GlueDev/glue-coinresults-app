@@ -3,16 +3,17 @@ import CardListComponent from 'components/portfolio/CardListComponent';
 import ResultComponent from 'components/portfolio/ResultComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { InteractionManager, RefreshControl, StyleSheet, View } from 'react-native';
-import realm from 'realm';
+import { RefreshControl, StyleSheet, View } from 'react-native';
+import { connectRealm } from 'react-native-realm';
 import RateAPI from 'utils/RateAPI';
 
-export default class DetailsScreen extends Component {
+class DetailsScreen extends Component {
   /**
    * Define the possible props.
    */
   static propTypes = {
     portfolioName: PropTypes.string.isRequired,
+    portfolio:     PropTypes.object.isRequired,
   };
 
   /**
@@ -23,49 +24,51 @@ export default class DetailsScreen extends Component {
   };
 
   /**
-   * Grab the portfolio.
+   * Define the store.
    */
   constructor (props) {
     super(props);
-
     this.state = {
-      portfolio:   null,
-      assets:      [],
-      lastUpdated: null,
+      ...this.mapState(props),
+      loading: false,
     };
-
-    this.loading = false;
-  };
-
-  componentDidMount () {
-    // Use InteractionManager to avoid white screen flickering
-    InteractionManager.runAfterInteractions(() => {
-      let portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName),
-          assets    = portfolio.assets.slice();
-
-      // Todo: replace hardcoded EUR for the preference of the user
-      assets.sort((a, b) => a.fiatValue('EUR') < b.fiatValue('EUR'));
-
-      this.setState({
-        portfolio,
-        assets,
-      });
-    });
   }
+
+  /**
+   * Update the state when new props arrive.
+   */
+  componentWillReceiveProps (props) {
+    this.setState(this.mapState(props));
+  }
+
+  /**
+   * Map the props to the state.
+   */
+  mapState = (props) => {
+    const assets = props.portfolio.assets.slice();
+    assets.sort((a, b) => a.totalValue('EUR') < b.totalValue('EUR'));
+
+    return {
+      portfolio: props.portfolio,
+      assets,
+    };
+  };
 
   /**
    * Update the portfolios.
    */
   updatePortfolio = async () => {
-    this.loading = true;
+    this.setState({loading: true});
     await RateAPI.refreshData([this.state.portfolio]);
+    this.setState({loading: false});
+  };
 
-    await this.setState({
-      ...this.state,
-      lastUpdated: new Date(),
-    });
-
-    this.loading = false;
+  /**
+   * Render an asset.
+   */
+  renderItem = asset => {
+    const ticker = this.props.realm.objects('Ticker').filtered('ticker == $0', asset.ticker)[0];
+    return <AssetCardComponent asset={asset} ticker={ticker}/>;
   };
 
   /**
@@ -82,17 +85,27 @@ export default class DetailsScreen extends Component {
 
         <CardListComponent
           data={this.state.assets}
+          renderItem={({item}) => this.renderItem(item)}
           refreshControl={<RefreshControl
             tintColor={'#FFFFFF'}
-            refreshing={this.loading}
-            onRefresh={this.updatePortfolio}/>}
-          renderItem={({item}) => <AssetCardComponent
-            portfolioName={this.props.portfolioName}
-            ticker={item.ticker}/>}/>
+            refreshing={this.state.loading}
+            onRefresh={this.updatePortfolio}/>}/>
       </View>
     );
   };
 }
+
+export default connectRealm(DetailsScreen, {
+  schemas:    ['Portfolio', 'Rate', 'Asset', 'Ticker'],
+  mapToProps: (results, realm, ownProps) => {
+    const portfolio = results.portfolios.filtered('name == $0', ownProps.portfolioName)[0];
+
+    return {
+      realm,
+      portfolio,
+    };
+  },
+});
 
 const styles = StyleSheet.create({
   container: {

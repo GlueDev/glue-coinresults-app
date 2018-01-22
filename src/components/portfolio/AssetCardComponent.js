@@ -2,8 +2,6 @@ import CardComponent from 'components/ui/CardComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
-import realm from 'realm';
 import Finance from 'utils/Finance';
 import AssetGraphComponent from './AssetGraphComponent';
 
@@ -12,96 +10,51 @@ export default class AssetCardComponent extends Component {
    * Define the possible props.
    */
   static propTypes = {
-    portfolioName: PropTypes.string.isRequired,
-    ticker:        PropTypes.string.isRequired,
+    asset:  PropTypes.object.isRequired,
+    ticker: PropTypes.object.isRequired,
   };
 
   /**
-   * Find the portfolio and asset.
+   * Define the store.
    */
   constructor (props) {
     super(props);
 
     this.state = {
-      portfolio:          {},
-      asset:              {},
-      ticker:             {color: '#000000'},
-      dataPoints:         [0],
-      eurUsdBtcSwitcher:  {
-        active: 'eur',
-        values: {eur: '...'}
-      },
-      fiatAmountSwitcher:  {
-        active: 'fiat',
-        values: {fiat: '...'}
-      },
+      color:      '#000000',
+      dataPoints: [0],
+
+      name:   '...',
+      ticker: '...',
+      amount: '...',
+
+      totalEur: '...',
+
+      eurValue: '...',
+      btcValue: '...',
+      usdValue: '...',
     };
   }
 
   /**
-   * Listen for portfolio changes.
+   * Update the state when new props arrive.
    */
-  componentDidMount () {
-    this.updateComponent();
-
-    EventRegister.on('dataRefreshed', () => this.updateComponent());
-    EventRegister.on('fiatAmountSwitcher', () => this.fiatAmountSwitcher());
-  }
-
-  /**
-   * Remove listeners.
-   */
-  componentWillUnmount () {
-    EventRegister.rmAll();
-  }
-
-  /**
-   * Update component with the data.
-   */
-  updateComponent = async () => {
-    const portfolio = realm.objectForPrimaryKey('Portfolio', this.props.portfolioName),
-          asset = portfolio.assets.filtered('ticker = $0', this.props.ticker)[0],
-          ticker = realm.objectForPrimaryKey('Ticker', this.props.ticker),
-          dataPoints = ticker.rates.map(rate => rate.rate);
-
-    await this.setState({
-      portfolio,
-      asset,
-      ticker,
-      dataPoints,
-
-      eurUsdBtcSwitcher: {
-        active: 'eur',
-        values: {
-          eur: Finance.formatFIAT(dataPoints.slice(-1).pop()),
-          usd: 0,
-          btc: 0,
-        },
-      },
-
-      fiatAmountSwitcher: {
-        active: 'fiat',
-        values: {
-          fiat:   Finance.formatFIAT(asset.fiatValue('EUR'), 'EUR'),
-          amount: `${Finance.formatCrypto(asset.amount)} ${ticker.ticker}`,
-        },
-      },
-    });
-  };
-
-  /**
-   * Switch between FIAT currency and amount of coins.
-   */
-  fiatAmountSwitcher = () => {
-    const nextValue = (this.state.fiatAmountSwitcher.active === 'fiat' ? 'amount' : 'fiat');
-
+  componentWillReceiveProps (props) {
     this.setState({
-      fiatAmountSwitcher: {
-        ...this.state.fiatAmountSwitcher,
-        active: nextValue,
-      },
+      color:      props.ticker.color,
+      dataPoints: Array.from(props.asset.dataPoints()).map(rate => rate.rate),
+
+      name:   props.ticker.name,
+      ticker: props.asset.ticker,
+      amount: Finance.formatCrypto(props.asset.amount),
+
+      totalEur: Finance.formatFIAT(props.asset.totalValue('EUR'), 'EUR'),
+
+      eurValue: Finance.formatFIAT(props.asset.valueEUR, 'EUR'),
+      btcValue: 'unk.',
+      usdValue: 'unk.',
     });
-  };
+  }
 
   /**
    * Render the view.
@@ -112,22 +65,22 @@ export default class AssetCardComponent extends Component {
         <View style={styles.leftTextContainer}>
           <Text
             allowFontScaling={false}
-            style={[styles.topSwitchers, {color: this.state.ticker.color}]}>
-            {this.state.ticker.name}
+            style={[styles.topSwitchers, {color: this.state.color}]}>
+            {this.state.name}
           </Text>
 
           <Text style={styles.eurUsdBtcSwitcher}>
-            1 {this.state.ticker.ticker} =
-            € {this.state.eurUsdBtcSwitcher.values[this.state.eurUsdBtcSwitcher.active]}
+            1 {this.state.ticker} =
+            € {this.state.eurValue}
           </Text>
         </View>
 
         <View style={styles.rightTextContainer}>
-          <TouchableOpacity onPress={() => EventRegister.emit('fiatAmountSwitcher')}>
+          <TouchableOpacity onPress={() => {}}>
             <Text
               allowFontScaling={false}
-              style={[styles.topSwitchers, {color: this.state.ticker.color}]}>
-              {this.state.fiatAmountSwitcher.values[this.state.fiatAmountSwitcher.active]}
+              style={[styles.topSwitchers, {color: this.state.color}]}>
+              {this.state.totalEur}
             </Text>
           </TouchableOpacity>
         </View>
@@ -141,7 +94,7 @@ export default class AssetCardComponent extends Component {
 
       <AssetGraphComponent
         dataPoints={this.state.dataPoints}
-        color={this.state.ticker.color}/>
+        color={this.state.color}/>
     </CardComponent>
   );
 }
@@ -185,7 +138,7 @@ const styles = StyleSheet.create({
   divider: {
     position:   'absolute',
     left:       0,
-    top:        72,
+    top:        71,
     width:      '100%',
     alignItems: 'center',
   },
