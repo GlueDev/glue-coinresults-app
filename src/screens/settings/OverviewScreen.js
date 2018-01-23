@@ -24,13 +24,6 @@ export default class OverviewScreen extends Component {
   };
 
   /**
-   * Get rates.
-   */
-  devGetRates = async () => {
-    RateAPI.refreshData(this.portfolios);
-  };
-
-  /**
    * Action used to clear the Realm Rates schema in dev mode.
    */
   devClearRates = () => {
@@ -38,8 +31,6 @@ export default class OverviewScreen extends Component {
       let allRates = realm.objects('Rate');
       realm.delete(allRates);
     });
-
-    EventRegister.emit('dataRefreshed');
   };
 
   /**
@@ -59,10 +50,6 @@ export default class OverviewScreen extends Component {
       <Button
         title="Camera Screen"
         onPress={this.navigateToCameraScreen}/>
-
-      <Button
-        title="Load API data"
-        onPress={this.devGetRates}/>
 
       <Button
         title="Clear API data"

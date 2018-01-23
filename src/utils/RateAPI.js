@@ -36,17 +36,13 @@ export default class RateAPI {
           const date    = new Date(rate.timestamp * 1000),
                 rateKey = `${year}${month}${day}${hours}${ticker}${FIAT}`;
 
-          // Delete existing key so we have the most recent data.
-          const oldRate = realm.objectForPrimaryKey('Rate', rateKey);
-          if (oldRate !== undefined) realm.delete(oldRate);
-
-          tickerObject.rates.push({
+          realm.create('Rate', {
             id:   rateKey,
             rate: rate.rate,
             date,
             ticker,
             FIAT,
-          });
+          }, true);
         });
       });
     });
