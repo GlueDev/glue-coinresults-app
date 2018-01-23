@@ -43,7 +43,7 @@ export default class TextToggleComponent extends Component {
       activeValue: values[this.state.activeKey],
     });
 
-    if(props.emitChange !== undefined) EventRegister.on(props.emitChange, () => this.nextValue(false));
+    if (props.emitChange !== undefined) EventRegister.on(props.emitChange, () => this.nextValue(false));
   }
 
   /**
@@ -54,11 +54,11 @@ export default class TextToggleComponent extends Component {
     const nextKey = this.state.activeKey === length ? 0 : this.state.activeKey + 1;
 
     this.setState({
-      activeKey: nextKey,
+      activeKey:   nextKey,
       activeValue: this.state.values[nextKey],
     });
 
-    if(this.props.emitChange && emit) EventRegister.emit(this.props.emitChange);
+    if (this.props.emitChange && emit) EventRegister.emit(this.props.emitChange);
   };
 
   /**

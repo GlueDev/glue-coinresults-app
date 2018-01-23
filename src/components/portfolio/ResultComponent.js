@@ -1,9 +1,9 @@
 import BackButtonComponent from 'components/ui/BackButtonComponent';
 import GradientComponent from 'components/ui/GradientComponent';
+import TextToggleComponent from 'components/ui/TextToggleComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import TextToggleComponent from 'components/ui/TextToggleComponent';
 import Finance from 'utils/Finance';
 
 export default class ResultComponent extends Component {

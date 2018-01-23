@@ -1,4 +1,3 @@
-import moment from 'moment/moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FlatList, ScrollView, StyleSheet } from 'react-native';

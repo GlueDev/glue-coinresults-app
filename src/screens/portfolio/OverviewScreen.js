@@ -2,18 +2,9 @@ import CardListComponent from 'components/portfolio/CardListComponent';
 import MarketCapComponent from 'components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from 'components/portfolio/PortfolioCardComponent';
 import React, { Component } from 'react';
-import { AlertIOS, RefreshControl, StyleSheet, View } from 'react-native';
-import { connectRealm } from 'react-native-realm';
-import RateAPI from 'utils/RateAPI';
+import { StyleSheet, View } from 'react-native';
 
-class OverviewScreen extends Component {
-  /**
-   * Set the screen's navigator style.
-   */
-  static navigatorStyle = {
-    navBarHidden: true,
-  };
-
+export default class OverviewScreen extends Component {
   /**
    * Define the store.
    */
@@ -22,15 +13,14 @@ class OverviewScreen extends Component {
 
     this.state = {
       loading:    false,
-      portfolios: props.portfolios,
     };
   }
 
   /**
    * Update the state when new props arrive.
    */
-  componentWillReceiveProps (props) {
-    this.setState({portfolios: props.portfolios});
+  componentDidMount () {
+    console.log(this.props);
   }
 
   /**
@@ -53,46 +43,24 @@ class OverviewScreen extends Component {
   };
 
   /**
-   * Update the portfolios.
-   */
-  updatePortfolios = async () => {
-    this.setState({loading: true});
-    await RateAPI.refreshData(this.state.portfolios);
-    this.setState({loading: false});
-  };
-
-  /**
    * Render the view.
    */
   render = () => (
     <View style={styles.container}>
       <MarketCapComponent
-        marketData={this.props.marketData}
+        marketData={{}}
         navigate={this.navigateToSettingsScreen}
         navigateIcon="gear"
       />
 
       <CardListComponent
         data={this.props.portfolios}
-        refreshControl={<RefreshControl
-          tintColor={'#FFFFFF'}
-          refreshing={this.state.loading}
-          onRefresh={this.updatePortfolios}/>}
         renderItem={({item}) => <PortfolioCardComponent
           portfolio={item}
           navigate={this.navigateToDetails}/>}/>
     </View>
   );
 }
-
-export default connectRealm(OverviewScreen, {
-  schemas:    ['Portfolio', 'MarketData', 'Rate'],
-  mapToProps: (results, realm, ownProps) => ({
-    realm,
-    portfolios: results.portfolios,
-    marketData: results.marketData,
-  }),
-});
 
 const styles = StyleSheet.create({
   container: {

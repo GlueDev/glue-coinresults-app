@@ -20,14 +20,12 @@
 		"react-native-haptic": "^1.0.5",
 		"react-native-linear-gradient": "^2.3.0",
 		"react-native-navigation": "^1.1.349",
-		"react-native-realm": "https://github.com/DiederikvandenB/react-native-realm.git",
 		"react-native-svg": "^6.0.1-rc.3",
 		"react-native-svg-charts": "^2.1.0",
 		"react-native-swipeout": "^2.3.1",
 		"react-native-textinput-effects": "^0.4.2",
 		"react-native-touch-id": "https://github.com/naoufal/react-native-touch-id.git#d9a96f58bd39f5a2566885057add1816416a8a7b",
-		"react-native-vector-icons": "^4.5.0",
-		"realm": "^2.2.4"
+		"react-native-vector-icons": "^4.5.0"
 	},
 	"devDependencies": {
 		"babel-jest": "22.1.0",

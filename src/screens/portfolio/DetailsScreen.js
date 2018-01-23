@@ -3,11 +3,9 @@ import CardListComponent from 'components/portfolio/CardListComponent';
 import ResultComponent from 'components/portfolio/ResultComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
-import { connectRealm } from 'react-native-realm';
-import RateAPI from 'utils/RateAPI';
+import { StyleSheet, View } from 'react-native';
 
-class DetailsScreen extends Component {
+export default class DetailsScreen extends Component {
   /**
    * Define the possible props.
    */
@@ -28,9 +26,9 @@ class DetailsScreen extends Component {
    */
   constructor (props) {
     super(props);
+
     this.state = {
       ...this.mapState(props),
-      loading: false,
     };
   }
 
@@ -55,15 +53,6 @@ class DetailsScreen extends Component {
   };
 
   /**
-   * Update the portfolios.
-   */
-  updatePortfolio = async () => {
-    this.setState({loading: true});
-    await RateAPI.refreshData([this.state.portfolio]);
-    this.setState({loading: false});
-  };
-
-  /**
    * Render an asset.
    */
   renderItem = asset => {
@@ -83,27 +72,11 @@ class DetailsScreen extends Component {
 
         <CardListComponent
           data={this.state.assets}
-          renderItem={({item}) => this.renderItem(item)}
-          refreshControl={<RefreshControl
-            tintColor={'#FFFFFF'}
-            refreshing={this.state.loading}
-            onRefresh={this.updatePortfolio}/>}/>
+          renderItem={({item}) => this.renderItem(item)}/>
       </View>
     );
   };
 }
-
-export default connectRealm(DetailsScreen, {
-  schemas:    ['Portfolio', 'Rate', 'Asset', 'Ticker'],
-  mapToProps: (results, realm, ownProps) => {
-    const portfolio = results.portfolios.filtered('name == $0', ownProps.portfolioName)[0];
-
-    return {
-      realm,
-      portfolio,
-    };
-  },
-});
 
 const styles = StyleSheet.create({
   container: {

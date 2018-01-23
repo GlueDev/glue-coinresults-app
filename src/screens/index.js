@@ -1,7 +1,5 @@
 import React from 'react';
 import { Navigation } from 'react-native-navigation';
-import { RealmProvider } from 'react-native-realm';
-import realm from 'realm';
 import AssetsOverviewScreen from './firstrun/assets/OverviewScreen';
 import SetAssetAmountScreen from './firstrun/assets/SetAmountScreen';
 import SetTickerScreen from './firstrun/assets/SetTickerScreen';
@@ -12,13 +10,14 @@ import AddPortfolioScreen from './firstrun/portfolio/AddScreen';
 import DetailsScreen from './portfolio/DetailsScreen';
 import OverviewScreen from './portfolio/OverviewScreen';
 import SettingsOverviewScreen from './settings/OverviewScreen';
+import WSProvider from 'utils/WSProvider';
 
 export default function registerScreens () {
   /**
    * Portfolio screens.
    */
-  Navigation.registerComponent('CR.PF.OverviewScreen', () => OverviewScreen, realm, RealmProvider);
-  Navigation.registerComponent('CR.PF.DetailsScreen', () => DetailsScreen, realm, RealmProvider);
+  Navigation.registerComponent('CR.PF.OverviewScreen', () => WSProvider(OverviewScreen));
+  Navigation.registerComponent('CR.PF.DetailsScreen', () => DetailsScreen);
 
   /**
    * First run screens.

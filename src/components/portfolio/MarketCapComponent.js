@@ -1,11 +1,9 @@
 import GradientComponent from 'components/ui/GradientComponent';
-import moment from 'moment';
+import TextToggleComponent from 'components/ui/TextToggleComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Finance from 'utils/Finance';
-import TextToggleComponent from 'components/ui/TextToggleComponent';
 
 export default class MarketCapComponent extends Component {
   /**
@@ -22,29 +20,16 @@ export default class MarketCapComponent extends Component {
    */
   constructor (props) {
     super(props);
-    this.state = this.mapState(props);
-  }
 
-  /**
-   * Update the state when new props arrive.
-   */
-  componentWillReceiveProps (props) {
-    this.setState(this.mapState(props));
-  }
-
-  /**
-   * Map the props to the state.
-   */
-  mapState = (props) => {
-    const marketData = props.marketData.filtered('date == $0', moment().format('ll'))[0] || {};
-    return {
+    this.state = {
       marketCapSwitcher: {
-        EUR: `€ ${Finance.formatMarketCap(marketData.marketCapEUR || 0)}`,
-        USD: `$ ${Finance.formatMarketCap(marketData.marketCapUSD || 0)}`,
+        EUR: `...`,
+        USD: `...`,
       },
-      dominanceBTC: Finance.formatPercentage(marketData.dominanceBTC),
+
+      dominanceBTC: '...',
     };
-  };
+  }
 
   /**
    * Render the component's view.

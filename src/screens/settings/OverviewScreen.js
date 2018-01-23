@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
 import realm from 'realm';
-import RateAPI from 'utils/RateAPI';
 
 export default class OverviewScreen extends Component {
   /**
