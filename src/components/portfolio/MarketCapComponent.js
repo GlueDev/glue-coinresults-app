@@ -36,7 +36,7 @@ export default class MarketCapComponent extends Component {
    * Map the props to the state.
    */
   mapState = (props) => {
-    const marketData = props.marketData.filtered('date == $0', moment().format('ll'))[0];
+    const marketData = props.marketData.filtered('date == $0', moment().format('ll'))[0] || {};
     return {
       marketCapSwitcher: {
         EUR: `€ ${Finance.formatMarketCap(marketData.marketCapEUR || 0)}`,
