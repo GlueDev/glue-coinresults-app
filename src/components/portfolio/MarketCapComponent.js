@@ -39,8 +39,8 @@ export default class MarketCapComponent extends Component {
     const marketData = props.marketData.filtered('date == $0', moment().format('ll'))[0];
     return {
       marketCapSwitcher: {
-        EUR: `€${Finance.formatMarketCap(marketData.marketCapEUR)}`,
-        USD: `$${Finance.formatMarketCap(marketData.marketCapUSD)}`,
+        EUR: `€ ${Finance.formatMarketCap(marketData.marketCapEUR || 0)}`,
+        USD: `$ ${Finance.formatMarketCap(marketData.marketCapUSD || 0)}`,
       },
       dominanceBTC: Finance.formatPercentage(marketData.dominanceBTC),
     };
