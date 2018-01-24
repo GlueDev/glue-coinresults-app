@@ -23,9 +23,11 @@ export default class RateAPI {
     await realm.write(() => {
       realm.create('MarketData', marketData, true);
       rates.forEach(rates => {
+        // Some arrays are empty apparently...
+        if (!rates[0]) return;
+
         const FIAT         = 'EUR',
-              ticker       = rates[0].ticker,
-              tickerObject = realm.objectForPrimaryKey('Ticker', ticker);
+              ticker       = rates[0].ticker
 
         rates.forEach(rate => {
           const year  = moment.unix(rate.timestamp).year(),
@@ -62,7 +64,6 @@ export default class RateAPI {
    */
   static async fetchRates (ticker, FIAT) {
     const request = await axios.get('https://min-api.cryptocompare.com/data/histohour', {
-      timeout: 1500,
       params:  {
         fsym:  ticker,
         tsym:  FIAT,
@@ -119,7 +120,6 @@ export default class RateAPI {
    */
   static async fetchMarketData () {
     const request = await axios.get('https://api.coinmarketcap.com/v1/global/', {
-      timeout: 2000,
       params:  {convert: 'EUR'},
     });
 
