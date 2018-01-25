@@ -1,0 +1,11 @@
+subscription newRate {
+  Rate(filter: {mutation_in: [CREATED]}) {
+    mutation
+    node {
+      ticker
+      pair
+      value
+      timestamp
+    }
+  }
+}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
-import realm from 'realm';
 
 export default class OverviewScreen extends Component {
   /**

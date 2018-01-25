@@ -5,6 +5,7 @@
       "cwd": "babelrc",
       "root": ["./src"],
       "extensions": [".js"]
-    }]
+    }],
+    "babel-plugin-inline-import-graphql-ast"
   ]
 }

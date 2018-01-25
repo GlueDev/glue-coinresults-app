@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, Vibration, View, } from 'react-native';
 import Camera from 'react-native-camera';
 import Swipeout from 'react-native-swipeout';
-import realm from 'realm';
+
 import Finance from 'utils/Finance';
 
 export default class CameraScreen extends Component {

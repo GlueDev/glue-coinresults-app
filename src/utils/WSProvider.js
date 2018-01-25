@@ -14,11 +14,11 @@ export default (Component) => (
      * Define the store.
      */
     constructor (props) {
-      super (props);
+      super(props);
     }
 
     componentDidMount () {
-      const ws = new WebSocket('wss://kendoui-ws-demo.herokuapp.com')
+      const ws     = new WebSocket('wss://kendoui-ws-demo.herokuapp.com');
       ws.onmessage = event => console.log(event.data);
     }
 
@@ -27,6 +27,6 @@ export default (Component) => (
      */
     render = () => (
       <Component store={this.state}/>
-    )
+    );
   }
 );

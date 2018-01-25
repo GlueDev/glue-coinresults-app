@@ -3,7 +3,6 @@ import Input from 'components/ui/InputComponent';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
-import realm from 'realm';
 
 export default class SetAssetAmountScreen extends Component {
   /**

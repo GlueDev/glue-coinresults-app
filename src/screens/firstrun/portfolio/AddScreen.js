@@ -2,7 +2,6 @@ import Container from 'components/firstrun/ContainerComponent';
 import Input from 'components/ui/InputComponent';
 import React, { Component } from 'react';
 import { AlertIOS, KeyboardAvoidingView } from 'react-native';
-import realm from 'realm';
 
 export default class AddPortfolioScreen extends Component {
   /**

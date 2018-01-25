@@ -1,0 +1,11 @@
+query ($tickers: [String!] $pair: String!) {
+  assets: allRates (first: 1, orderBy: timestamp_DESC, filter: {
+    ticker_in: $tickers
+    pair: $pair
+  }) {
+    ticker
+    pair
+    value
+    timestamp
+  }
+}
