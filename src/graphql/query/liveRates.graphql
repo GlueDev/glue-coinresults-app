@@ -1,0 +1,13 @@
+query ($pairs: [String!]!) {
+  liveRates (
+    orderBy: updatedAt_DESC
+    where: {
+    pair_in: $pairs
+  })
+  {
+    pair
+    price
+    change24
+    updatedAt
+  }
+}

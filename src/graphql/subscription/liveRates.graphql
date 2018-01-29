@@ -1,0 +1,16 @@
+subscription ($pairs: [String!]!) {
+  liveRate (where:{
+    mutation_in: [UPDATED]
+    node: {
+      pair_in: $pairs
+    }
+  }) {
+    mutation
+    node {
+      pair
+      price
+      change24
+      updatedAt
+    }
+  }
+}

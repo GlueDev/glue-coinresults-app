@@ -1,8 +1,8 @@
 import CardListComponent from 'components/portfolio/CardListComponent';
 import MarketCapComponent from 'components/portfolio/MarketCapComponent';
 import PortfolioCardComponent from 'components/portfolio/PortfolioCardComponent';
-import RateQuery from 'graphql/query/allRates.graphql';
-import newRate from 'graphql/subscription/newRate.graphql';
+import liveRatesQuery from 'graphql/query/liveRates.graphql';
+import liveRatesSubscription from 'graphql/subscription/liveRates.graphql';
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import { StyleSheet, Text, View } from 'react-native';
@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 class OverviewScreen extends Component {
   componentWillReceiveProps (props) {
     console.log(props);
-    props.subscribeToNewRate();
+    props.subscribeToLiveRate();
   }
 
   /**
@@ -56,19 +56,19 @@ class OverviewScreen extends Component {
   );
 }
 
-export default graphql(RateQuery, {
+export default graphql(liveRatesQuery, {
   options: {
     variables: {
-      tickers: ['XRP', 'BTC'],
-      pair:    'EUR',
+      pairs: ['XRPEUR', 'XRPBTC', 'XRPUSD', 'ETHEUR', 'ETHUSD'],
     },
   },
 
   props: props => ({
     ...props,
-    subscribeToNewRate: () => {
+    subscribeToLiveRate: () => {
       props.data.subscribeToMore({
-        document:    newRate,
+        document:    liveRatesSubscription,
+        variables:   props.data.variables,
         updateQuery: (prev, {subscriptionData}) => {
           if (!subscriptionData.data) {
             return prev;
@@ -76,7 +76,7 @@ export default graphql(RateQuery, {
 
           console.log(prev, subscriptionData.data);
         },
-      })
+      });
     },
   }),
 })(OverviewScreen);

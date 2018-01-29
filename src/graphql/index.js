@@ -9,11 +9,11 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:60000/simple/v1/cjctxhthg00020192i3b2ewgj',
+  uri: 'https://eu1.prisma.sh/diederik-van-den-burger/RateBase/dev',
 });
 
 const wsLink = new WebSocketLink({
-  uri:     `ws://localhost:60000/subscriptions/v1/cjctxhthg00020192i3b2ewgj`,
+  uri:     'wss://eu1.prisma.sh/diederik-van-den-burger/RateBase/dev',
   options: {
     reconnect: true,
   },
