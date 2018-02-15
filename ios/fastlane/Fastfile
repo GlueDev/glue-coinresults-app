@@ -8,7 +8,7 @@ platform :ios do
     increment_build_number(xcodeproj: "CoinResults.xcodeproj")
     build_app(scheme: "CoinResults Release")
     hockey(
-      api_token: "a4e9897081b049d6bde312d845e74be9",
+      api_token: "4895779019194f00ab55bd63773ee10c",
       ipa: "./CoinResults.ipa",
     )
   end
