@@ -1,8 +1,8 @@
-git_url "https://github.com/DiederikvandenB/CoinResults-Certificates.git"
+git_url "git@devops.glue.group:Keys-and-Certificates/CodeSigning-Glue.git"
 
 type "development" # The default type, can be: appstore, adhoc, enterprise or development
 
-username "apple@apprelated.nl"
+username "apple@glue.group"
 
 # For all available options run `fastlane match --help`
 # Remove the # in the beginning of the line to enable the other options

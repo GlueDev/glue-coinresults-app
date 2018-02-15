@@ -222,6 +222,20 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		A35C75C920359B7D002C4C86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBF21BDC1FC498900052F4D5;
+			remoteInfo = jsinspector;
+		};
+		A35C75CB20359B7D002C4C86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBF21BFA1FC4989A0052F4D5;
+			remoteInfo = "jsinspector-tvOS";
+		};
 		A3B66E061FEEB75000BE309A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -573,6 +587,8 @@
 				3DAD3EAB1DF850E9000B6D8A /* libcxxreact.a */,
 				3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */,
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
+				A35C75CA20359B7D002C4C86 /* libjsinspector.a */,
+				A35C75CC20359B7D002C4C86 /* libjsinspector-tvOS.a */,
 				A3E7AF881FEEB7A30096CA6A /* libthird-party.a */,
 				A3E7AF8A1FEEB7A30096CA6A /* libthird-party.a */,
 				A3E7AF8C1FEEB7A30096CA6A /* libdouble-conversion.a */,
@@ -1107,6 +1123,20 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A35C75CA20359B7D002C4C86 /* libjsinspector.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjsinspector.a;
+			remoteRef = A35C75C920359B7D002C4C86 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A35C75CC20359B7D002C4C86 /* libjsinspector-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libjsinspector-tvOS.a";
+			remoteRef = A35C75CB20359B7D002C4C86 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A3B66E071FEEB75000BE309A /* libRCTBlob-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1322,7 +1352,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 28;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = FXWBM48678;
 				HEADER_SEARCH_PATHS = (
@@ -1364,7 +1394,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = FXWBM48678;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1392,7 +1422,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apprelated.coinresults;
 				PRODUCT_NAME = CoinResults;
-				PROVISIONING_PROFILE = "f67fbf47-08dc-4a5a-bdac-a0ecff92dbe8";
+				PROVISIONING_PROFILE = "b5db74c9-3f5c-49b3-b727-28d0f83e42ff";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.apprelated.coinresults";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
