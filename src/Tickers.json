@@ -183,5 +183,10 @@
     "ticker": "BAT",
     "name": "Basic Attention Token",
     "color": "#912B61"
+  },
+  {
+    "ticker": "TKY",
+    "name": "THEKEY",
+    "color": "#72B9E0"
   }
 ]
