@@ -23,7 +23,7 @@ class CoinResults extends Component {
     }
 
     // Grab data from realm.
-    const [portfolios, tickers] = [realm.objects('Portfolio'), realm.objects('Ticker')];
+    const tickers = realm.objects('Ticker');
 
     // Make sure we insert the tickers in to realm if necessary.
     if (!tickers.length) {
@@ -40,13 +40,6 @@ class CoinResults extends Component {
         console.error(e);
       }
     }
-
-    if (!portfolios.length) {
-      return this.setNavigationStack('CR.FR.ExplanationScreen');
-    }
-
-    // Refresh data.
-    // await RateAPI.refreshData(portfolios);
 
     // Show the overview screen.
     return this.setNavigationStack('CR.PF.OverviewScreen');
